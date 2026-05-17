@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - SummitFX</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050816;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+}
+
+.container{
+    width:400px;
+    background:#0d1327;
+    padding:40px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+}
+
+.input-group input{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#111936;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#00f7ff;
+    color:black;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.bottom-text{
+    text-align:center;
+    margin-top:20px;
+}
+
+.bottom-text a{
+    color:#00f7ff;
+    text-decoration:none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Create Account</h1>
+
+    <form>
+
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="Enter your full name">
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email">
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" placeholder="Create password">
+        </div>
+
+        <button type="submit">Create Account</button>
+
+    </form>
+
+    <div class="bottom-text">
+        Already have an account?
+        <a href="login.html">Login</a>
+    </div>
+
+</div>
+
+</body>
+</html>
