@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading Bots - SummitFX</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050816;
+    color:white;
+    display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:#0b1020;
+    padding:30px 20px;
+    position:fixed;
+    left:0;
+    top:0;
+    border-right:1px solid rgba(255,255,255,0.1);
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    color:#00f7ff;
+    margin-bottom:50px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    background:#111936;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    background:#00f7ff;
+    color:black;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:260px;
+    width:calc(100% - 260px);
+    padding:30px;
+}
+
+.page-title{
+    font-size:34px;
+    margin-bottom:30px;
+}
+
+.bot-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+
+.bot-card{
+    background:#0d1327;
+    padding:25px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.08);
+    transition:0.3s;
+}
+
+.bot-card:hover{
+    transform:translateY(-5px);
+    border-color:#00f7ff;
+}
+
+.bot-card h2{
+    margin-bottom:15px;
+}
+
+.bot-card p{
+    color:#b5b5b5;
+    line-height:1.7;
+    margin-bottom:20px;
+}
+
+.stats{
+    margin-bottom:20px;
+}
+
+.stats div{
+    margin-bottom:10px;
+}
+
+.view-btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    background:#00f7ff;
+    color:black;
+    padding:14px;
+    border-radius:12px;
+    font-weight:600;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+body{
+    flex-direction:column;
+}
+
+.sidebar{
+    width:100%;
+    height:auto;
+    position:relative;
+}
+
+.main{
+    margin-left:0;
+    width:100%;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">SummitFX</div>
+
+    <div class="menu">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="deposit.html">Deposit</a>
+        <a href="withdraw.html">Withdraw</a>
+        <a href="bots.html">Trading Bots</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="settings.html">Settings</a>
+        <a href="index.html">Logout</a>
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <h1 class="page-title">Trading Bots</h1>
+
+    <div class="bot-grid">
+
+        <!-- BOT 1 -->
+
+        <div class="bot-card">
+
+            <h2>Scalper AI</h2>
+
+            <p>
+                High-frequency forex AI trading
+                bot optimized for short-term profits.
+            </p>
+
+            <div class="stats">
+                <div>ROI: 18%</div>
+                <div>Risk: Medium</div>
+                <div>Win Rate: 89%</div>
+            </div>
+
+            <a href="scalper-bot.html" class="view-btn">
+                View Bot
+            </a>
+
+        </div>
+
+        <!-- BOT 2 -->
+
+        <div class="bot-card">
+
+            <h2>Swing Master</h2>
+
+            <p>
+                Advanced swing trading bot
+                designed for stable growth.
+            </p>
+
+            <div class="stats">
+                <div>ROI: 24%</div>
+                <div>Risk: Low</div>
+                <div>Win Rate: 92%</div>
+            </div>
+
+            <a href="swing-bot.html" class="view-btn">
+                View Bot
+            </a>
+
+        </div>
+
+        <!-- BOT 3 -->
+
+        <div class="bot-card">
+
+            <h2>Gold Hunter</h2>
+
+            <p>
+                AI-powered XAU/USD gold
+                trading automation system.
+            </p>
+
+            <div class="stats">
+                <div>ROI: 31%</div>
+                <div>Risk: High</div>
+                <div>Win Rate: 85%</div>
+            </div>
+
+            <a href="gold-bot.html" class="view-btn">
+                View Bot
+            </a>
+
+        </div>
+
+        <!-- BOT 4 -->
+
+        <div class="bot-card">
+
+            <h2>Smart Hedge AI</h2>
+
+            <p>
+                Intelligent hedging system
+                for portfolio protection.
+            </p>
+
+            <div class="stats">
+                <div>ROI: 15%</div>
+                <div>Risk: Low</div>
+                <div>Win Rate: 95%</div>
+            </div>
+
+            <a href="hedge-bot.html" class="view-btn">
+                View Bot
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
