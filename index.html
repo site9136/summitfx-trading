@@ -1,16 +1,493 @@
+```html
 <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SummitFX - AI Forex Trading Platform</title>
 
-<section class="bots">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050816;
+    color:white;
+    overflow-x:hidden;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+/* NAVBAR */
+
+.navbar{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:25px 8%;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1000;
+    background:rgba(5,8,22,0.95);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.logo{
+    font-size:32px;
+    font-weight:800;
+    color:#00f7ff;
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+    align-items:center;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:white;
+    transition:0.3s;
+    font-weight:500;
+}
+
+.nav-links a:hover{
+    color:#00f7ff;
+}
+
+.auth-buttons{
+    display:flex;
+    gap:15px;
+}
+
+.btn{
+    padding:13px 24px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.login-btn{
+    border:1px solid #00f7ff;
+    color:#00f7ff;
+}
+
+.login-btn:hover{
+    background:#00f7ff;
+    color:black;
+}
+
+.signup-btn{
+    background:#00f7ff;
+    color:black;
+}
+
+.signup-btn:hover{
+    opacity:0.8;
+}
+
+/* HERO SECTION */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:150px 8% 80px;
+    gap:50px;
+}
+
+.hero-text{
+    flex:1;
+}
+
+.hero-text h1{
+    font-size:70px;
+    line-height:1.1;
+    margin-bottom:25px;
+}
+
+.hero-text h1 span{
+    color:#00f7ff;
+}
+
+.hero-text p{
+    color:#b5b5b5;
+    font-size:18px;
+    line-height:1.8;
+    margin-bottom:40px;
+    max-width:650px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.hero-card{
+    flex:1;
+    background:#0d1327;
+    border:1px solid rgba(255,255,255,0.08);
+    padding:40px;
+    border-radius:30px;
+    max-width:450px;
+    box-shadow:0 0 40px rgba(0,247,255,0.08);
+}
+
+.hero-card h2{
+    font-size:30px;
+    margin-bottom:25px;
+}
+
+.stat-box{
+    background:#111936;
+    padding:20px;
+    border-radius:16px;
+    margin-bottom:18px;
+}
+
+.stat-box h3{
+    color:#00f7ff;
+    margin-bottom:8px;
+}
+
+.stat-box p{
+    color:#b5b5b5;
+}
+
+/* FEATURES */
+
+.section{
+    padding:100px 8%;
+}
+
+.section-title{
+    text-align:center;
+    font-size:50px;
+    margin-bottom:20px;
+}
+
+.section-subtitle{
+    text-align:center;
+    color:#b5b5b5;
+    max-width:700px;
+    margin:auto;
+    margin-bottom:60px;
+    line-height:1.8;
+}
+
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+
+.feature-card{
+    background:#0d1327;
+    padding:35px;
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,0.08);
+    transition:0.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+    border-color:#00f7ff;
+}
+
+.feature-card h3{
+    font-size:24px;
+    margin-bottom:15px;
+}
+
+.feature-card p{
+    color:#b5b5b5;
+    line-height:1.7;
+}
+
+/* BOTS SECTION */
+
+.bots-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.bot-card{
+    background:#0d1327;
+    border-radius:24px;
+    padding:30px;
+    border:1px solid rgba(255,255,255,0.08);
+    transition:0.3s;
+}
+
+.bot-card:hover{
+    transform:translateY(-8px);
+    border-color:#00f7ff;
+}
+
+.bot-card h3{
+    font-size:28px;
+    margin-bottom:18px;
+}
+
+.bot-card p{
+    color:#b5b5b5;
+    line-height:1.7;
+    margin-bottom:20px;
+}
+
+.bot-stats div{
+    margin-bottom:10px;
+}
+
+/* CTA */
+
+.cta{
+    margin:100px 8%;
+    background:linear-gradient(135deg,#00f7ff,#0066ff);
+    border-radius:35px;
+    padding:70px 40px;
+    text-align:center;
+    color:black;
+}
+
+.cta h2{
+    font-size:50px;
+    margin-bottom:20px;
+}
+
+.cta p{
+    max-width:700px;
+    margin:auto;
+    margin-bottom:35px;
+    line-height:1.8;
+    font-weight:500;
+}
+
+.cta .btn{
+    background:black;
+    color:white;
+}
+
+/* FOOTER */
+
+.footer{
+    padding:40px 8%;
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,0.08);
+    color:#b5b5b5;
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+
+.hero{
+    flex-direction:column;
+}
+
+.hero-text h1{
+    font-size:50px;
+}
+
+.hero-card{
+    width:100%;
+    max-width:100%;
+}
+
+}
+
+@media(max-width:800px){
+
+.navbar{
+    flex-direction:column;
+    gap:20px;
+}
+
+.nav-links{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.hero{
+    padding-top:220px;
+}
+
+.hero-text h1{
+    font-size:42px;
+}
+
+.section-title{
+    font-size:38px;
+}
+
+.cta h2{
+    font-size:36px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+    <div class="logo">SummitFX</div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#bots">Trading Bots</a>
+        <a href="login.html">Login</a>
+    </div>
+
+    <div class="auth-buttons">
+        <a href="login.html" class="btn login-btn">Sign In</a>
+        <a href="signup.html" class="btn signup-btn">Sign Up</a>
+    </div>
+
+</div>
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <div class="hero-text">
+
+        <h1>
+            The Future Of <span>AI Forex Trading</span>
+        </h1>
+
+        <p>
+            SummitFX is a professional AI-powered forex trading platform
+            designed for smart automated trading, advanced portfolio
+            management, secure deposits, fast withdrawals, and intelligent
+            trading bot activation.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="signup.html" class="btn signup-btn">
+                Start Trading
+            </a>
+
+            <a href="login.html" class="btn login-btn">
+                Login Account
+            </a>
+        </div>
+
+    </div>
+
+    <div class="hero-card">
+
+        <h2>Platform Highlights</h2>
+
+        <div class="stat-box">
+            <h3>4 AI Trading Bots</h3>
+            <p>Automated forex trading systems for multiple strategies.</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Secure Crypto Deposits</h3>
+            <p>Fast and secure funding through crypto wallets.</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Professional Dashboard</h3>
+            <p>Track balances, bots, withdrawals, and transactions.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="section" id="features">
+
+    <h2 class="section-title">Why Choose SummitFX</h2>
+
+    <p class="section-subtitle">
+        Built for traders who want automation, speed, security,
+        and intelligent AI trading technology in one platform.
+    </p>
+
+    <div class="features-grid">
+
+        <div class="feature-card">
+            <h3>AI Automation</h3>
+            <p>
+                Advanced trading algorithms designed to analyze
+                forex market opportunities automatically.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Secure Platform</h3>
+            <p>
+                Protected account systems with professional
+                crypto transaction management.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Fast Withdrawals</h3>
+            <p>
+                Submit withdrawal requests directly from your
+                user dashboard anytime.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Modern Dashboard</h3>
+            <p>
+                Beautiful responsive interface designed for
+                desktop and mobile trading experience.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- BOTS -->
+
+<section class="section" id="bots">
 
     <h2 class="section-title">Our Trading Bots</h2>
 
-    <div class="bot-grid">
+    <p class="section-subtitle">
+        Activate intelligent forex bots built for different
+        market conditions and trading styles.
+    </p>
+
+    <div class="bots-grid">
 
         <div class="bot-card">
             <h3>Scalper AI</h3>
-            <p>Fast short-term forex trades powered by AI algorithms.</p>
 
-            <div class="stats">
+            <p>
+                High-frequency AI trading bot focused on short-term profits.
+            </p>
+
+            <div class="bot-stats">
                 <div>ROI: 18%</div>
                 <div>Risk: Medium</div>
                 <div>Win Rate: 89%</div>
@@ -19,9 +496,12 @@
 
         <div class="bot-card">
             <h3>Swing Master</h3>
-            <p>Advanced swing trading strategy for steady profits.</p>
 
-            <div class="stats">
+            <p>
+                Stable swing trading system designed for long-term growth.
+            </p>
+
+            <div class="bot-stats">
                 <div>ROI: 24%</div>
                 <div>Risk: Low</div>
                 <div>Win Rate: 92%</div>
@@ -30,9 +510,12 @@
 
         <div class="bot-card">
             <h3>Gold Hunter</h3>
-            <p>Specialized XAU/USD gold trading automation system.</p>
 
-            <div class="stats">
+            <p>
+                AI automation specialized for XAU/USD gold market trading.
+            </p>
+
+            <div class="bot-stats">
                 <div>ROI: 31%</div>
                 <div>Risk: High</div>
                 <div>Win Rate: 85%</div>
@@ -41,9 +524,12 @@
 
         <div class="bot-card">
             <h3>Smart Hedge AI</h3>
-            <p>Risk-managed AI system for portfolio protection.</p>
 
-            <div class="stats">
+            <p>
+                Portfolio protection bot using intelligent hedging strategies.
+            </p>
+
+            <div class="bot-stats">
                 <div>ROI: 15%</div>
                 <div>Risk: Low</div>
                 <div>Win Rate: 95%</div>
@@ -54,9 +540,29 @@
 
 </section>
 
-<footer>
-    © 2026 SummitFX Trading Platform. All rights reserved.
-</footer>
+<!-- CTA -->
+
+<section class="cta">
+
+    <h2>Start Your AI Trading Journey</h2>
+
+    <p>
+        Create your SummitFX account today and access professional
+        AI-powered forex trading systems from anywhere in the world.
+    </p>
+
+    <a href="signup.html" class="btn">
+        Create Free Account
+    </a>
+
+</section>
+
+<!-- FOOTER -->
+
+<div class="footer">
+    © 2026 SummitFX. All Rights Reserved.
+</div>
 
 </body>
 </html>
+```
