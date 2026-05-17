@@ -33,6 +33,7 @@ body{
     left:0;
     top:0;
     border-right:1px solid rgba(255,255,255,0.1);
+    overflow-y:auto;
 }
 
 .logo{
@@ -55,6 +56,7 @@ body{
     border-radius:12px;
     transition:0.3s;
     background:#111936;
+    font-weight:500;
 }
 
 .menu a:hover{
@@ -77,6 +79,7 @@ body{
     justify-content:space-between;
     align-items:center;
     margin-bottom:30px;
+    gap:20px;
 }
 
 .topbar h1{
@@ -95,7 +98,7 @@ body{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
-    margin-bottom:30px;
+    margin-bottom:40px;
 }
 
 .card{
@@ -213,6 +216,10 @@ table td{
 
 @media(max-width:900px){
 
+body{
+    flex-direction:column;
+}
+
 .sidebar{
     width:100%;
     height:auto;
@@ -222,10 +229,12 @@ table td{
 .main{
     margin-left:0;
     width:100%;
+    padding:20px;
 }
 
-body{
+.topbar{
     flex-direction:column;
+    align-items:flex-start;
 }
 
 }
@@ -241,12 +250,12 @@ body{
     <div class="logo">SummitFX</div>
 
     <div class="menu">
-        <a href="#">Dashboard</a>
-        <a href="#">Deposit</a>
-        <a href="#">Withdraw</a>
-        <a href="#">Trading Bots</a>
-        <a href="#">Transactions</a>
-        <a href="#">Settings</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="deposit.html">Deposit</a>
+        <a href="withdraw.html">Withdraw</a>
+        <a href="bots.html">Trading Bots</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="settings.html">Settings</a>
         <a href="index.html">Logout</a>
     </div>
 
@@ -259,11 +268,13 @@ body{
     <!-- TOPBAR -->
 
     <div class="topbar">
+
         <h1>User Dashboard</h1>
 
         <div class="profile">
             Welcome, Trader
         </div>
+
     </div>
 
     <!-- STAT CARDS -->
@@ -299,6 +310,7 @@ body{
     <div class="bot-grid">
 
         <div class="bot-card">
+
             <h3>Scalper AI</h3>
 
             <p>
@@ -315,9 +327,11 @@ body{
             <button class="activate-btn">
                 Activate Bot
             </button>
+
         </div>
 
         <div class="bot-card">
+
             <h3>Swing Master</h3>
 
             <p>
@@ -334,9 +348,11 @@ body{
             <button class="activate-btn">
                 Activate Bot
             </button>
+
         </div>
 
         <div class="bot-card">
+
             <h3>Gold Hunter</h3>
 
             <p>
@@ -353,9 +369,11 @@ body{
             <button class="activate-btn">
                 Activate Bot
             </button>
+
         </div>
 
         <div class="bot-card">
+
             <h3>Smart Hedge AI</h3>
 
             <p>
@@ -372,6 +390,7 @@ body{
             <button class="activate-btn">
                 Activate Bot
             </button>
+
         </div>
 
     </div>
