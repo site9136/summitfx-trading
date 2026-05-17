@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -153,6 +155,12 @@ table td{
     color:black;
     font-weight:600;
     cursor:pointer;
+    margin-right:8px;
+    margin-top:5px;
+}
+
+.action-btn:hover{
+    opacity:0.8;
 }
 
 /* MOBILE */
@@ -218,7 +226,7 @@ body{
 
         <div class="card">
             <h3>Total Users</h3>
-            <h2>0</h2>
+            <h2 id="totalUsers">0</h2>
         </div>
 
         <div class="card">
@@ -246,29 +254,190 @@ body{
 
         <table>
 
+            <thead>
+
             <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Balance</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
 
+            </thead>
+
+            <tbody id="usersTable">
+
             <tr>
-                <td>No users yet</td>
-                <td>---</td>
-                <td>---</td>
-                <td>
-                    <button class="action-btn">
-                        View
-                    </button>
+                <td colspan="5" style="text-align:center;">
+                    Loading users...
                 </td>
             </tr>
+
+            </tbody>
 
         </table>
 
     </div>
 
 </div>
+
+<script>
+
+const supabaseUrl = 'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey = 'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client = createClient(supabaseUrl, supabaseKey);
+
+async function loadUsers(){
+
+    const { data, error } = await client
+    .from('users')
+    .select('*');
+
+    const usersTable = document.getElementById('usersTable');
+
+    const totalUsers = document.getElementById('totalUsers');
+
+    if(error){
+
+        usersTable.innerHTML = `
+        <tr>
+            <td colspan="5">
+                Failed to load users
+            </td>
+        </tr>
+        `;
+
+        return;
+    }
+
+    totalUsers.innerText = data.length;
+
+    usersTable.innerHTML = '';
+
+    if(data.length === 0){
+
+        usersTable.innerHTML = `
+        <tr>
+            <td colspan="5" style="text-align:center;">
+                No users found
+            </td>
+        </tr>
+        `;
+
+    }
+
+    data.forEach(user => {
+
+        usersTable.innerHTML += `
+
+        <tr>
+
+            <td>${user.full_name}</td>
+
+            <td>${user.email}</td>
+
+            <td>$${user.balance || 0}</td>
+
+            <td>Active</td>
+
+            <td>
+
+                <button class="action-btn"
+                onclick="creditUser('${user.id}', ${user.balance || 0})">
+
+                    Credit
+
+                </button>
+
+                <button class="action-btn"
+                onclick="deductUser('${user.id}', ${user.balance || 0})">
+
+                    Deduct
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+async function creditUser(userId, currentBalance){
+
+    const amount = prompt("Enter amount to credit:");
+
+    if(!amount) return;
+
+    const newBalance =
+    Number(currentBalance) + Number(amount);
+
+    const { error } = await client
+    .from('users')
+    .update({
+
+        balance: newBalance
+
+    })
+    .eq('id', userId);
+
+    if(error){
+
+        alert("Failed to credit user");
+
+    }else{
+
+        alert("Balance credited successfully");
+
+        loadUsers();
+
+    }
+
+}
+
+async function deductUser(userId, currentBalance){
+
+    const amount = prompt("Enter amount to deduct:");
+
+    if(!amount) return;
+
+    const newBalance =
+    Number(currentBalance) - Number(amount);
+
+    const { error } = await client
+    .from('users')
+    .update({
+
+        balance: newBalance
+
+    })
+    .eq('id', userId);
+
+    if(error){
+
+        alert("Failed to deduct balance");
+
+    }else{
+
+        alert("Balance deducted successfully");
+
+        loadUsers();
+
+    }
+
+}
+
+loadUsers();
+
+</script>
 
 </body>
 </html>
