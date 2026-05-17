@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deposit - SummitFX</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050816;
+    color:white;
+    display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:#0b1020;
+    padding:30px 20px;
+    position:fixed;
+    left:0;
+    top:0;
+    border-right:1px solid rgba(255,255,255,0.1);
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    color:#00f7ff;
+    margin-bottom:50px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    transition:0.3s;
+    background:#111936;
+}
+
+.menu a:hover{
+    background:#00f7ff;
+    color:black;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:260px;
+    width:calc(100% - 260px);
+    padding:30px;
+}
+
+.page-title{
+    font-size:32px;
+    margin-bottom:30px;
+}
+
+/* DEPOSIT BOX */
+
+.deposit-box{
+    background:#0d1327;
+    padding:35px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.08);
+    max-width:700px;
+}
+
+.deposit-box h2{
+    margin-bottom:25px;
+}
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:10px;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#111936;
+    color:white;
+    font-size:15px;
+}
+
+.wallet-box{
+    background:#111936;
+    padding:20px;
+    border-radius:12px;
+    margin-top:20px;
+    margin-bottom:25px;
+}
+
+.wallet-box p{
+    color:#b5b5b5;
+    margin-bottom:10px;
+}
+
+.wallet-address{
+    word-break:break-all;
+    color:#00f7ff;
+    font-size:15px;
+}
+
+.upload-box{
+    border:2px dashed rgba(255,255,255,0.2);
+    padding:30px;
+    text-align:center;
+    border-radius:15px;
+    margin-bottom:25px;
+    color:#b5b5b5;
+}
+
+button{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:#00f7ff;
+    color:black;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    opacity:0.8;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.sidebar{
+    width:100%;
+    height:auto;
+    position:relative;
+}
+
+.main{
+    margin-left:0;
+    width:100%;
+}
+
+body{
+    flex-direction:column;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">SummitFX</div>
+
+    <div class="menu">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="deposit.html">Deposit</a>
+        <a href="#">Withdraw</a>
+        <a href="#">Trading Bots</a>
+        <a href="#">Transactions</a>
+        <a href="#">Settings</a>
+        <a href="index.html">Logout</a>
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <h1 class="page-title">Deposit Funds</h1>
+
+    <div class="deposit-box">
+
+        <h2>Make a Deposit</h2>
+
+        <div class="input-group">
+            <label>Select Cryptocurrency</label>
+
+            <select>
+                <option>USDT TRC20</option>
+                <option>Bitcoin (BTC)</option>
+                <option>Ethereum (ETH)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Deposit Amount</label>
+
+            <input type="number" placeholder="Enter amount">
+        </div>
+
+        <div class="wallet-box">
+
+            <p>Send payment to this wallet address:</p>
+
+            <div class="wallet-address">
+                TX9s8djw73jd8shs82jdhw83hdbs7shd82
+            </div>
+
+        </div>
+
+        <div class="upload-box">
+            Upload payment screenshot or transaction hash
+        </div>
+
+        <button>
+            Submit Deposit Request
+        </button>
+
+    </div>
+
+</div>
+
+</body>
+</html>
