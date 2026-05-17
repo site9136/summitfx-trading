@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <style>
 
@@ -167,12 +167,17 @@ button:hover{
 <script>
 
 const supabaseUrl = 'https://grcpnibpjcpjckognvbm.supabase.co';
+
 const supabaseKey = 'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const { createClient } = supabase;
+
+const client = createClient(supabaseUrl, supabaseKey);
 
 const form = document.getElementById('signupForm');
+
 const messageBox = document.getElementById('message');
+
 const signupBtn = document.getElementById('signupBtn');
 
 form.addEventListener('submit', async (e) => {
@@ -182,18 +187,25 @@ form.addEventListener('submit', async (e) => {
     signupBtn.innerText = "Creating Account...";
 
     const fullname = document.getElementById('fullname').value;
+
     const email = document.getElementById('email').value;
+
     const password = document.getElementById('password').value;
 
-    const { data, error } = await supabase.auth.signUp({
+    const { data, error } = await client.auth.signUp({
 
         email: email,
+
         password: password,
 
         options: {
+
             data: {
+
                 full_name: fullname
+
             }
+
         }
 
     });
@@ -201,7 +213,9 @@ form.addEventListener('submit', async (e) => {
     if(error){
 
         messageBox.style.display = "block";
+
         messageBox.className = "message error";
+
         messageBox.innerText = error.message;
 
         signupBtn.innerText = "Create Account";
@@ -209,10 +223,11 @@ form.addEventListener('submit', async (e) => {
     }else{
 
         messageBox.style.display = "block";
+
         messageBox.className = "message success";
 
         messageBox.innerText =
-        "Account created successfully. Please check your email to verify your account.";
+        "Account created successfully. Check your email to verify your account.";
 
         signupBtn.innerText = "Account Created";
 
