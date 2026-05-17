@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swing Master - SummitFX</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050816;
+    color:white;
+    padding:40px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:#0d1327;
+    padding:40px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+h1{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.description{
+    color:#b5b5b5;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.stats{
+    margin-bottom:30px;
+}
+
+.stats div{
+    margin-bottom:15px;
+    font-size:18px;
+}
+
+button{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:14px;
+    background:#00f7ff;
+    color:black;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.8;
+}
+
+.message{
+    margin-top:20px;
+    background:#111936;
+    padding:18px;
+    border-radius:12px;
+    display:none;
+    color:#ffcc00;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:25px;
+    color:#00f7ff;
+    text-decoration:none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Swing Master</h1>
+
+    <div class="description">
+        Swing Master is an intelligent swing trading
+        AI bot designed to capture medium and long-term
+        market trends with precision risk management
+        and stable growth strategies.
+    </div>
+
+    <div class="stats">
+        <div>Minimum Activation: $800</div>
+        <div>ROI: 24%</div>
+        <div>Risk Level: Low</div>
+        <div>Win Rate: 92%</div>
+    </div>
+
+    <button onclick="showMessage()">
+        Activate Bot
+    </button>
+
+    <div class="message" id="message">
+        Insufficient funds. Please deposit funds to activate this bot.
+    </div>
+
+    <a href="bots.html" class="back-btn">
+        ← Back to Bots
+    </a>
+
+</div>
+
+<script>
+
+function showMessage(){
+    document.getElementById("message").style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
