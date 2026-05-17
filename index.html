@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,9 +37,8 @@ html{
     position:fixed;
     top:0;
     left:0;
-    z-index:1000;
-    background:rgba(5,8,22,0.95);
-    backdrop-filter:blur(10px);
+    z-index:9999;
+    background:#050816;
     border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
@@ -61,6 +59,8 @@ html{
     color:white;
     transition:0.3s;
     font-weight:500;
+    position:relative;
+    z-index:99999;
 }
 
 .nav-links a:hover{
@@ -78,6 +78,8 @@ html{
     text-decoration:none;
     font-weight:600;
     transition:0.3s;
+    position:relative;
+    z-index:99999;
 }
 
 .login-btn{
@@ -346,8 +348,6 @@ html{
 </head>
 <body>
 
-<!-- NAVBAR -->
-
 <div class="navbar">
 
     <div class="logo">SummitFX</div>
@@ -366,8 +366,6 @@ html{
 
 </div>
 
-<!-- HERO -->
-
 <section class="hero" id="home">
 
     <div class="hero-text">
@@ -377,13 +375,11 @@ html{
         </h1>
 
         <p>
-            SummitFX is a professional AI-powered forex trading platform
-            designed for smart automated trading, advanced portfolio
-            management, secure deposits, fast withdrawals, and intelligent
-            trading bot activation.
+            SummitFX is a professional AI-powered forex trading platform designed for automated trading, secure deposits, smart withdrawals, and intelligent trading bot activation.
         </p>
 
         <div class="hero-buttons">
+
             <a href="signup.html" class="btn signup-btn">
                 Start Trading
             </a>
@@ -391,6 +387,7 @@ html{
             <a href="login.html" class="btn login-btn">
                 Login Account
             </a>
+
         </div>
 
     </div>
@@ -401,154 +398,63 @@ html{
 
         <div class="stat-box">
             <h3>4 AI Trading Bots</h3>
-            <p>Automated forex trading systems for multiple strategies.</p>
+            <p>Advanced forex automation systems.</p>
         </div>
 
         <div class="stat-box">
             <h3>Secure Crypto Deposits</h3>
-            <p>Fast and secure funding through crypto wallets.</p>
+            <p>Fast and secure funding methods.</p>
         </div>
 
         <div class="stat-box">
             <h3>Professional Dashboard</h3>
-            <p>Track balances, bots, withdrawals, and transactions.</p>
+            <p>Track profits, bots, and withdrawals.</p>
         </div>
 
     </div>
 
 </section>
-
-<!-- FEATURES -->
 
 <section class="section" id="features">
 
     <h2 class="section-title">Why Choose SummitFX</h2>
 
     <p class="section-subtitle">
-        Built for traders who want automation, speed, security,
-        and intelligent AI trading technology in one platform.
+        Built for traders who want intelligent AI trading technology and professional automation.
     </p>
 
     <div class="features-grid">
 
         <div class="feature-card">
             <h3>AI Automation</h3>
-            <p>
-                Advanced trading algorithms designed to analyze
-                forex market opportunities automatically.
-            </p>
+            <p>Advanced trading algorithms for forex market analysis.</p>
         </div>
 
         <div class="feature-card">
             <h3>Secure Platform</h3>
-            <p>
-                Protected account systems with professional
-                crypto transaction management.
-            </p>
+            <p>Protected account systems and secure crypto transactions.</p>
         </div>
 
         <div class="feature-card">
             <h3>Fast Withdrawals</h3>
-            <p>
-                Submit withdrawal requests directly from your
-                user dashboard anytime.
-            </p>
+            <p>Withdraw funds directly from your dashboard anytime.</p>
         </div>
 
         <div class="feature-card">
             <h3>Modern Dashboard</h3>
-            <p>
-                Beautiful responsive interface designed for
-                desktop and mobile trading experience.
-            </p>
+            <p>Beautiful responsive design for desktop and mobile users.</p>
         </div>
 
     </div>
 
 </section>
-
-<!-- BOTS -->
-
-<section class="section" id="bots">
-
-    <h2 class="section-title">Our Trading Bots</h2>
-
-    <p class="section-subtitle">
-        Activate intelligent forex bots built for different
-        market conditions and trading styles.
-    </p>
-
-    <div class="bots-grid">
-
-        <div class="bot-card">
-            <h3>Scalper AI</h3>
-
-            <p>
-                High-frequency AI trading bot focused on short-term profits.
-            </p>
-
-            <div class="bot-stats">
-                <div>ROI: 18%</div>
-                <div>Risk: Medium</div>
-                <div>Win Rate: 89%</div>
-            </div>
-        </div>
-
-        <div class="bot-card">
-            <h3>Swing Master</h3>
-
-            <p>
-                Stable swing trading system designed for long-term growth.
-            </p>
-
-            <div class="bot-stats">
-                <div>ROI: 24%</div>
-                <div>Risk: Low</div>
-                <div>Win Rate: 92%</div>
-            </div>
-        </div>
-
-        <div class="bot-card">
-            <h3>Gold Hunter</h3>
-
-            <p>
-                AI automation specialized for XAU/USD gold market trading.
-            </p>
-
-            <div class="bot-stats">
-                <div>ROI: 31%</div>
-                <div>Risk: High</div>
-                <div>Win Rate: 85%</div>
-            </div>
-        </div>
-
-        <div class="bot-card">
-            <h3>Smart Hedge AI</h3>
-
-            <p>
-                Portfolio protection bot using intelligent hedging strategies.
-            </p>
-
-            <div class="bot-stats">
-                <div>ROI: 15%</div>
-                <div>Risk: Low</div>
-                <div>Win Rate: 95%</div>
-            </div>
-        </div>
-
-    </div>
-
-</section>
-
-<!-- CTA -->
 
 <section class="cta">
 
     <h2>Start Your AI Trading Journey</h2>
 
     <p>
-        Create your SummitFX account today and access professional
-        AI-powered forex trading systems from anywhere in the world.
+        Create your SummitFX account today and access powerful AI forex trading systems.
     </p>
 
     <a href="signup.html" class="btn">
@@ -557,12 +463,9 @@ html{
 
 </section>
 
-<!-- FOOTER -->
-
 <div class="footer">
     © 2026 SummitFX. All Rights Reserved.
 </div>
 
 </body>
 </html>
-```
