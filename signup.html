@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -21,21 +23,32 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
     color:white;
+    padding:20px;
 }
 
 .container{
-    width:400px;
+    width:100%;
+    max-width:420px;
     background:#0d1327;
     padding:40px;
     border-radius:20px;
     border:1px solid rgba(255,255,255,0.1);
 }
 
+.logo{
+    text-align:center;
+    font-size:32px;
+    font-weight:700;
+    color:#00f7ff;
+    margin-bottom:10px;
+}
+
 h1{
     text-align:center;
     margin-bottom:30px;
+    font-size:30px;
 }
 
 .input-group{
@@ -54,6 +67,12 @@ h1{
     border-radius:10px;
     background:#111936;
     color:white;
+    font-size:15px;
+}
+
+.input-group input:focus{
+    outline:none;
+    border:1px solid #00f7ff;
 }
 
 button{
@@ -66,11 +85,36 @@ button{
     font-size:16px;
     font-weight:600;
     cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    opacity:0.8;
+}
+
+.message{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    display:none;
+    text-align:center;
+    line-height:1.6;
+}
+
+.success{
+    background:rgba(0,255,140,0.1);
+    color:#00ff99;
+}
+
+.error{
+    background:rgba(255,0,0,0.1);
+    color:#ff5c5c;
 }
 
 .bottom-text{
     text-align:center;
     margin-top:20px;
+    color:#b5b5b5;
 }
 
 .bottom-text a{
@@ -84,28 +128,34 @@ button{
 
 <div class="container">
 
+    <div class="logo">SummitFX</div>
+
     <h1>Create Account</h1>
 
-    <form>
+    <form id="signupForm">
 
         <div class="input-group">
             <label>Full Name</label>
-            <input type="text" placeholder="Enter your full name">
+            <input type="text" id="fullname" placeholder="Enter your full name" required>
         </div>
 
         <div class="input-group">
             <label>Email</label>
-            <input type="email" placeholder="Enter your email">
+            <input type="email" id="email" placeholder="Enter your email" required>
         </div>
 
         <div class="input-group">
             <label>Password</label>
-            <input type="password" placeholder="Create password">
+            <input type="password" id="password" placeholder="Create password" required>
         </div>
 
-        <button type="submit">Create Account</button>
+        <button type="submit" id="signupBtn">
+            Create Account
+        </button>
 
     </form>
+
+    <div class="message" id="message"></div>
 
     <div class="bottom-text">
         Already have an account?
@@ -113,6 +163,66 @@ button{
     </div>
 
 </div>
+
+<script>
+
+const supabaseUrl = 'https://grcpnibpjcpjckognvbm.supabase.co';
+const supabaseKey = 'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+const form = document.getElementById('signupForm');
+const messageBox = document.getElementById('message');
+const signupBtn = document.getElementById('signupBtn');
+
+form.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+    signupBtn.innerText = "Creating Account...";
+
+    const fullname = document.getElementById('fullname').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const { data, error } = await supabase.auth.signUp({
+
+        email: email,
+        password: password,
+
+        options: {
+            data: {
+                full_name: fullname
+            }
+        }
+
+    });
+
+    if(error){
+
+        messageBox.style.display = "block";
+        messageBox.className = "message error";
+        messageBox.innerText = error.message;
+
+        signupBtn.innerText = "Create Account";
+
+    }else{
+
+        messageBox.style.display = "block";
+        messageBox.className = "message success";
+
+        messageBox.innerText =
+        "Account created successfully. Please check your email to verify your account.";
+
+        signupBtn.innerText = "Account Created";
+
+        form.reset();
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
