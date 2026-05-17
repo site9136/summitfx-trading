@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -21,21 +23,32 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
     color:white;
+    padding:20px;
 }
 
 .container{
-    width:400px;
+    width:100%;
+    max-width:420px;
     background:#0d1327;
     padding:40px;
     border-radius:20px;
     border:1px solid rgba(255,255,255,0.1);
 }
 
+.logo{
+    text-align:center;
+    font-size:32px;
+    font-weight:700;
+    color:#00f7ff;
+    margin-bottom:10px;
+}
+
 h1{
     text-align:center;
     margin-bottom:30px;
+    font-size:30px;
 }
 
 .input-group{
@@ -54,6 +67,12 @@ h1{
     border-radius:10px;
     background:#111936;
     color:white;
+    font-size:15px;
+}
+
+.input-group input:focus{
+    outline:none;
+    border:1px solid #00f7ff;
 }
 
 button{
@@ -66,11 +85,36 @@ button{
     font-size:16px;
     font-weight:600;
     cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    opacity:0.8;
+}
+
+.message{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    display:none;
+    text-align:center;
+    line-height:1.6;
+}
+
+.success{
+    background:rgba(0,255,140,0.1);
+    color:#00ff99;
+}
+
+.error{
+    background:rgba(255,0,0,0.1);
+    color:#ff5c5c;
 }
 
 .bottom-text{
     text-align:center;
     margin-top:20px;
+    color:#b5b5b5;
 }
 
 .bottom-text a{
@@ -84,30 +128,89 @@ button{
 
 <div class="container">
 
-    <h1>Login</h1>
+    <div class="logo">SummitFX</div>
 
-    <form>
+    <h1>Login Account</h1>
+
+    <form id="loginForm">
 
         <div class="input-group">
             <label>Email</label>
-            <input type="email" placeholder="Enter your email">
+            <input type="email" id="email" placeholder="Enter your email" required>
         </div>
 
         <div class="input-group">
             <label>Password</label>
-            <input type="password" placeholder="Enter your password">
+            <input type="password" id="password" placeholder="Enter password" required>
         </div>
 
-        <button type="submit">Login</button>
+        <button type="submit" id="loginBtn">
+            Login
+        </button>
 
     </form>
 
+    <div class="message" id="message"></div>
+
     <div class="bottom-text">
-        Don’t have an account?
-        <a href="signup.html">Sign Up</a>
+        Don't have an account?
+        <a href="signup.html">Create Account</a>
     </div>
 
 </div>
+
+<script>
+
+const supabaseUrl = 'https://grcpnibpjcpjckognvbm.supabase.co';
+const supabaseKey = 'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+const form = document.getElementById('loginForm');
+const messageBox = document.getElementById('message');
+const loginBtn = document.getElementById('loginBtn');
+
+form.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+    loginBtn.innerText = "Logging In...";
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+
+        email: email,
+        password: password
+
+    });
+
+    if(error){
+
+        messageBox.style.display = "block";
+        messageBox.className = "message error";
+        messageBox.innerText = error.message;
+
+        loginBtn.innerText = "Login";
+
+    }else{
+
+        messageBox.style.display = "block";
+        messageBox.className = "message success";
+        messageBox.innerText = "Login successful. Redirecting...";
+
+        setTimeout(() => {
+
+            window.location.href = "dashboard.html";
+
+        }, 2000);
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
