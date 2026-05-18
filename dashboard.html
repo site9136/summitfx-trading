@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -333,6 +335,8 @@ table td{
 
         <a href="bots.html">Trading Bots</a>
 
+        <a href="plans.html">Investment Plans</a>
+
         <a href="transactions.html">Transactions</a>
 
         <div class="menu-title">ACCOUNT</div>
@@ -377,7 +381,7 @@ table td{
 
         <div class="card">
             <h3>Account Balance</h3>
-            <h2>$0.00</h2>
+            <h2 id="balance">$0.00</h2>
         </div>
 
         <div class="card">
@@ -386,8 +390,8 @@ table td{
         </div>
 
         <div class="card">
-            <h3>Active Bots</h3>
-            <h2>0</h2>
+            <h3>Active Investments</h3>
+            <h2 id="activePlans">0</h2>
         </div>
 
         <div class="card">
@@ -489,6 +493,35 @@ table td{
 
     </div>
 
+    <!-- ACTIVE INVESTMENTS -->
+
+    <div class="transactions">
+
+        <h2>My Active Investments</h2>
+
+        <table>
+
+            <tr>
+                <th>Plan</th>
+                <th>Amount</th>
+                <th>ROI</th>
+                <th>Status</th>
+            </tr>
+
+            <tbody id="investmentTable">
+
+            <tr>
+                <td colspan="4" style="text-align:center; padding:30px; color:#b5b5b5;">
+                    No active investments
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
     <!-- TRANSACTIONS -->
 
     <div class="transactions">
@@ -534,6 +567,109 @@ overlay.addEventListener("click", () => {
     overlay.classList.remove("active");
 
 });
+
+/* SUPABASE */
+
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client =
+createClient(supabaseUrl,supabaseKey);
+
+/* LOAD DASHBOARD */
+
+async function loadDashboard(){
+
+    const { data:{ user } } =
+    await client.auth.getUser();
+
+    if(!user){
+
+        window.location.href = "login.html";
+        return;
+
+    }
+
+    /* USER INFO */
+
+    const { data:userData } =
+    await client
+    .from('users')
+    .select('*')
+    .eq('id',user.id)
+    .single();
+
+    if(userData){
+
+        document.getElementById('balance')
+        .innerText =
+        `$${Number(userData.balance || 0).toFixed(2)}`;
+
+    }
+
+    /* LOAD INVESTMENTS */
+
+    const { data:plans } =
+    await client
+    .from('user_investments')
+    .select('*')
+    .eq('user_id',user.id);
+
+    document.getElementById('activePlans')
+    .innerText = plans.length;
+
+    const investmentTable =
+    document.getElementById('investmentTable');
+
+    if(plans.length === 0){
+
+        investmentTable.innerHTML = `
+        <tr>
+            <td colspan="4"
+            style="text-align:center;
+            padding:30px;
+            color:#b5b5b5;">
+                No active investments
+            </td>
+        </tr>
+        `;
+
+        return;
+
+    }
+
+    investmentTable.innerHTML = '';
+
+    plans.forEach(plan => {
+
+        investmentTable.innerHTML += `
+
+        <tr>
+
+            <td>${plan.plan_name}</td>
+
+            <td>$${plan.amount}</td>
+
+            <td>${plan.roi}%</td>
+
+            <td>${plan.status}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+/* START */
+
+loadDashboard();
 
 </script>
 
