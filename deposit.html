@@ -126,6 +126,16 @@ body{
     word-break:break-all;
     color:#00f7ff;
     font-size:15px;
+    margin-top:15px;
+}
+
+.qr-code{
+    width:220px;
+    max-width:100%;
+    border-radius:15px;
+    margin-top:20px;
+    background:white;
+    padding:10px;
 }
 
 .upload-box{
@@ -208,42 +218,108 @@ body{
         <h2>Make a Deposit</h2>
 
         <div class="input-group">
+
             <label>Select Cryptocurrency</label>
 
-            <select>
-                <option>USDT TRC20</option>
-                <option>Bitcoin (BTC)</option>
-                <option>Ethereum (ETH)</option>
+            <select id="cryptoSelect" onchange="changeWallet()">
+
+                <option value="usdt">USDT TRC20</option>
+
+                <option value="btc">Bitcoin (BTC)</option>
+
+                <option value="eth">Ethereum (ETH)</option>
+
             </select>
+
         </div>
 
         <div class="input-group">
+
             <label>Deposit Amount</label>
 
             <input type="number" placeholder="Enter amount">
+
         </div>
 
         <div class="wallet-box">
 
             <p>Send payment to this wallet address:</p>
 
-            <div class="wallet-address">
-                TX9s8djw73jd8shs82jdhw83hdbs7shd82
+            <div class="wallet-address" id="walletAddress">
+
+                TVa4pHAaHe5eo3pyPuHXYnXr7jsS96XCiL
+
             </div>
+
+            <img
+            src="photo_2026-05-18_14-18-11 (4).png"
+            id="walletQR"
+            class="qr-code">
 
         </div>
 
         <div class="upload-box">
+
             Upload payment screenshot or transaction hash
+
         </div>
 
         <button>
+
             Submit Deposit Request
+
         </button>
 
     </div>
 
 </div>
+
+<script>
+
+function changeWallet(){
+
+    const crypto =
+    document.getElementById('cryptoSelect').value;
+
+    const walletAddress =
+    document.getElementById('walletAddress');
+
+    const walletQR =
+    document.getElementById('walletQR');
+
+    if(crypto === 'usdt'){
+
+        walletAddress.innerText =
+        'TVa4pHAaHe5eo3pyPuHXYnXr7jsS96XCiL';
+
+        walletQR.src =
+        'photo_2026-05-18_14-18-11 (4).png';
+
+    }
+
+    else if(crypto === 'btc'){
+
+        walletAddress.innerText =
+        'bc1q39awpq3x6yssc294asl8ahlpr0853agnuvqarf';
+
+        walletQR.src =
+        'photo_2026-05-18_14-18-11 (2).png';
+
+    }
+
+    else if(crypto === 'eth'){
+
+        walletAddress.innerText =
+        '0xB4BF499F31C98B2cf4be00b6CF19f6Bc2730e87E';
+
+        walletQR.src =
+        'photo_2026-05-18_14-18-11.png';
+
+    }
+
+}
+
+</script>
 
 </body>
 </html>
