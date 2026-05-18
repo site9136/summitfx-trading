@@ -128,6 +128,7 @@ body{
     border-radius:20px;
     border:1px solid rgba(255,255,255,0.08);
     overflow-x:auto;
+    margin-bottom:40px;
 }
 
 .table-box h2{
@@ -210,6 +211,7 @@ body{
         <a href="#">Users</a>
         <a href="#">Deposits</a>
         <a href="#">Withdrawals</a>
+        <a href="#kycSection">KYC Verification</a>
         <a href="#">Bots</a>
         <a href="#">Transactions</a>
         <a href="#" id="logoutBtn">Logout</a>
@@ -291,6 +293,39 @@ body{
 
     </div>
 
+    <!-- KYC SECTION -->
+
+    <div class="table-box" id="kycSection">
+
+        <h2>KYC Verification Requests</h2>
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Name</th>
+                <th>Document Type</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="kycTable">
+
+            <tr>
+                <td colspan="4" style="text-align:center;">
+                    Loading KYC requests...
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
 
 <script>
@@ -331,6 +366,7 @@ async function checkAdmin(){
     }
 
     loadUsers();
+    loadKYC();
 
 }
 
@@ -415,6 +451,103 @@ async function loadUsers(){
         `;
 
     });
+
+}
+
+/* LOAD KYC */
+
+async function loadKYC(){
+
+    const { data, error } = await client
+    .from('kyc_submissions')
+    .select('*');
+
+    const kycTable =
+    document.getElementById('kycTable');
+
+    if(error){
+
+        kycTable.innerHTML = `
+        <tr>
+            <td colspan="4" style="text-align:center;">
+                Failed to load KYC requests
+            </td>
+        </tr>
+        `;
+
+        return;
+    }
+
+    kycTable.innerHTML = '';
+
+    if(data.length === 0){
+
+        kycTable.innerHTML = `
+        <tr>
+            <td colspan="4" style="text-align:center;">
+                No KYC requests found
+            </td>
+        </tr>
+        `;
+
+        return;
+    }
+
+    data.forEach(kyc => {
+
+        kycTable.innerHTML += `
+
+        <tr>
+
+            <td>${kyc.full_name || 'N/A'}</td>
+
+            <td>${kyc.document_type || 'N/A'}</td>
+
+            <td>${kyc.status || 'Pending'}</td>
+
+            <td>
+
+                <button class="action-btn"
+                onclick="approveKYC('${kyc.id}')">
+
+                    Approve
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+/* APPROVE KYC */
+
+async function approveKYC(id){
+
+    const { error } = await client
+    .from('kyc_submissions')
+    .update({
+
+        status: 'Verified'
+
+    })
+    .eq('id', id);
+
+    if(error){
+
+        alert("Failed to verify KYC");
+
+    }else{
+
+        alert("KYC verified successfully");
+
+        loadKYC();
+
+    }
 
 }
 
