@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - SummitFX</title>
+<title>Deposit - SummitFX</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <style>
 
@@ -77,7 +75,7 @@ body{
     color:black;
 }
 
-/* MAIN CONTENT */
+/* MAIN */
 
 .main{
     margin-left:260px;
@@ -85,28 +83,13 @@ body{
     padding:30px;
 }
 
-/* MOBILE MENU BUTTON */
-
-.menu-toggle{
-    display:none;
-    width:50px;
-    height:50px;
-    border:none;
-    border-radius:12px;
-    background:#111936;
-    color:#00f7ff;
-    font-size:24px;
-    cursor:pointer;
-}
-
-/* TOP BAR */
+/* TOPBAR */
 
 .topbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:30px;
-    gap:20px;
 }
 
 .topbar h1{
@@ -119,84 +102,63 @@ body{
     border-radius:12px;
 }
 
-/* CARDS */
+/* DEPOSIT SECTION */
 
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-bottom:40px;
+.deposit-section{
+    margin-top:20px;
 }
-
-.card{
-    background:#0d1327;
-    padding:25px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,0.08);
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:translateY(-5px);
-    border-color:#00f7ff;
-}
-
-.card h3{
-    color:#b5b5b5;
-    margin-bottom:10px;
-    font-size:16px;
-}
-
-.card h2{
-    font-size:30px;
-}
-
-/* BOT SECTION */
 
 .section-title{
     font-size:28px;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
-.bot-grid{
+.wallet-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
 }
 
-.bot-card{
+.wallet-card{
     background:#0d1327;
     padding:25px;
     border-radius:20px;
     border:1px solid rgba(255,255,255,0.08);
+    text-align:center;
     transition:0.3s;
 }
 
-.bot-card:hover{
+.wallet-card:hover{
     transform:translateY(-5px);
     border-color:#00f7ff;
 }
 
-.bot-card h3{
-    margin-bottom:15px;
-    font-size:24px;
-}
-
-.bot-card p{
-    color:#b5b5b5;
+.wallet-card h3{
     margin-bottom:20px;
-    line-height:1.6;
+    color:#00f7ff;
+    font-size:22px;
 }
 
-.stats{
+.qr-image{
+    width:230px;
+    max-width:100%;
+    border-radius:16px;
     margin-bottom:20px;
+    background:white;
+    padding:10px;
 }
 
-.stats div{
-    margin-bottom:10px;
+.wallet-address{
+    background:#111936;
+    padding:15px;
+    border-radius:12px;
+    word-break:break-all;
+    margin-bottom:20px;
+    font-size:14px;
+    color:#d7d7d7;
 }
 
-.activate-btn{
+.copy-btn{
     width:100%;
     padding:14px;
     border:none;
@@ -208,50 +170,20 @@ body{
     transition:0.3s;
 }
 
-.activate-btn:hover{
+.copy-btn:hover{
     opacity:0.8;
 }
 
-/* TRANSACTIONS */
+/* NOTICE */
 
-.transactions{
-    margin-top:40px;
-    background:#0d1327;
-    padding:25px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,0.08);
-    overflow-x:auto;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
-    min-width:500px;
-}
-
-table th{
-    text-align:left;
-    padding:15px;
+.notice{
+    margin-top:35px;
     background:#111936;
-}
-
-table td{
-    padding:15px;
-    border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-/* OVERLAY */
-
-.overlay{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
-    top:0;
-    left:0;
-    z-index:900;
-    display:none;
+    padding:20px;
+    border-radius:16px;
+    line-height:1.8;
+    border-left:4px solid #00f7ff;
+    color:#d6d6d6;
 }
 
 /* MOBILE */
@@ -259,17 +191,7 @@ table td{
 @media(max-width:900px){
 
 .sidebar{
-    left:-100%;
-    width:280px;
-    height:100vh;
-}
-
-.sidebar.active{
-    left:0;
-}
-
-.overlay.active{
-    display:block;
+    display:none;
 }
 
 .main{
@@ -278,33 +200,18 @@ table td{
     padding:20px;
 }
 
-.menu-toggle{
-    display:block;
-}
-
 .topbar{
-    align-items:center;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
 }
 
 .topbar h1{
-    font-size:24px;
+    font-size:26px;
 }
 
-.cards{
+.wallet-grid{
     grid-template-columns:1fr;
-}
-
-.bot-grid{
-    grid-template-columns:1fr;
-}
-
-.card h2{
-    font-size:24px;
-}
-
-.profile{
-    font-size:14px;
-    padding:10px 15px;
 }
 
 }
@@ -313,13 +220,9 @@ table td{
 </head>
 <body>
 
-<!-- OVERLAY -->
-
-<div class="overlay" id="overlay"></div>
-
 <!-- SIDEBAR -->
 
-<div class="sidebar" id="sidebar">
+<div class="sidebar">
 
     <div class="logo">SummitFX</div>
 
@@ -355,7 +258,7 @@ table td{
 
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 
 <div class="main">
 
@@ -363,186 +266,120 @@ table td{
 
     <div class="topbar">
 
-        <button class="menu-toggle" id="menuBtn">
-            ☰
-        </button>
-
-        <h1>User Dashboard</h1>
+        <h1>Deposit Funds</h1>
 
         <div class="profile">
-            Welcome, Trader
+            Secure Crypto Deposits
         </div>
 
     </div>
 
-    <!-- STAT CARDS -->
+    <!-- DEPOSIT METHODS -->
 
-    <div class="cards">
+    <div class="deposit-section">
 
-        <div class="card">
-            <h3>Account Balance</h3>
-            <h2 id="balance">$0.00</h2>
-        </div>
+        <h2 class="section-title">
+            Crypto Deposit Wallets
+        </h2>
 
-        <div class="card">
-            <h3>Total Profit</h3>
-            <h2>$0.00</h2>
-        </div>
+        <div class="wallet-grid">
 
-        <div class="card">
-            <h3>Active Investments</h3>
-            <h2 id="activePlans">0</h2>
-        </div>
+            <!-- USDT -->
 
-        <div class="card">
-            <h3>Total Withdrawals</h3>
-            <h2>$0.00</h2>
-        </div>
+            <div class="wallet-card">
 
-    </div>
+                <h3>USDT (TRC20)</h3>
 
-    <!-- BOT SECTION -->
+                <img src="photo_2026-05-18_14-18-11 (4).jpg"
+                class="qr-image">
 
-    <h2 class="section-title">Trading Bots</h2>
+                <div class="wallet-address"
+                id="usdtAddress">
 
-    <div class="bot-grid">
+                    TVa4pHAaHe5eo3pyPuHXYnXr7jsS96XCiL
 
-        <div class="bot-card">
+                </div>
 
-            <h3>Scalper AI</h3>
+                <button class="copy-btn"
+                onclick="copyWallet('usdtAddress')">
 
-            <p>
-                High-frequency AI forex trading system
-                optimized for short-term profits.
-            </p>
+                    Copy Address
 
-            <div class="stats">
-                <div>ROI: 18%</div>
-                <div>Risk: Medium</div>
-                <div>Win Rate: 89%</div>
+                </button>
+
             </div>
 
-            <button class="activate-btn">
-                Activate Bot
-            </button>
+            <!-- BTC -->
 
-        </div>
+            <div class="wallet-card">
 
-        <div class="bot-card">
+                <h3>Bitcoin (BTC)</h3>
 
-            <h3>Swing Master</h3>
+                <img src="photo_2026-05-18_14-18-11 (2).jpg"
+                class="qr-image">
 
-            <p>
-                Smart swing trading system for
-                stable market movements.
-            </p>
+                <div class="wallet-address"
+                id="btcAddress">
 
-            <div class="stats">
-                <div>ROI: 24%</div>
-                <div>Risk: Low</div>
-                <div>Win Rate: 92%</div>
+                    bc1q39awpq3x6yssc294asl8ahlpr0853agnuvqarf
+
+                </div>
+
+                <button class="copy-btn"
+                onclick="copyWallet('btcAddress')">
+
+                    Copy Address
+
+                </button>
+
             </div>
 
-            <button class="activate-btn">
-                Activate Bot
-            </button>
+            <!-- ETH -->
 
-        </div>
+            <div class="wallet-card">
 
-        <div class="bot-card">
+                <h3>Ethereum (ERC20)</h3>
 
-            <h3>Gold Hunter</h3>
+                <img src="photo_2026-05-18_14-18-11.jpg"
+                class="qr-image">
 
-            <p>
-                Advanced XAU/USD gold market
-                AI automation system.
-            </p>
+                <div class="wallet-address"
+                id="ethAddress">
 
-            <div class="stats">
-                <div>ROI: 31%</div>
-                <div>Risk: High</div>
-                <div>Win Rate: 85%</div>
+                    0xB4BF499F31C98B2cf4be00b6CF19f6Bc2730e87E
+
+                </div>
+
+                <button class="copy-btn"
+                onclick="copyWallet('ethAddress')">
+
+                    Copy Address
+
+                </button>
+
             </div>
 
-            <button class="activate-btn">
-                Activate Bot
-            </button>
-
         </div>
 
-        <div class="bot-card">
+        <!-- NOTICE -->
 
-            <h3>Smart Hedge AI</h3>
+        <div class="notice">
 
-            <p>
-                AI-powered hedging system for
-                portfolio protection.
-            </p>
+            <strong>Important Notice:</strong><br><br>
 
-            <div class="stats">
-                <div>ROI: 15%</div>
-                <div>Risk: Low</div>
-                <div>Win Rate: 95%</div>
-            </div>
+            • Send only the correct cryptocurrency to the matching wallet address.<br>
 
-            <button class="activate-btn">
-                Activate Bot
-            </button>
+            • USDT deposits must be sent through the TRC20 network.<br>
+
+            • ETH deposits must be sent through the ERC20 network.<br>
+
+            • BTC deposits must be sent through the Bitcoin network.<br>
+
+            • Deposits are credited after blockchain confirmation.<br>
+
+            • Contact support after payment if your balance delays updating.
 
         </div>
-
-    </div>
-
-    <!-- ACTIVE INVESTMENTS -->
-
-    <div class="transactions">
-
-        <h2>My Active Investments</h2>
-
-        <table>
-
-            <tr>
-                <th>Plan</th>
-                <th>Amount</th>
-                <th>ROI</th>
-                <th>Status</th>
-            </tr>
-
-            <tbody id="investmentTable">
-
-            <tr>
-                <td colspan="4" style="text-align:center; padding:30px; color:#b5b5b5;">
-                    No active investments
-                </td>
-            </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <!-- TRANSACTIONS -->
-
-    <div class="transactions">
-
-        <h2>Recent Transactions</h2>
-
-        <table>
-
-            <tr>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Status</th>
-            </tr>
-
-            <tr>
-                <td colspan="3" style="text-align:center; padding:30px; color:#b5b5b5;">
-                    No transactions available yet.
-                </td>
-            </tr>
-
-        </table>
 
     </div>
 
@@ -550,126 +387,16 @@ table td{
 
 <script>
 
-const sidebar = document.getElementById("sidebar");
-const menuBtn = document.getElementById("menuBtn");
-const overlay = document.getElementById("overlay");
+function copyWallet(id){
 
-menuBtn.addEventListener("click", () => {
+    const text =
+    document.getElementById(id).innerText;
 
-    sidebar.classList.toggle("active");
-    overlay.classList.toggle("active");
+    navigator.clipboard.writeText(text);
 
-});
-
-overlay.addEventListener("click", () => {
-
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-
-});
-
-/* SUPABASE */
-
-const supabaseUrl =
-'https://grcpnibpjcpjckognvbm.supabase.co';
-
-const supabaseKey =
-'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
-
-const { createClient } = supabase;
-
-const client =
-createClient(supabaseUrl,supabaseKey);
-
-/* LOAD DASHBOARD */
-
-async function loadDashboard(){
-
-    const { data:{ user } } =
-    await client.auth.getUser();
-
-    if(!user){
-
-        window.location.href = "login.html";
-        return;
-
-    }
-
-    /* USER INFO */
-
-    const { data:userData } =
-    await client
-    .from('users')
-    .select('*')
-    .eq('id',user.id)
-    .single();
-
-    if(userData){
-
-        document.getElementById('balance')
-        .innerText =
-        `$${Number(userData.balance || 0).toFixed(2)}`;
-
-    }
-
-    /* LOAD INVESTMENTS */
-
-    const { data:plans } =
-    await client
-    .from('user_investments')
-    .select('*')
-    .eq('user_id',user.id);
-
-    document.getElementById('activePlans')
-    .innerText = plans.length;
-
-    const investmentTable =
-    document.getElementById('investmentTable');
-
-    if(plans.length === 0){
-
-        investmentTable.innerHTML = `
-        <tr>
-            <td colspan="4"
-            style="text-align:center;
-            padding:30px;
-            color:#b5b5b5;">
-                No active investments
-            </td>
-        </tr>
-        `;
-
-        return;
-
-    }
-
-    investmentTable.innerHTML = '';
-
-    plans.forEach(plan => {
-
-        investmentTable.innerHTML += `
-
-        <tr>
-
-            <td>${plan.plan_name}</td>
-
-            <td>$${plan.amount}</td>
-
-            <td>${plan.roi}%</td>
-
-            <td>${plan.status}</td>
-
-        </tr>
-
-        `;
-
-    });
+    alert("Wallet address copied successfully");
 
 }
-
-/* START */
-
-loadDashboard();
 
 </script>
 
