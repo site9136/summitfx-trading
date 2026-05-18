@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Plans - SummitFX</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050816;
+    color:white;
+    min-height:100vh;
+}
+
+/* HEADER */
+
+.header{
+    padding:30px 20px;
+    text-align:center;
+}
+
+.logo{
+    font-size:38px;
+    font-weight:700;
+    color:#00f7ff;
+    margin-bottom:10px;
+}
+
+.header h1{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.header p{
+    max-width:700px;
+    margin:auto;
+    color:#b5b5b5;
+    line-height:1.8;
+}
+
+/* PLAN GRID */
+
+.plan-grid{
+    width:90%;
+    max-width:1400px;
+    margin:40px auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+/* PLAN CARD */
+
+.plan-card{
+    background:#0d1327;
+    border-radius:25px;
+    padding:35px 30px;
+    border:1px solid rgba(255,255,255,0.08);
+    transition:0.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.plan-card:hover{
+    transform:translateY(-8px);
+    border-color:#00f7ff;
+    box-shadow:0 0 25px rgba(0,247,255,0.2);
+}
+
+.popular{
+    border:1px solid #00f7ff;
+}
+
+.popular-badge{
+    position:absolute;
+    top:20px;
+    right:-40px;
+    background:#00f7ff;
+    color:black;
+    padding:8px 50px;
+    font-size:13px;
+    font-weight:700;
+    transform:rotate(45deg);
+}
+
+.plan-name{
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.plan-desc{
+    color:#b5b5b5;
+    line-height:1.7;
+    margin-bottom:25px;
+}
+
+.roi{
+    font-size:42px;
+    font-weight:700;
+    color:#00f7ff;
+    margin-bottom:5px;
+}
+
+.roi span{
+    font-size:16px;
+    color:#b5b5b5;
+}
+
+.duration{
+    margin-bottom:25px;
+    color:#d5d5d5;
+}
+
+.features{
+    margin-bottom:30px;
+}
+
+.features div{
+    margin-bottom:14px;
+    color:#d8d8d8;
+}
+
+.activate-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:#00f7ff;
+    color:black;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.activate-btn:hover{
+    opacity:0.85;
+}
+
+/* ACTIVE INVESTMENTS */
+
+.active-section{
+    width:90%;
+    max-width:1400px;
+    margin:60px auto;
+}
+
+.section-title{
+    font-size:32px;
+    margin-bottom:25px;
+}
+
+.investment-box{
+    background:#0d1327;
+    border-radius:25px;
+    padding:30px;
+    border:1px solid rgba(255,255,255,0.08);
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#111936;
+    padding:16px;
+    text-align:left;
+}
+
+table td{
+    padding:16px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.status{
+    color:#00ff99;
+    font-weight:600;
+}
+
+/* MESSAGE */
+
+.message{
+    width:90%;
+    max-width:600px;
+    margin:20px auto;
+    padding:18px;
+    border-radius:14px;
+    text-align:center;
+    display:none;
+    font-weight:500;
+}
+
+.success{
+    background:rgba(0,255,140,0.1);
+    color:#00ff99;
+}
+
+.error{
+    background:rgba(255,0,0,0.1);
+    color:#ff5c5c;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.header h1{
+    font-size:32px;
+}
+
+.roi{
+    font-size:34px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="logo">SummitFX</div>
+
+    <h1>AI Trading Investment Plans</h1>
+
+    <p>
+        Choose from our professionally managed
+        AI-powered trading investment plans designed
+        for both beginner and advanced traders.
+    </p>
+
+</div>
+
+<!-- MESSAGE -->
+
+<div class="message" id="message"></div>
+
+<!-- PLANS -->
+
+<div class="plan-grid">
+
+    <!-- STARTER -->
+
+    <div class="plan-card">
+
+        <div class="plan-name">
+            Starter Plan
+        </div>
+
+        <div class="plan-desc">
+            Perfect for beginners looking to start
+            AI-assisted forex trading.
+        </div>
+
+        <div class="roi">
+            12%
+            <span>Estimated ROI</span>
+        </div>
+
+        <div class="duration">
+            Duration: 7 Days
+        </div>
+
+        <div class="features">
+            <div>✔ Minimum Deposit: $50</div>
+            <div>✔ Maximum Deposit: $499</div>
+            <div>✔ Scalper AI Bot</div>
+            <div>✔ Standard Support</div>
+        </div>
+
+        <button class="activate-btn"
+        onclick="activatePlan('Starter Plan',50,12,7)">
+            Activate Plan
+        </button>
+
+    </div>
+
+    <!-- ADVANCED -->
+
+    <div class="plan-card popular">
+
+        <div class="popular-badge">
+            POPULAR
+        </div>
+
+        <div class="plan-name">
+            Advanced Plan
+        </div>
+
+        <div class="plan-desc">
+            Balanced risk and returns for growing
+            investors.
+        </div>
+
+        <div class="roi">
+            20%
+            <span>Estimated ROI</span>
+        </div>
+
+        <div class="duration">
+            Duration: 14 Days
+        </div>
+
+        <div class="features">
+            <div>✔ Minimum Deposit: $500</div>
+            <div>✔ Maximum Deposit: $1,999</div>
+            <div>✔ Swing Master AI</div>
+            <div>✔ Priority Support</div>
+        </div>
+
+        <button class="activate-btn"
+        onclick="activatePlan('Advanced Plan',500,20,14)">
+            Activate Plan
+        </button>
+
+    </div>
+
+    <!-- PROFESSIONAL -->
+
+    <div class="plan-card">
+
+        <div class="plan-name">
+            Professional Plan
+        </div>
+
+        <div class="plan-desc">
+            Built for serious traders seeking larger
+            portfolio growth.
+        </div>
+
+        <div class="roi">
+            30%
+            <span>Estimated ROI</span>
+        </div>
+
+        <div class="duration">
+            Duration: 30 Days
+        </div>
+
+        <div class="features">
+            <div>✔ Minimum Deposit: $2,000</div>
+            <div>✔ Maximum Deposit: $9,999</div>
+            <div>✔ Gold Hunter AI</div>
+            <div>✔ VIP Support</div>
+        </div>
+
+        <button class="activate-btn"
+        onclick="activatePlan('Professional Plan',2000,30,30)">
+            Activate Plan
+        </button>
+
+    </div>
+
+    <!-- INSTITUTIONAL -->
+
+    <div class="plan-card">
+
+        <div class="plan-name">
+            Institutional Plan
+        </div>
+
+        <div class="plan-desc">
+            Exclusive investment solution for high
+            volume investors and institutions.
+        </div>
+
+        <div class="roi">
+            Custom
+            <span>ROI</span>
+        </div>
+
+        <div class="duration">
+            Flexible Duration
+        </div>
+
+        <div class="features">
+            <div>✔ Minimum Deposit: $10,000</div>
+            <div>✔ Unlimited Capacity</div>
+            <div>✔ Smart Hedge AI</div>
+            <div>✔ Dedicated Manager</div>
+        </div>
+
+        <button class="activate-btn"
+        onclick="activatePlan('Institutional Plan',10000,40,60)">
+            Activate Plan
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ACTIVE INVESTMENTS -->
+
+<div class="active-section">
+
+    <h2 class="section-title">
+        Active Investments
+    </h2>
+
+    <div class="investment-box">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Plan</th>
+                <th>Amount</th>
+                <th>ROI</th>
+                <th>Duration</th>
+                <th>Status</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="investmentTable">
+
+            <tr>
+                <td colspan="5" style="text-align:center;">
+                    Loading investments...
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client =
+createClient(supabaseUrl,supabaseKey);
+
+const message =
+document.getElementById('message');
+
+/* ACTIVATE PLAN */
+
+async function activatePlan(planName,minAmount,roi,duration){
+
+    const amount =
+    prompt(`Enter investment amount for ${planName}`);
+
+    if(!amount) return;
+
+    if(Number(amount) < minAmount){
+
+        showMessage(
+        `Minimum investment is $${minAmount}`,
+        'error');
+
+        return;
+    }
+
+    const { data:{ user } } =
+    await client.auth.getUser();
+
+    if(!user){
+
+        window.location.href = "login.html";
+        return;
+    }
+
+    const { data:userData } =
+    await client
+    .from('users')
+    .select('*')
+    .eq('id',user.id)
+    .single();
+
+    if(Number(userData.balance) < Number(amount)){
+
+        showMessage(
+        'Insufficient account balance',
+        'error');
+
+        return;
+    }
+
+    /* DEDUCT BALANCE */
+
+    const newBalance =
+    Number(userData.balance) - Number(amount);
+
+    await client
+    .from('users')
+    .update({
+        balance:newBalance
+    })
+    .eq('id',user.id);
+
+    /* SAVE INVESTMENT */
+
+    const { error } =
+    await client
+    .from('user_investments')
+    .insert([{
+
+        user_id:user.id,
+        plan_name:planName,
+        amount:Number(amount),
+        roi:roi,
+        duration_days:duration,
+        status:'Active'
+
+    }]);
+
+    if(error){
+
+        showMessage(
+        'Failed to activate plan',
+        'error');
+
+    }else{
+
+        showMessage(
+        'Investment plan activated successfully',
+        'success');
+
+        loadInvestments();
+
+    }
+
+}
+
+/* LOAD INVESTMENTS */
+
+async function loadInvestments(){
+
+    const { data:{ user } } =
+    await client.auth.getUser();
+
+    if(!user) return;
+
+    const { data,error } =
+    await client
+    .from('user_investments')
+    .select('*')
+    .eq('user_id',user.id);
+
+    const table =
+    document.getElementById('investmentTable');
+
+    if(error){
+
+        table.innerHTML = `
+        <tr>
+            <td colspan="5">
+                Failed to load investments
+            </td>
+        </tr>
+        `;
+
+        return;
+    }
+
+    if(data.length === 0){
+
+        table.innerHTML = `
+        <tr>
+            <td colspan="5" style="text-align:center;">
+                No active investments
+            </td>
+        </tr>
+        `;
+
+        return;
+    }
+
+    table.innerHTML = '';
+
+    data.forEach(plan => {
+
+        table.innerHTML += `
+
+        <tr>
+
+            <td>${plan.plan_name}</td>
+
+            <td>$${plan.amount}</td>
+
+            <td>${plan.roi}%</td>
+
+            <td>${plan.duration_days} Days</td>
+
+            <td class="status">
+                ${plan.status}
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+/* MESSAGE */
+
+function showMessage(text,type){
+
+    message.style.display = "block";
+
+    message.className =
+    `message ${type}`;
+
+    message.innerText = text;
+
+    setTimeout(() => {
+
+        message.style.display = "none";
+
+    },4000);
+
+}
+
+/* START */
+
+loadInvestments();
+
+</script>
+
+</body>
+</html>
