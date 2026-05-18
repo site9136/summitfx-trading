@@ -1,195 +1,329 @@
-<div class="profile-form">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Profile - SummitFX</title>
 
-    <!-- FIRST NAME -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <div class="input-group">
-        <label>First Name</label>
-        <input type="text"
-        id="firstName"
-        placeholder="Enter first name">
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050816;
+    color:white;
+    padding:30px;
+}
+
+/* CONTAINER */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+/* TOPBAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.topbar h1{
+    font-size:34px;
+    font-weight:700;
+}
+
+.back-btn{
+    text-decoration:none;
+    background:#111936;
+    color:#00f7ff;
+    padding:14px 22px;
+    border-radius:14px;
+    transition:0.3s;
+    font-weight:600;
+}
+
+.back-btn:hover{
+    background:#00f7ff;
+    color:black;
+}
+
+/* PROFILE FORM */
+
+.profile-form{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+    background:linear-gradient(145deg,#0d1327,#111936);
+    padding:40px;
+    border-radius:28px;
+    border:1px solid rgba(0,247,255,0.12);
+    box-shadow:
+    0 0 25px rgba(0,247,255,0.08),
+    0 0 60px rgba(0,0,0,0.35);
+}
+
+/* INPUT GROUP */
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+/* LABELS */
+
+.input-group label{
+    margin-bottom:10px;
+    color:#00f7ff;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:0.5px;
+}
+
+/* INPUTS */
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:18px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.08);
+    background:linear-gradient(145deg,#111936,#182445);
+    color:white;
+    font-size:15px;
+    transition:0.3s;
+    outline:none;
+}
+
+/* PLACEHOLDER */
+
+.input-group input::placeholder{
+    color:#9ba6c7;
+}
+
+/* HOVER */
+
+.input-group input:hover,
+.input-group select:hover{
+    border-color:rgba(0,247,255,0.4);
+}
+
+/* FOCUS */
+
+.input-group input:focus,
+.input-group select:focus{
+    border-color:#00f7ff;
+    box-shadow:0 0 15px rgba(0,247,255,0.3);
+    transform:translateY(-2px);
+}
+
+/* OPTIONS */
+
+.input-group select option{
+    background:#0b1020;
+    color:white;
+}
+
+/* SAVE BUTTON */
+
+.save-btn{
+    grid-column:1/-1;
+    padding:18px;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(90deg,#00f7ff,#00c3ff);
+    color:black;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top:10px;
+}
+
+.save-btn:hover{
+    transform:translateY(-3px);
+    opacity:0.9;
+    box-shadow:0 0 20px rgba(0,247,255,0.35);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+body{
+    padding:20px;
+}
+
+.profile-form{
+    grid-template-columns:1fr;
+    padding:25px;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <h1>Edit Profile</h1>
+
+        <a href="dashboard.html" class="back-btn">
+            Back to Dashboard
+        </a>
+
     </div>
 
-    <!-- LAST NAME -->
+    <!-- PROFILE FORM -->
 
-    <div class="input-group">
-        <label>Last Name</label>
-        <input type="text"
-        id="lastName"
-        placeholder="Enter last name">
-    </div>
+    <form class="profile-form">
 
-    <!-- USERNAME -->
+        <!-- FIRST NAME -->
 
-    <div class="input-group">
-        <label>Username</label>
-        <input type="text"
-        id="username"
-        placeholder="Enter username">
-    </div>
+        <div class="input-group">
+            <label>First Name</label>
+            <input type="text"
+            id="firstName"
+            placeholder="Enter first name">
+        </div>
 
-    <!-- PHONE -->
+        <!-- LAST NAME -->
 
-    <div class="input-group">
-        <label>Phone Number</label>
-        <input type="tel"
-        id="phone"
-        placeholder="Enter phone number">
-    </div>
+        <div class="input-group">
+            <label>Last Name</label>
+            <input type="text"
+            id="lastName"
+            placeholder="Enter last name">
+        </div>
 
-    <!-- DATE OF BIRTH -->
+        <!-- USERNAME -->
 
-    <div class="input-group">
-        <label>Date of Birth</label>
-        <input type="date"
-        id="dob">
-    </div>
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text"
+            id="username"
+            placeholder="Enter username">
+        </div>
 
-    <!-- GENDER -->
+        <!-- PHONE -->
 
-    <div class="input-group">
-        <label>Gender</label>
+        <div class="input-group">
+            <label>Phone Number</label>
+            <input type="tel"
+            id="phone"
+            placeholder="Enter phone number">
+        </div>
 
-        <select id="gender">
+        <!-- DATE OF BIRTH -->
 
-            <option value="">
-                Select Gender
-            </option>
+        <div class="input-group">
+            <label>Date of Birth</label>
+            <input type="date"
+            id="dob">
+        </div>
 
-            <option value="Male">
-                Male
-            </option>
+        <!-- GENDER -->
 
-            <option value="Female">
-                Female
-            </option>
+        <div class="input-group">
 
-            <option value="Other">
-                Other
-            </option>
+            <label>Gender</label>
 
-        </select>
+            <select id="gender">
 
-    </div>
+                <option value="">
+                    Select Gender
+                </option>
 
-    <!-- COUNTRY -->
+                <option value="Male">
+                    Male
+                </option>
 
-    <div class="input-group">
+                <option value="Female">
+                    Female
+                </option>
 
-        <label>Country</label>
+                <option value="Other">
+                    Other
+                </option>
 
-        <select id="country">
+            </select>
 
-            <option value="">
-                Select Country
-            </option>
+        </div>
 
-            <option>Afghanistan</option>
-            <option>Albania</option>
-            <option>Algeria</option>
-            <option>Andorra</option>
-            <option>Angola</option>
-            <option>Argentina</option>
-            <option>Armenia</option>
-            <option>Australia</option>
-            <option>Austria</option>
-            <option>Azerbaijan</option>
+        <!-- COUNTRY -->
 
-            <option>Bahamas</option>
-            <option>Bahrain</option>
-            <option>Bangladesh</option>
-            <option>Barbados</option>
-            <option>Belarus</option>
-            <option>Belgium</option>
-            <option>Belize</option>
-            <option>Benin</option>
-            <option>Bhutan</option>
-            <option>Bolivia</option>
-            <option>Botswana</option>
-            <option>Brazil</option>
+        <div class="input-group">
 
-            <option>Canada</option>
-            <option>China</option>
-            <option>Denmark</option>
-            <option>Egypt</option>
-            <option>Ethiopia</option>
-            <option>Finland</option>
-            <option>France</option>
-            <option>Germany</option>
-            <option>Ghana</option>
-            <option>Greece</option>
+            <label>Country</label>
 
-            <option>India</option>
-            <option>Indonesia</option>
-            <option>Iran</option>
-            <option>Iraq</option>
-            <option>Ireland</option>
-            <option>Israel</option>
-            <option>Italy</option>
+            <select id="country">
 
-            <option>Japan</option>
-            <option>Jordan</option>
+                <option value="">
+                    Select Country
+                </option>
 
-            <option>Kazakhstan</option>
-            <option>Kenya</option>
-            <option>Kuwait</option>
+                <option>Kenya</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>South Africa</option>
+                <option>Nigeria</option>
+                <option>India</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>Australia</option>
+                <option>Japan</option>
+                <option>China</option>
+                <option>Brazil</option>
+                <option>Mexico</option>
+                <option>UAE</option>
 
-            <option>Malaysia</option>
-            <option>Mexico</option>
-            <option>Morocco</option>
+            </select>
 
-            <option>Namibia</option>
-            <option>Nepal</option>
-            <option>Netherlands</option>
-            <option>New Zealand</option>
-            <option>Nigeria</option>
-            <option>Norway</option>
+        </div>
 
-            <option>Pakistan</option>
-            <option>Philippines</option>
-            <option>Poland</option>
-            <option>Portugal</option>
+        <!-- EMAIL -->
 
-            <option>Qatar</option>
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email"
+            id="email"
+            placeholder="Enter email">
+        </div>
 
-            <option>Romania</option>
-            <option>Russia</option>
-            <option>Rwanda</option>
+        <!-- SAVE BUTTON -->
 
-            <option>Saudi Arabia</option>
-            <option>Singapore</option>
-            <option>Somalia</option>
-            <option>South Africa</option>
-            <option>South Korea</option>
-            <option>Spain</option>
-            <option>Sweden</option>
-            <option>Switzerland</option>
+        <button type="submit" class="save-btn">
+            Save Profile Changes
+        </button>
 
-            <option>Tanzania</option>
-            <option>Thailand</option>
-            <option>Turkey</option>
-
-            <option>Uganda</option>
-            <option>Ukraine</option>
-            <option>United Arab Emirates</option>
-            <option>United Kingdom</option>
-            <option>United States</option>
-
-            <option>Vietnam</option>
-
-            <option>Zambia</option>
-            <option>Zimbabwe</option>
-
-        </select>
-
-    </div>
-
-    <!-- EMAIL -->
-
-    <div class="input-group">
-        <label>Email</label>
-        <input type="email"
-        id="email"
-        placeholder="Enter email">
-    </div>
+    </form>
 
 </div>
+
+</body>
+</html>
