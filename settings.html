@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings - SummitFX</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050816;
+    color:white;
+    min-height:100vh;
+    display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:#0b1020;
+    padding:30px 20px;
+    position:fixed;
+    left:0;
+    top:0;
+    border-right:1px solid rgba(255,255,255,0.1);
+    overflow-y:auto;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    color:#00f7ff;
+    margin-bottom:50px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    transition:0.3s;
+    background:#111936;
+    font-weight:500;
+}
+
+.menu a:hover,
+.menu .active{
+    background:#00f7ff;
+    color:black;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:260px;
+    width:calc(100% - 260px);
+    padding:30px;
+}
+
+/* TOP */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+    gap:20px;
+}
+
+.topbar h1{
+    font-size:34px;
+}
+
+.profile-box{
+    background:#111936;
+    padding:12px 20px;
+    border-radius:12px;
+    color:#00f7ff;
+}
+
+/* SETTINGS BOX */
+
+.settings-box{
+    background:#0d1327;
+    padding:30px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.section-title{
+    font-size:24px;
+    margin-bottom:25px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.input-group label{
+    margin-bottom:10px;
+    color:#b5b5b5;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#111936;
+    color:white;
+    font-size:15px;
+}
+
+.input-group textarea{
+    resize:none;
+    min-height:120px;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus{
+    outline:none;
+    border:1px solid #00f7ff;
+}
+
+/* BUTTONS */
+
+.btn-group{
+    display:flex;
+    gap:15px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+
+.save-btn,
+.logout-btn{
+    padding:15px 25px;
+    border:none;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.save-btn{
+    background:#00f7ff;
+    color:black;
+}
+
+.logout-btn{
+    background:#111936;
+    color:white;
+}
+
+.save-btn:hover,
+.logout-btn:hover{
+    opacity:0.8;
+}
+
+/* MESSAGE */
+
+.message{
+    margin-top:20px;
+    padding:15px;
+    border-radius:12px;
+    display:none;
+    font-weight:500;
+}
+
+.success{
+    background:rgba(0,255,140,0.1);
+    color:#00ff99;
+}
+
+.error{
+    background:rgba(255,0,0,0.1);
+    color:#ff5c5c;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+body{
+    flex-direction:column;
+}
+
+.sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+}
+
+.main{
+    margin-left:0;
+    width:100%;
+    padding:20px;
+}
+
+.topbar{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">SummitFX</div>
+
+    <div class="menu">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="profile.html">My Profile</a>
+        <a href="deposit.html">Deposit</a>
+        <a href="withdraw.html">Withdraw</a>
+        <a href="kyc.html">Verify KYC</a>
+        <a href="settings.html" class="active">Settings</a>
+        <a href="#" id="logoutBtn">Logout</a>
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+
+        <h1>Account Settings</h1>
+
+        <div class="profile-box">
+            SummitFX Trader
+        </div>
+
+    </div>
+
+    <div class="settings-box">
+
+        <h2 class="section-title">
+            Security & Preferences
+        </h2>
+
+        <form id="settingsForm">
+
+            <div class="form-grid">
+
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="full_name">
+                </div>
+
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" disabled>
+                </div>
+
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="phone">
+                </div>
+
+                <div class="input-group">
+                    <label>Country</label>
+                    <input type="text" id="country">
+                </div>
+
+                <div class="input-group">
+                    <label>New Password</label>
+                    <input type="password" id="password" placeholder="Enter new password">
+                </div>
+
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                </div>
+
+                <div class="input-group" style="grid-column:1/-1;">
+                    <label>Bio</label>
+                    <textarea id="bio"></textarea>
+                </div>
+
+            </div>
+
+            <div class="btn-group">
+
+                <button type="submit" class="save-btn">
+                    Save Changes
+                </button>
+
+                <button type="button" class="logout-btn" id="logoutButton">
+                    Logout
+                </button>
+
+            </div>
+
+            <div class="message" id="message"></div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+const supabaseUrl = 'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey = 'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client = createClient(supabaseUrl, supabaseKey);
+
+const form = document.getElementById('settingsForm');
+
+const message = document.getElementById('message');
+
+let currentUserId = null;
+
+/* LOAD USER */
+
+async function loadUser(){
+
+    const { data: { user } } =
+    await client.auth.getUser();
+
+    if(!user){
+
+        window.location.href = "login.html";
+        return;
+
+    }
+
+    currentUserId = user.id;
+
+    const { data, error } = await client
+    .from('users')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+    if(error || !data){
+
+        alert("Failed to load profile");
+        return;
+
+    }
+
+    document.getElementById('full_name').value =
+    data.full_name || '';
+
+    document.getElementById('email').value =
+    data.email || '';
+
+    document.getElementById('phone').value =
+    data.phone || '';
+
+    document.getElementById('country').value =
+    data.country || '';
+
+    document.getElementById('bio').value =
+    data.bio || '';
+
+}
+
+/* SAVE SETTINGS */
+
+form.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+    const full_name =
+    document.getElementById('full_name').value;
+
+    const phone =
+    document.getElementById('phone').value;
+
+    const country =
+    document.getElementById('country').value;
+
+    const bio =
+    document.getElementById('bio').value;
+
+    const password =
+    document.getElementById('password').value;
+
+    const confirmPassword =
+    document.getElementById('confirmPassword').value;
+
+    /* UPDATE PROFILE */
+
+    const { error } = await client
+    .from('users')
+    .update({
+
+        full_name,
+        phone,
+        country,
+        bio
+
+    })
+    .eq('id', currentUserId);
+
+    if(error){
+
+        message.style.display = "block";
+        message.className = "message error";
+        message.innerText = "Failed to update settings";
+        return;
+
+    }
+
+    /* UPDATE PASSWORD */
+
+    if(password){
+
+        if(password !== confirmPassword){
+
+            message.style.display = "block";
+            message.className = "message error";
+            message.innerText = "Passwords do not match";
+            return;
+
+        }
+
+        const { error: passwordError } =
+        await client.auth.updateUser({
+
+            password: password
+
+        });
+
+        if(passwordError){
+
+            message.style.display = "block";
+            message.className = "message error";
+            message.innerText =
+            passwordError.message;
+
+            return;
+
+        }
+
+    }
+
+    message.style.display = "block";
+    message.className = "message success";
+    message.innerText =
+    "Settings updated successfully";
+
+});
+
+/* LOGOUT */
+
+document.getElementById('logoutBtn')
+.addEventListener('click', logout);
+
+document.getElementById('logoutButton')
+.addEventListener('click', logout);
+
+async function logout(){
+
+    await client.auth.signOut();
+
+    window.location.href = "login.html";
+
+}
+
+/* START */
+
+loadUser();
+
+</script>
+
+</body>
+</html>
