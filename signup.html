@@ -35,6 +35,7 @@ body{
     padding:40px;
     border-radius:20px;
     border:1px solid rgba(255,255,255,0.1);
+    box-shadow:0 0 30px rgba(0,247,255,0.08);
 }
 
 .logo{
@@ -58,28 +59,32 @@ h1{
 .input-group label{
     display:block;
     margin-bottom:8px;
+    color:#d6d6d6;
+    font-size:14px;
 }
 
 .input-group input{
     width:100%;
     padding:15px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     background:#111936;
     color:white;
     font-size:15px;
+    transition:0.3s;
 }
 
 .input-group input:focus{
     outline:none;
     border:1px solid #00f7ff;
+    box-shadow:0 0 10px rgba(0,247,255,0.2);
 }
 
 button{
     width:100%;
     padding:15px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     background:#00f7ff;
     color:black;
     font-size:16px;
@@ -89,37 +94,65 @@ button{
 }
 
 button:hover{
-    opacity:0.8;
+    opacity:0.85;
+    transform:translateY(-2px);
 }
 
 .message{
     margin-top:20px;
     padding:15px;
-    border-radius:10px;
+    border-radius:12px;
     display:none;
     text-align:center;
     line-height:1.6;
+    font-size:14px;
 }
 
 .success{
     background:rgba(0,255,140,0.1);
     color:#00ff99;
+    border:1px solid rgba(0,255,140,0.2);
 }
 
 .error{
     background:rgba(255,0,0,0.1);
     color:#ff5c5c;
+    border:1px solid rgba(255,0,0,0.2);
 }
 
 .bottom-text{
     text-align:center;
     margin-top:20px;
     color:#b5b5b5;
+    font-size:14px;
 }
 
 .bottom-text a{
     color:#00f7ff;
     text-decoration:none;
+    font-weight:500;
+}
+
+.bottom-text a:hover{
+    text-decoration:underline;
+}
+
+/* MOBILE */
+
+@media(max-width:500px){
+
+.container{
+    padding:30px 20px;
+}
+
+h1{
+    font-size:26px;
+}
+
+.logo{
+    font-size:28px;
+}
+
 }
 
 </style>
@@ -136,17 +169,29 @@ button:hover{
 
         <div class="input-group">
             <label>Full Name</label>
-            <input type="text" id="fullname" placeholder="Enter your full name" required>
+            <input 
+            type="text" 
+            id="fullname" 
+            placeholder="Enter your full name" 
+            required>
         </div>
 
         <div class="input-group">
             <label>Email</label>
-            <input type="email" id="email" placeholder="Enter your email" required>
+            <input 
+            type="email" 
+            id="email" 
+            placeholder="Enter your email" 
+            required>
         </div>
 
         <div class="input-group">
             <label>Password</label>
-            <input type="password" id="password" placeholder="Create password" required>
+            <input 
+            type="password" 
+            id="password" 
+            placeholder="Create password" 
+            required>
         </div>
 
         <button type="submit" id="signupBtn">
@@ -166,33 +211,52 @@ button:hover{
 
 <script>
 
-const supabaseUrl = 'https://grcpnibpjcpjckognvbm.supabase.co';
+/* SUPABASE */
 
-const supabaseKey = 'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
 
 const { createClient } = supabase;
 
-const client = createClient(supabaseUrl, supabaseKey);
+const client =
+createClient(supabaseUrl, supabaseKey);
 
-const form = document.getElementById('signupForm');
+/* ELEMENTS */
 
-const messageBox = document.getElementById('message');
+const form =
+document.getElementById('signupForm');
 
-const signupBtn = document.getElementById('signupBtn');
+const messageBox =
+document.getElementById('message');
+
+const signupBtn =
+document.getElementById('signupBtn');
+
+/* SIGNUP */
 
 form.addEventListener('submit', async (e) => {
 
     e.preventDefault();
 
     signupBtn.innerText = "Creating Account...";
+    signupBtn.disabled = true;
 
-    const fullname = document.getElementById('fullname').value;
+    const fullname =
+    document.getElementById('fullname').value.trim();
 
-    const email = document.getElementById('email').value;
+    const email =
+    document.getElementById('email').value.trim();
 
-    const password = document.getElementById('password').value;
+    const password =
+    document.getElementById('password').value;
 
-    const { data, error } = await client.auth.signUp({
+    /* CREATE AUTH USER */
+
+    const { data, error } =
+    await client.auth.signUp({
 
         email: email,
 
@@ -206,11 +270,14 @@ form.addEventListener('submit', async (e) => {
 
             },
 
-            emailRedirectTo: 'https://site9136.github.io/summitfx-trading/login.html'
+            emailRedirectTo:
+            'https://site9136.github.io/summitfx-trading/login.html'
 
         }
 
     });
+
+    /* ERROR */
 
     if(error){
 
@@ -221,37 +288,61 @@ form.addEventListener('submit', async (e) => {
         messageBox.innerText = error.message;
 
         signupBtn.innerText = "Create Account";
+        signupBtn.disabled = false;
 
-    }else{
+        return;
 
-        const user = data.user;
+    }
 
-        if(user){
+    /* INSERT USER INTO DATABASE */
 
-            await client.from('users').insert([{
+    const user = data.user;
 
-                id: user.id,
-                full_name: fullname,
-                email: email,
-                balance: 0,
-                role: 'user'
+    if(user){
 
-            }]);
+        const { error: insertError } =
+        await client
+        .from('users')
+        .insert([{
+
+            id: user.id,
+
+            full_name: fullname,
+
+            email: email,
+
+            balance: 0,
+
+            total_profit: 0,
+
+            total_withdrawals: 0,
+
+            role: 'user',
+
+            created_at: new Date().toISOString()
+
+        }]);
+
+        if(insertError){
+
+            console.log(insertError);
 
         }
 
-        messageBox.style.display = "block";
-
-        messageBox.className = "message success";
-
-        messageBox.innerText =
-        "Account created successfully. Check your email to verify your account.";
-
-        signupBtn.innerText = "Account Created";
-
-        form.reset();
-
     }
+
+    /* SUCCESS */
+
+    messageBox.style.display = "block";
+
+    messageBox.className = "message success";
+
+    messageBox.innerText =
+    "Account created successfully. Please check your email to verify your account before logging in.";
+
+    signupBtn.innerText = "Account Created";
+
+    form.reset();
 
 });
 
