@@ -506,7 +506,7 @@ form.addEventListener("submit", async (e) => {
 
         const { error:frontError } =
         await client.storage
-        .from('kyc')
+        .from('kyc-documents')
         .upload(frontPath, frontFile);
 
         if(frontError) throw frontError;
@@ -515,7 +515,7 @@ form.addEventListener("submit", async (e) => {
 
         const { error:backError } =
         await client.storage
-        .from('kyc')
+        .from('kyc-documents')
         .upload(backPath, backFile);
 
         if(backError) throw backError;
@@ -524,7 +524,7 @@ form.addEventListener("submit", async (e) => {
 
         const { error:selfieError } =
         await client.storage
-        .from('kyc')
+        .from('kyc-documents')
         .upload(selfiePath, selfieFile);
 
         if(selfieError) throw selfieError;
@@ -533,19 +533,19 @@ form.addEventListener("submit", async (e) => {
 
         const frontUrl =
         client.storage
-        .from('kyc')
+        .from('kyc-documents')
         .getPublicUrl(frontPath)
         .data.publicUrl;
 
         const backUrl =
         client.storage
-        .from('kyc')
+        .from('kyc-documents')
         .getPublicUrl(backPath)
         .data.publicUrl;
 
         const selfieUrl =
         client.storage
-        .from('kyc')
+        .from('kyc-documents')
         .getPublicUrl(selfiePath)
         .data.publicUrl;
 
@@ -553,20 +553,20 @@ form.addEventListener("submit", async (e) => {
 
         const { error:dbError } =
         await client
-        .from('kyc_requests')
+        .from('kyc_submissions')
         .insert([{
 
             user_id: user.id,
 
             document_type: documentType,
 
-            front_image: frontUrl,
+            document_front: frontUrl,
 
-            back_image: backUrl,
+            document_back: backUrl,
 
-            selfie_image: selfieUrl,
+            selfie_photo: selfieUrl,
 
-            status: 'Pending'
+            status: 'pending'
 
         }]);
 
