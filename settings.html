@@ -28,61 +28,82 @@ body{
 /* SIDEBAR */
 
 .sidebar{
-    width:260px;
+    width:270px;
     height:100vh;
     background:#0b1020;
     padding:30px 20px;
     position:fixed;
     left:0;
     top:0;
-    border-right:1px solid rgba(255,255,255,0.1);
+    border-right:1px solid rgba(255,255,255,0.08);
     overflow-y:auto;
+    transition:0.3s;
+    z-index:1000;
 }
 
 .logo{
-    font-size:28px;
+    font-size:30px;
     font-weight:700;
     color:#00f7ff;
-    margin-bottom:50px;
+    margin-bottom:45px;
+    letter-spacing:1px;
 }
 
 .menu{
     display:flex;
     flex-direction:column;
-    gap:15px;
+    gap:14px;
+}
+
+.menu-title{
+    color:#7f8db3;
+    font-size:13px;
+    margin-top:10px;
+    margin-bottom:5px;
+    padding-left:5px;
+    letter-spacing:1px;
 }
 
 .menu a{
     text-decoration:none;
     color:white;
     padding:15px;
-    border-radius:12px;
+    border-radius:14px;
     transition:0.3s;
     background:#111936;
     font-weight:500;
+    border:1px solid transparent;
 }
 
 .menu a:hover,
 .menu .active{
     background:#00f7ff;
     color:black;
+    transform:translateX(5px);
 }
 
 /* MAIN */
 
 .main{
-    margin-left:260px;
-    width:calc(100% - 260px);
+    margin-left:270px;
+    width:calc(100% - 270px);
     padding:30px;
 }
 
-/* TOP */
+/* TOPBAR */
 
 .topbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:30px;
+    margin-bottom:35px;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.topbar-left{
+    display:flex;
+    align-items:center;
     gap:20px;
 }
 
@@ -90,31 +111,84 @@ body{
     font-size:34px;
 }
 
+.topbar p{
+    color:#9ca8c7;
+    margin-top:5px;
+}
+
 .profile-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
     background:#111936;
-    padding:12px 20px;
-    border-radius:12px;
+    padding:12px 18px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.avatar{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#00f7ff;
+    color:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:700;
+    font-size:18px;
+}
+
+/* MOBILE MENU */
+
+.menu-toggle{
+    display:none;
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:14px;
+    background:#111936;
     color:#00f7ff;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    top:0;
+    left:0;
+    z-index:900;
+    display:none;
 }
 
 /* SETTINGS BOX */
 
 .settings-box{
-    background:#0d1327;
-    padding:30px;
-    border-radius:20px;
+    background:linear-gradient(145deg,#0d1327,#121a34);
+    padding:35px;
+    border-radius:26px;
     border:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 0 30px rgba(0,247,255,0.06);
 }
 
 .section-title{
-    font-size:24px;
-    margin-bottom:25px;
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+.section-subtitle{
+    color:#9ca8c7;
+    margin-bottom:30px;
+    line-height:1.7;
 }
 
 .form-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
+    gap:22px;
 }
 
 .input-group{
@@ -125,18 +199,21 @@ body{
 .input-group label{
     margin-bottom:10px;
     color:#b5b5b5;
+    font-size:14px;
 }
 
 .input-group input,
 .input-group select,
 .input-group textarea{
     width:100%;
-    padding:15px;
+    padding:16px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     background:#111936;
     color:white;
     font-size:15px;
+    border:1px solid transparent;
+    transition:0.3s;
 }
 
 .input-group textarea{
@@ -149,6 +226,32 @@ body{
 .input-group textarea:focus{
     outline:none;
     border:1px solid #00f7ff;
+    box-shadow:0 0 12px rgba(0,247,255,0.15);
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder{
+    color:#7f8db3;
+}
+
+/* SECURITY CARD */
+
+.security-box{
+    margin-top:30px;
+    padding:25px;
+    border-radius:20px;
+    background:#111936;
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.security-box h3{
+    margin-bottom:10px;
+}
+
+.security-box p{
+    color:#9ca8c7;
+    line-height:1.7;
+    font-size:14px;
 }
 
 /* BUTTONS */
@@ -156,41 +259,44 @@ body{
 .btn-group{
     display:flex;
     gap:15px;
-    margin-top:30px;
+    margin-top:35px;
     flex-wrap:wrap;
 }
 
 .save-btn,
 .logout-btn{
-    padding:15px 25px;
+    padding:16px 28px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     font-weight:600;
     cursor:pointer;
     transition:0.3s;
+    font-size:15px;
 }
 
 .save-btn{
-    background:#00f7ff;
+    background:linear-gradient(90deg,#00f7ff,#00c3ff);
     color:black;
 }
 
 .logout-btn{
     background:#111936;
     color:white;
+    border:1px solid rgba(255,255,255,0.08);
 }
 
 .save-btn:hover,
 .logout-btn:hover{
-    opacity:0.8;
+    transform:translateY(-3px);
+    opacity:0.9;
 }
 
 /* MESSAGE */
 
 .message{
-    margin-top:20px;
-    padding:15px;
-    border-radius:12px;
+    margin-top:25px;
+    padding:16px;
+    border-radius:14px;
     display:none;
     font-weight:500;
 }
@@ -198,25 +304,29 @@ body{
 .success{
     background:rgba(0,255,140,0.1);
     color:#00ff99;
+    border:1px solid rgba(0,255,140,0.2);
 }
 
 .error{
     background:rgba(255,0,0,0.1);
     color:#ff5c5c;
+    border:1px solid rgba(255,0,0,0.2);
 }
 
 /* MOBILE */
 
 @media(max-width:900px){
 
-body{
-    flex-direction:column;
+.sidebar{
+    left:-100%;
 }
 
-.sidebar{
-    position:relative;
-    width:100%;
-    height:auto;
+.sidebar.active{
+    left:0;
+}
+
+.overlay.active{
+    display:block;
 }
 
 .main{
@@ -225,9 +335,30 @@ body{
     padding:20px;
 }
 
+.menu-toggle{
+    display:block;
+}
+
 .topbar{
     flex-direction:column;
     align-items:flex-start;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+.profile-box{
+    width:100%;
+    justify-content:center;
+}
+
+.form-grid{
+    grid-template-columns:1fr;
+}
+
+.settings-box{
+    padding:25px;
 }
 
 }
@@ -236,20 +367,40 @@ body{
 </head>
 <body>
 
+<div class="overlay" id="overlay"></div>
+
 <!-- SIDEBAR -->
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
 
     <div class="logo">SummitFX</div>
 
     <div class="menu">
+
+        <div class="menu-title">MAIN MENU</div>
+
         <a href="dashboard.html">Dashboard</a>
+
         <a href="profile.html">My Profile</a>
+
         <a href="deposit.html">Deposit</a>
+
         <a href="withdraw.html">Withdraw</a>
+
+        <a href="bots.html">Trading Bots</a>
+
+        <a href="transactions.html">Transactions</a>
+
         <a href="kyc.html">Verify KYC</a>
+
+        <div class="menu-title">ACCOUNT</div>
+
         <a href="settings.html" class="active">Settings</a>
-        <a href="#" id="logoutBtn">Logout</a>
+
+        <a href="index.html" id="logoutBtn">
+            Logout
+        </a>
+
     </div>
 
 </div>
@@ -258,15 +409,45 @@ body{
 
 <div class="main">
 
+    <!-- TOPBAR -->
+
     <div class="topbar">
 
-        <h1>Account Settings</h1>
+        <div class="topbar-left">
+
+            <button class="menu-toggle" id="menuBtn">
+                ☰
+            </button>
+
+            <div>
+                <h1>Account Settings</h1>
+                <p>
+                    Manage your profile, security and account preferences.
+                </p>
+            </div>
+
+        </div>
 
         <div class="profile-box">
-            SummitFX Trader
+
+            <div class="avatar" id="avatarLetter">
+                S
+            </div>
+
+            <div>
+                <div id="welcomeName">
+                    SummitFX Trader
+                </div>
+                <small style="color:#9ca8c7;">
+                    Premium Member
+                </small>
+            </div>
+
         </div>
 
     </div>
+
+    <!-- SETTINGS -->
 
     <div class="settings-box">
 
@@ -274,13 +455,17 @@ body{
             Security & Preferences
         </h2>
 
+        <p class="section-subtitle">
+            Update your account details, change your password and manage your trading profile securely.
+        </p>
+
         <form id="settingsForm">
 
             <div class="form-grid">
 
                 <div class="input-group">
                     <label>Full Name</label>
-                    <input type="text" id="full_name">
+                    <input type="text" id="full_name" placeholder="Enter full name">
                 </div>
 
                 <div class="input-group">
@@ -290,12 +475,12 @@ body{
 
                 <div class="input-group">
                     <label>Phone Number</label>
-                    <input type="text" id="phone">
+                    <input type="text" id="phone" placeholder="Enter phone number">
                 </div>
 
                 <div class="input-group">
                     <label>Country</label>
-                    <input type="text" id="country">
+                    <input type="text" id="country" placeholder="Enter country">
                 </div>
 
                 <div class="input-group">
@@ -310,8 +495,18 @@ body{
 
                 <div class="input-group" style="grid-column:1/-1;">
                     <label>Bio</label>
-                    <textarea id="bio"></textarea>
+                    <textarea id="bio" placeholder="Write something about yourself..."></textarea>
                 </div>
+
+            </div>
+
+            <div class="security-box">
+
+                <h3>Security Notice</h3>
+
+                <p>
+                    Keep your account secure by using a strong password and never sharing your login credentials with anyone.
+                </p>
 
             </div>
 
@@ -337,17 +532,44 @@ body{
 
 <script>
 
-const supabaseUrl = 'https://grcpnibpjcpjckognvbm.supabase.co';
+/* MOBILE MENU */
 
-const supabaseKey = 'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+
+});
+
+overlay.addEventListener("click", () => {
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+});
+
+/* SUPABASE */
+
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
 
 const { createClient } = supabase;
 
-const client = createClient(supabaseUrl, supabaseKey);
+const client =
+createClient(supabaseUrl, supabaseKey);
 
-const form = document.getElementById('settingsForm');
+const form =
+document.getElementById('settingsForm');
 
-const message = document.getElementById('message');
+const message =
+document.getElementById('message');
 
 let currentUserId = null;
 
@@ -367,7 +589,8 @@ async function loadUser(){
 
     currentUserId = user.id;
 
-    const { data, error } = await client
+    const { data, error } =
+    await client
     .from('users')
     .select('*')
     .eq('id', user.id)
@@ -395,6 +618,16 @@ async function loadUser(){
     document.getElementById('bio').value =
     data.bio || '';
 
+    const firstName =
+    data.full_name || "Trader";
+
+    document.getElementById('welcomeName')
+    .innerText = firstName;
+
+    document.getElementById('avatarLetter')
+    .innerText =
+    firstName.charAt(0).toUpperCase();
+
 }
 
 /* SAVE SETTINGS */
@@ -402,6 +635,12 @@ async function loadUser(){
 form.addEventListener('submit', async (e) => {
 
     e.preventDefault();
+
+    const saveBtn =
+    document.querySelector('.save-btn');
+
+    saveBtn.innerText =
+    "Saving...";
 
     const full_name =
     document.getElementById('full_name').value;
@@ -423,7 +662,8 @@ form.addEventListener('submit', async (e) => {
 
     /* UPDATE PROFILE */
 
-    const { error } = await client
+    const { error } =
+    await client
     .from('users')
     .update({
 
@@ -439,7 +679,12 @@ form.addEventListener('submit', async (e) => {
 
         message.style.display = "block";
         message.className = "message error";
-        message.innerText = "Failed to update settings";
+        message.innerText =
+        "Failed to update settings";
+
+        saveBtn.innerText =
+        "Save Changes";
+
         return;
 
     }
@@ -452,7 +697,12 @@ form.addEventListener('submit', async (e) => {
 
             message.style.display = "block";
             message.className = "message error";
-            message.innerText = "Passwords do not match";
+            message.innerText =
+            "Passwords do not match";
+
+            saveBtn.innerText =
+            "Save Changes";
+
             return;
 
         }
@@ -471,6 +721,9 @@ form.addEventListener('submit', async (e) => {
             message.innerText =
             passwordError.message;
 
+            saveBtn.innerText =
+            "Save Changes";
+
             return;
 
         }
@@ -481,6 +734,9 @@ form.addEventListener('submit', async (e) => {
     message.className = "message success";
     message.innerText =
     "Settings updated successfully";
+
+    saveBtn.innerText =
+    "Save Changes";
 
 });
 
@@ -496,7 +752,8 @@ async function logout(){
 
     await client.auth.signOut();
 
-    window.location.href = "login.html";
+    window.location.href =
+    "login.html";
 
 }
 
