@@ -278,93 +278,6 @@ body{
     z-index:2;
 }
 
-/* SECTION */
-
-.section-title{
-    font-size:30px;
-    margin-bottom:25px;
-}
-
-/* BOT GRID */
-
-.bot-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-}
-
-.bot-card{
-    background:linear-gradient(145deg,#0d1327,#121a34);
-    padding:30px;
-    border-radius:24px;
-    border:1px solid rgba(255,255,255,0.08);
-    transition:0.3s;
-    position:relative;
-    overflow:hidden;
-}
-
-.bot-card::after{
-    content:'AI';
-    position:absolute;
-    top:15px;
-    right:20px;
-    color:#00f7ff20;
-    font-size:60px;
-    font-weight:700;
-}
-
-.bot-card:hover{
-    transform:translateY(-6px);
-    border-color:#00f7ff;
-    box-shadow:0 0 25px rgba(0,247,255,0.1);
-}
-
-.bot-card h3{
-    margin-bottom:15px;
-    font-size:24px;
-}
-
-.bot-card p{
-    color:#b5b5b5;
-    margin-bottom:22px;
-    line-height:1.7;
-}
-
-.stats{
-    margin-bottom:22px;
-}
-
-.stats div{
-    margin-bottom:12px;
-    background:#111936;
-    padding:12px;
-    border-radius:12px;
-}
-
-/* FIXED BUTTONS */
-
-.activate-btn{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:14px;
-    background:linear-gradient(90deg,#00f7ff,#00c3ff);
-    color:black;
-    font-weight:700;
-    cursor:pointer;
-    transition:0.3s;
-    font-size:15px;
-    text-decoration:none;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.activate-btn:hover{
-    opacity:0.9;
-    transform:translateY(-3px);
-}
-
 /* TABLES */
 
 .transactions{
@@ -452,10 +365,6 @@ table td{
     grid-template-columns:1fr;
 }
 
-.bot-grid{
-    grid-template-columns:1fr;
-}
-
 .profile{
     width:100%;
     justify-content:center;
@@ -486,8 +395,6 @@ table td{
         <a href="withdraw.html">Withdraw</a>
 
         <a href="bots.html">Trading Bots</a>
-
-        <a href="plans.html">Investment Plans</a>
 
         <a href="transactions.html">Transactions</a>
 
@@ -552,8 +459,8 @@ table td{
             <h2>AI Trading Portfolio</h2>
 
             <p>
-                Track your account performance, activate AI investment plans,
-                monitor your profits and manage your portfolio from one powerful dashboard.
+                Track your account performance, monitor your profits
+                and manage your portfolio from one powerful dashboard.
             </p>
 
             <div class="hero-buttons">
@@ -598,74 +505,6 @@ table td{
             <h3>Total Withdrawals</h3>
             <h2 id="withdrawals">$0.00</h2>
             <div class="growth">Completed Withdrawals</div>
-        </div>
-
-    </div>
-
-    <!-- INVESTMENT PLANS -->
-
-    <h2 class="section-title">Investment Plans</h2>
-
-    <div class="bot-grid">
-
-        <div class="bot-card">
-
-            <h3>Starter Plan</h3>
-
-            <p>
-                Beginner investment package designed for traders starting with smaller capital.
-            </p>
-
-            <div class="stats">
-                <div>Minimum Deposit: $100</div>
-                <div>ROI: 15%</div>
-                <div>Duration: 7 Days</div>
-            </div>
-
-            <a href="starter-plan.html" class="activate-btn">
-                Activate Plan
-            </a>
-
-        </div>
-
-        <div class="bot-card">
-
-            <h3>Pro Trader</h3>
-
-            <p>
-                Medium-risk AI investment package for experienced traders seeking steady returns.
-            </p>
-
-            <div class="stats">
-                <div>Minimum Deposit: $500</div>
-                <div>ROI: 35%</div>
-                <div>Duration: 14 Days</div>
-            </div>
-
-            <a href="pro-plan.html" class="activate-btn">
-                Activate Plan
-            </a>
-
-        </div>
-
-        <div class="bot-card">
-
-            <h3>VIP Elite</h3>
-
-            <p>
-                Advanced AI trading portfolio with premium market strategies and high returns.
-            </p>
-
-            <div class="stats">
-                <div>Minimum Deposit: $1000</div>
-                <div>ROI: 60%</div>
-                <div>Duration: 30 Days</div>
-            </div>
-
-            <a href="vip-plan.html" class="activate-btn">
-                Activate Plan
-            </a>
-
         </div>
 
     </div>
