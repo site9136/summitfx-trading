@@ -20,101 +20,163 @@ body{
     background:#050816;
     color:white;
     display:flex;
+    overflow-x:hidden;
 }
 
 /* SIDEBAR */
 
 .sidebar{
-    width:260px;
+    width:270px;
     height:100vh;
     background:#0b1020;
     padding:30px 20px;
     position:fixed;
     left:0;
     top:0;
-    border-right:1px solid rgba(255,255,255,0.1);
+    border-right:1px solid rgba(255,255,255,0.08);
+    overflow-y:auto;
+    transition:0.3s;
+    z-index:1000;
 }
 
 .logo{
-    font-size:28px;
+    font-size:30px;
     font-weight:700;
     color:#00f7ff;
-    margin-bottom:50px;
+    margin-bottom:40px;
+    letter-spacing:1px;
 }
 
 .menu{
     display:flex;
     flex-direction:column;
-    gap:15px;
+    gap:14px;
 }
 
 .menu a{
     text-decoration:none;
     color:white;
     padding:15px;
-    border-radius:12px;
+    border-radius:14px;
     transition:0.3s;
     background:#111936;
+    font-weight:500;
+    border:1px solid transparent;
 }
 
 .menu a:hover{
     background:#00f7ff;
     color:black;
+    transform:translateX(5px);
 }
 
 /* MAIN */
 
 .main{
-    margin-left:260px;
-    width:calc(100% - 260px);
+    margin-left:270px;
+    width:calc(100% - 270px);
     padding:30px;
 }
 
-.page-title{
+/* TOPBAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.topbar h1{
+    font-size:34px;
+}
+
+.topbar p{
+    color:#9ca8c7;
+    margin-top:5px;
+}
+
+/* HERO */
+
+.hero{
+    background:linear-gradient(135deg,#00f7ff20,#111936);
+    border:1px solid rgba(0,247,255,0.12);
+    border-radius:28px;
+    padding:35px;
+    margin-bottom:35px;
+}
+
+.hero h2{
     font-size:32px;
-    margin-bottom:30px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#b5b5b5;
+    line-height:1.7;
 }
 
 /* DEPOSIT BOX */
 
 .deposit-box{
-    background:#0d1327;
+    background:linear-gradient(145deg,#0d1327,#121a34);
     padding:35px;
-    border-radius:20px;
+    border-radius:24px;
     border:1px solid rgba(255,255,255,0.08);
-    max-width:700px;
+    max-width:750px;
+    box-shadow:0 0 25px rgba(0,247,255,0.05);
 }
 
 .deposit-box h2{
     margin-bottom:25px;
+    font-size:28px;
 }
 
+/* INPUT GROUP */
+
 .input-group{
-    margin-bottom:20px;
+    margin-bottom:22px;
 }
 
 .input-group label{
     display:block;
     margin-bottom:10px;
+    color:#00f7ff;
+    font-size:14px;
+    font-weight:600;
 }
 
 .input-group input,
 .input-group select{
     width:100%;
-    padding:15px;
+    padding:16px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     background:#111936;
     color:white;
     font-size:15px;
+    outline:none;
+    border:1px solid rgba(255,255,255,0.08);
+    transition:0.3s;
 }
+
+.input-group input:focus,
+.input-group select:focus{
+    border-color:#00f7ff;
+    box-shadow:0 0 15px rgba(0,247,255,0.2);
+}
+
+/* WALLET BOX */
 
 .wallet-box{
     background:#111936;
-    padding:20px;
-    border-radius:12px;
+    padding:25px;
+    border-radius:18px;
     margin-top:20px;
     margin-bottom:25px;
+    border:1px solid rgba(255,255,255,0.05);
 }
 
 .wallet-box p{
@@ -127,7 +189,12 @@ body{
     color:#00f7ff;
     font-size:15px;
     margin-top:15px;
+    background:#0d1327;
+    padding:15px;
+    border-radius:12px;
 }
+
+/* QR */
 
 .qr-code{
     width:220px;
@@ -138,30 +205,67 @@ body{
     padding:10px;
 }
 
+/* UPLOAD */
+
 .upload-box{
     border:2px dashed rgba(255,255,255,0.2);
-    padding:30px;
+    padding:35px;
     text-align:center;
-    border-radius:15px;
+    border-radius:18px;
     margin-bottom:25px;
     color:#b5b5b5;
+    transition:0.3s;
+    background:#0d1327;
 }
+
+.upload-box:hover{
+    border-color:#00f7ff;
+    color:#00f7ff;
+}
+
+/* BUTTON */
 
 button{
     width:100%;
-    padding:16px;
+    padding:17px;
     border:none;
-    border-radius:12px;
-    background:#00f7ff;
+    border-radius:14px;
+    background:linear-gradient(90deg,#00f7ff,#00c3ff);
     color:black;
     font-size:16px;
-    font-weight:600;
+    font-weight:700;
     cursor:pointer;
     transition:0.3s;
 }
 
 button:hover{
-    opacity:0.8;
+    opacity:0.9;
+    transform:translateY(-3px);
+}
+
+/* MOBILE MENU */
+
+.menu-toggle{
+    display:none;
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:14px;
+    background:#111936;
+    color:#00f7ff;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    top:0;
+    left:0;
+    z-index:900;
+    display:none;
 }
 
 /* MOBILE */
@@ -169,18 +273,37 @@ button:hover{
 @media(max-width:900px){
 
 .sidebar{
-    width:100%;
-    height:auto;
-    position:relative;
+    left:-100%;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.overlay.active{
+    display:block;
 }
 
 .main{
     margin-left:0;
     width:100%;
+    padding:20px;
+}
+
+.menu-toggle{
+    display:block;
 }
 
 body{
     flex-direction:column;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+.deposit-box{
+    padding:25px;
 }
 
 }
@@ -189,20 +312,30 @@ body{
 </head>
 <body>
 
+<div class="overlay" id="overlay"></div>
+
 <!-- SIDEBAR -->
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
 
     <div class="logo">SummitFX</div>
 
     <div class="menu">
+
         <a href="dashboard.html">Dashboard</a>
+
         <a href="deposit.html">Deposit</a>
-        <a href="#">Withdraw</a>
-        <a href="#">Trading Bots</a>
-        <a href="#">Transactions</a>
-        <a href="#">Settings</a>
+
+        <a href="withdraw.html">Withdraw</a>
+
+        <a href="bots.html">Trading Bots</a>
+
+        <a href="transactions.html">Transactions</a>
+
+        <a href="settings.html">Settings</a>
+
         <a href="index.html">Logout</a>
+
     </div>
 
 </div>
@@ -211,7 +344,40 @@ body{
 
 <div class="main">
 
-    <h1 class="page-title">Deposit Funds</h1>
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div>
+
+            <button class="menu-toggle" id="menuBtn">
+                ☰
+            </button>
+
+            <h1>Deposit Funds</h1>
+
+            <p>
+                Deposit cryptocurrency securely into your SummitFX trading wallet.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <h2>Secure Crypto Deposits</h2>
+
+        <p>
+            Select your preferred cryptocurrency, send payment to the wallet address provided,
+            upload your transaction proof and wait for confirmation from the SummitFX finance team.
+        </p>
+
+    </div>
+
+    <!-- DEPOSIT BOX -->
 
     <div class="deposit-box">
 
@@ -275,6 +441,28 @@ body{
 </div>
 
 <script>
+
+/* MOBILE MENU */
+
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+
+});
+
+overlay.addEventListener("click", () => {
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+});
+
+/* CHANGE WALLET */
 
 function changeWallet(){
 
