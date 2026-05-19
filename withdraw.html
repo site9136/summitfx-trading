@@ -20,120 +20,300 @@ body{
     background:#050816;
     color:white;
     display:flex;
+    overflow-x:hidden;
 }
 
 /* SIDEBAR */
 
 .sidebar{
-    width:260px;
+    width:270px;
     height:100vh;
     background:#0b1020;
     padding:30px 20px;
     position:fixed;
     left:0;
     top:0;
-    border-right:1px solid rgba(255,255,255,0.1);
+    border-right:1px solid rgba(255,255,255,0.08);
+    overflow-y:auto;
+    transition:0.3s;
+    z-index:1000;
 }
 
 .logo{
-    font-size:28px;
+    font-size:30px;
     font-weight:700;
     color:#00f7ff;
-    margin-bottom:50px;
+    margin-bottom:40px;
+    letter-spacing:1px;
 }
 
 .menu{
     display:flex;
     flex-direction:column;
-    gap:15px;
+    gap:14px;
+}
+
+.menu-title{
+    color:#7f8db3;
+    font-size:13px;
+    margin-top:10px;
+    margin-bottom:5px;
+    padding-left:5px;
+    letter-spacing:1px;
 }
 
 .menu a{
     text-decoration:none;
     color:white;
     padding:15px;
-    border-radius:12px;
+    border-radius:14px;
     transition:0.3s;
     background:#111936;
+    font-weight:500;
+    border:1px solid transparent;
 }
 
 .menu a:hover{
     background:#00f7ff;
     color:black;
+    transform:translateX(5px);
 }
 
 /* MAIN */
 
 .main{
-    margin-left:260px;
-    width:calc(100% - 260px);
+    margin-left:270px;
+    width:calc(100% - 270px);
     padding:30px;
 }
 
+/* TOPBAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.topbar-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
 .page-title{
+    font-size:34px;
+}
+
+.page-subtitle{
+    color:#9ca8c7;
+    margin-top:5px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:#111936;
+    padding:12px 18px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.avatar{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#00f7ff;
+    color:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:700;
+    font-size:18px;
+}
+
+/* MOBILE MENU */
+
+.menu-toggle{
+    display:none;
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:14px;
+    background:#111936;
+    color:#00f7ff;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    top:0;
+    left:0;
+    z-index:900;
+    display:none;
+}
+
+/* HERO */
+
+.hero{
+    background:linear-gradient(135deg,#00f7ff20,#111936);
+    border:1px solid rgba(0,247,255,0.12);
+    border-radius:28px;
+    padding:35px;
+    margin-bottom:35px;
+}
+
+.hero h2{
     font-size:32px;
-    margin-bottom:30px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#b5b5b5;
+    line-height:1.7;
+    max-width:700px;
 }
 
 /* WITHDRAW BOX */
 
 .withdraw-box{
-    background:#0d1327;
+    background:linear-gradient(145deg,#0d1327,#121a34);
     padding:35px;
-    border-radius:20px;
+    border-radius:24px;
     border:1px solid rgba(255,255,255,0.08);
-    max-width:700px;
+    max-width:850px;
+    position:relative;
+    overflow:hidden;
+}
+
+.withdraw-box::before{
+    content:'';
+    position:absolute;
+    width:160px;
+    height:160px;
+    background:rgba(0,247,255,0.05);
+    border-radius:50%;
+    top:-50px;
+    right:-50px;
 }
 
 .withdraw-box h2{
-    margin-bottom:25px;
+    margin-bottom:30px;
+    font-size:28px;
+    position:relative;
+    z-index:2;
 }
 
 .input-group{
-    margin-bottom:20px;
+    margin-bottom:22px;
+    position:relative;
+    z-index:2;
 }
 
 .input-group label{
     display:block;
     margin-bottom:10px;
+    color:#00f7ff;
+    font-size:14px;
+    font-weight:600;
 }
 
 .input-group input,
 .input-group select{
     width:100%;
-    padding:15px;
+    padding:17px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     background:#111936;
     color:white;
     font-size:15px;
+    border:1px solid rgba(255,255,255,0.08);
+    outline:none;
+    transition:0.3s;
+}
+
+.input-group input:focus,
+.input-group select:focus{
+    border-color:#00f7ff;
+    box-shadow:0 0 15px rgba(0,247,255,0.2);
 }
 
 .notice-box{
     background:#111936;
-    padding:20px;
-    border-radius:12px;
+    padding:22px;
+    border-radius:16px;
     margin-top:20px;
     margin-bottom:25px;
     color:#b5b5b5;
-    line-height:1.7;
+    line-height:1.8;
+    border:1px solid rgba(255,255,255,0.06);
+    position:relative;
+    z-index:2;
+}
+
+.notice-box strong{
+    color:#00f7ff;
+}
+
+.withdraw-info{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:25px;
+    position:relative;
+    z-index:2;
+}
+
+.info-card{
+    background:#111936;
+    padding:22px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.06);
+    transition:0.3s;
+}
+
+.info-card:hover{
+    border-color:#00f7ff;
+    transform:translateY(-4px);
+}
+
+.info-card h3{
+    color:#b5b5b5;
+    margin-bottom:12px;
+    font-size:15px;
+}
+
+.info-card h2{
+    font-size:28px;
+    color:#00f7ff;
 }
 
 button{
     width:100%;
-    padding:16px;
+    padding:18px;
     border:none;
-    border-radius:12px;
-    background:#00f7ff;
+    border-radius:14px;
+    background:linear-gradient(90deg,#00f7ff,#00c3ff);
     color:black;
     font-size:16px;
-    font-weight:600;
+    font-weight:700;
     cursor:pointer;
     transition:0.3s;
+    position:relative;
+    z-index:2;
 }
 
 button:hover{
-    opacity:0.8;
+    opacity:0.9;
+    transform:translateY(-3px);
 }
 
 /* MOBILE */
@@ -141,18 +321,37 @@ button:hover{
 @media(max-width:900px){
 
 .sidebar{
-    width:100%;
-    height:auto;
-    position:relative;
+    left:-100%;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.overlay.active{
+    display:block;
 }
 
 .main{
     margin-left:0;
     width:100%;
+    padding:20px;
 }
 
-body{
-    flex-direction:column;
+.menu-toggle{
+    display:block;
+}
+
+.page-title{
+    font-size:28px;
+}
+
+.withdraw-box{
+    padding:25px;
+}
+
+.withdraw-info{
+    grid-template-columns:1fr;
 }
 
 }
@@ -161,20 +360,42 @@ body{
 </head>
 <body>
 
+<div class="overlay" id="overlay"></div>
+
 <!-- SIDEBAR -->
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
 
     <div class="logo">SummitFX</div>
 
     <div class="menu">
+
+        <div class="menu-title">MAIN MENU</div>
+
         <a href="dashboard.html">Dashboard</a>
+
         <a href="deposit.html">Deposit</a>
+
         <a href="withdraw.html">Withdraw</a>
-        <a href="#">Trading Bots</a>
-        <a href="#">Transactions</a>
-        <a href="#">Settings</a>
+
+        <a href="bots.html">Trading Bots</a>
+
+        <a href="plans.html">Investment Plans</a>
+
+        <a href="transactions.html">Transactions</a>
+
+        <div class="menu-title">ACCOUNT</div>
+
+        <a href="profile.html">My Profile</a>
+
+        <a href="edit-profile.html">Edit Profile</a>
+
+        <a href="kyc.html">Verify KYC</a>
+
+        <a href="settings.html">Settings</a>
+
         <a href="index.html">Logout</a>
+
     </div>
 
 </div>
@@ -183,46 +404,169 @@ body{
 
 <div class="main">
 
-    <h1 class="page-title">Withdraw Funds</h1>
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="topbar-left">
+
+            <button class="menu-toggle" id="menuBtn">
+                ☰
+            </button>
+
+            <div>
+
+                <h1 class="page-title">
+                    Withdraw Funds
+                </h1>
+
+                <p class="page-subtitle">
+                    Securely withdraw your profits directly to your crypto wallet.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="profile">
+
+            <div class="avatar">
+                S
+            </div>
+
+            <div>
+                <div>SummitFX User</div>
+                <small style="color:#9ca8c7;">Premium Member</small>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <h2>Fast & Secure Withdrawals</h2>
+
+        <p>
+            Submit your withdrawal request and our finance team will process it securely.
+            Ensure your wallet address is correct before confirming your request.
+        </p>
+
+    </div>
+
+    <!-- WITHDRAW INFO -->
+
+    <div class="withdraw-info">
+
+        <div class="info-card">
+
+            <h3>Available Balance</h3>
+
+            <h2>$0.00</h2>
+
+        </div>
+
+        <div class="info-card">
+
+            <h3>Minimum Withdrawal</h3>
+
+            <h2>$50</h2>
+
+        </div>
+
+        <div class="info-card">
+
+            <h3>Processing Time</h3>
+
+            <h2>0 - 24h</h2>
+
+        </div>
+
+    </div>
+
+    <!-- WITHDRAW BOX -->
 
     <div class="withdraw-box">
 
         <h2>Request Withdrawal</h2>
 
         <div class="input-group">
+
             <label>Select Cryptocurrency</label>
 
             <select>
+
                 <option>USDT TRC20</option>
+
                 <option>Bitcoin (BTC)</option>
+
                 <option>Ethereum (ETH)</option>
+
             </select>
+
         </div>
 
         <div class="input-group">
+
             <label>Withdrawal Amount</label>
 
             <input type="number" placeholder="Enter amount">
+
         </div>
 
         <div class="input-group">
+
             <label>Wallet Address</label>
 
             <input type="text" placeholder="Enter wallet address">
+
         </div>
 
         <div class="notice-box">
-            Withdrawals are reviewed manually by the admin team.
-            Please double-check your wallet address before submitting.
+
+            <strong>Important:</strong><br><br>
+
+            Withdrawals are reviewed manually by the SummitFX finance team.
+            Please double-check your wallet address before submitting your request.
+            Transactions sent to the wrong address cannot be reversed.
+
         </div>
 
         <button>
+
             Submit Withdrawal Request
+
         </button>
 
     </div>
 
 </div>
+
+<script>
+
+/* MOBILE MENU */
+
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+
+});
+
+overlay.addEventListener("click", () => {
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+});
+
+</script>
 
 </body>
 </html>
