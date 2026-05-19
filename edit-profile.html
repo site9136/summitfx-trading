@@ -41,6 +41,13 @@ async function loadProfile(){
     .eq('id', user.id)
     .single();
 
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
+
     if(data){
 
         document.getElementById("firstName").value =
@@ -73,7 +80,7 @@ async function loadProfile(){
 
 /* SAVE PROFILE */
 
-form.addEventListener("submit", async(e)=>{
+form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
