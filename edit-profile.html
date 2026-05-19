@@ -346,55 +346,65 @@ document.querySelector(".profile-form");
 
 async function loadProfile(){
 
-    const { data:{ user } } =
-    await client.auth.getUser();
+    try{
 
-    if(!user){
+        const { data: { user }, error: userError } =
+        await client.auth.getUser();
 
-        window.location.href = "login.html";
-        return;
+        if(userError || !user){
 
-    }
+            window.location.href = "login.html";
+            return;
 
-    const { data, error } =
-    await client
-    .from('users')
-    .select('*')
-    .eq('id', user.id)
-    .single();
+        }
 
-    if(error){
+        const { data, error } =
+        await client
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
 
-        console.log(error);
-        return;
+        if(error){
 
-    }
+            console.log(error);
+            alert("Failed to load profile");
+            return;
 
-    if(data){
+        }
 
-        document.getElementById("firstName").value =
-        data.first_name || "";
+        if(data){
 
-        document.getElementById("lastName").value =
-        data.last_name || "";
+            document.getElementById("firstName").value =
+            data.first_name || "";
 
-        document.getElementById("username").value =
-        data.username || "";
+            document.getElementById("lastName").value =
+            data.last_name || "";
 
-        document.getElementById("phone").value =
-        data.phone || "";
+            document.getElementById("username").value =
+            data.username || "";
 
-        document.getElementById("dob").value =
-        data.dob || "";
+            document.getElementById("phone").value =
+            data.phone || "";
 
-        document.getElementById("gender").value =
-        data.gender || "";
+            document.getElementById("dob").value =
+            data.dob || "";
 
-        document.getElementById("country").value =
-        data.country || "";
+            document.getElementById("gender").value =
+            data.gender || "";
 
-        document.getElementById("email").value =
-        data.email || "";
+            document.getElementById("country").value =
+            data.country || "";
+
+            document.getElementById("email").value =
+            data.email || "";
+
+        }
+
+    }catch(err){
+
+        console.log(err);
+        alert("Failed to load profile");
 
     }
 
@@ -411,58 +421,109 @@ form.addEventListener("submit", async (e) => {
 
     saveBtn.innerText = "Saving...";
 
-    const { data:{ user } } =
-    await client.auth.getUser();
+    try{
 
-    const updates = {
+        const { data: { user }, error: userError } =
+        await client.auth.getUser();
 
-        first_name:
-        document.getElementById("firstName").value,
+        if(userError || !user){
 
-        last_name:
-        document.getElementById("lastName").value,
+            alert("User not logged in");
 
-        username:
-        document.getElementById("username").value,
+            saveBtn.innerText =
+            "Save Profile Changes";
 
-        phone:
-        document.getElementById("phone").value,
+            return;
 
-        dob:
-        document.getElementById("dob").value,
+        }
 
-        gender:
-        document.getElementById("gender").value,
+        const updates = {
 
-        country:
-        document.getElementById("country").value,
+            first_name:
+            document.getElementById("firstName").value,
 
-        email:
-        document.getElementById("email").value
+            last_name:
+            document.getElementById("lastName").value,
 
-    };
+            username:
+            document.getElementById("username").value,
 
-    const { error } =
-    await client
-    .from('users')
-    .update(updates)
-    .eq('id', user.id);
+            phone:
+            document.getElementById("phone").value,
 
-    if(error){
+            dob:
+            document.getElementById("dob").value,
 
-        alert(error.message);
+            gender:
+            document.getElementById("gender").value,
+
+            country:
+            document.getElementById("country").value,
+
+            email:
+            document.getElementById("email").value
+
+        };
+
+        const { data: existingUser } =
+        await client
+        .from('users')
+        .select('id')
+        .eq('id', user.id)
+        .maybeSingle();
+
+        let error;
+
+        if(existingUser){
+
+            const response =
+            await client
+            .from('users')
+            .update(updates)
+            .eq('id', user.id);
+
+            error = response.error;
+
+        }else{
+
+            const response =
+            await client
+            .from('users')
+            .insert([{
+                id: user.id,
+                ...updates
+            }]);
+
+            error = response.error;
+
+        }
+
+        if(error){
+
+            alert(error.message);
+
+            saveBtn.innerText =
+            "Save Profile Changes";
+
+            return;
+
+        }
+
+        alert("Profile updated successfully");
 
         saveBtn.innerText =
         "Save Profile Changes";
 
-        return;
+    }catch(err){
+
+        console.log(err);
+
+        alert("Something went wrong");
+
+        saveBtn.innerText =
+        "Save Profile Changes";
 
     }
-
-    alert("Profile updated successfully");
-
-    saveBtn.innerText =
-    "Save Profile Changes";
 
 });
 
