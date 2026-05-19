@@ -20,126 +20,315 @@ body{
     background:#050816;
     color:white;
     display:flex;
+    overflow-x:hidden;
 }
 
 /* SIDEBAR */
 
 .sidebar{
-    width:260px;
+    width:270px;
     height:100vh;
     background:#0b1020;
     padding:30px 20px;
     position:fixed;
     left:0;
     top:0;
-    border-right:1px solid rgba(255,255,255,0.1);
+    border-right:1px solid rgba(255,255,255,0.08);
+    overflow-y:auto;
+    transition:0.3s;
+    z-index:1000;
 }
 
 .logo{
-    font-size:28px;
+    font-size:30px;
     font-weight:700;
     color:#00f7ff;
-    margin-bottom:50px;
+    margin-bottom:40px;
+    letter-spacing:1px;
 }
 
 .menu{
     display:flex;
     flex-direction:column;
-    gap:15px;
+    gap:14px;
+}
+
+.menu-title{
+    color:#7f8db3;
+    font-size:13px;
+    margin-top:10px;
+    margin-bottom:5px;
+    padding-left:5px;
+    letter-spacing:1px;
 }
 
 .menu a{
     text-decoration:none;
     color:white;
     padding:15px;
-    border-radius:12px;
+    border-radius:14px;
     background:#111936;
     transition:0.3s;
+    font-weight:500;
+    border:1px solid transparent;
 }
 
 .menu a:hover{
     background:#00f7ff;
     color:black;
+    transform:translateX(5px);
 }
 
 /* MAIN */
 
 .main{
-    margin-left:260px;
-    width:calc(100% - 260px);
+    margin-left:270px;
+    width:calc(100% - 270px);
     padding:30px;
 }
 
-.page-title{
-    font-size:34px;
-    margin-bottom:30px;
+/* TOPBAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
-.bot-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+.topbar-left{
+    display:flex;
+    align-items:center;
     gap:20px;
 }
 
+.page-title{
+    font-size:36px;
+}
+
+.page-subtitle{
+    color:#9ca8c7;
+    margin-top:6px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:#111936;
+    padding:12px 18px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.avatar{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#00f7ff;
+    color:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:700;
+    font-size:18px;
+}
+
+/* MOBILE MENU */
+
+.menu-toggle{
+    display:none;
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:14px;
+    background:#111936;
+    color:#00f7ff;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    top:0;
+    left:0;
+    z-index:900;
+    display:none;
+}
+
+/* HERO */
+
+.hero{
+    background:linear-gradient(135deg,#00f7ff20,#111936);
+    border:1px solid rgba(0,247,255,0.12);
+    border-radius:28px;
+    padding:35px;
+    margin-bottom:35px;
+}
+
+.hero h2{
+    font-size:34px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#b5b5b5;
+    line-height:1.8;
+    max-width:750px;
+}
+
+/* BOT GRID */
+
+.bot-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+/* BOT CARD */
+
 .bot-card{
-    background:#0d1327;
-    padding:25px;
-    border-radius:20px;
+    background:linear-gradient(145deg,#0d1327,#121a34);
+    padding:30px;
+    border-radius:24px;
     border:1px solid rgba(255,255,255,0.08);
     transition:0.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.bot-card::before{
+    content:'AI';
+    position:absolute;
+    top:15px;
+    right:20px;
+    font-size:70px;
+    color:rgba(0,247,255,0.05);
+    font-weight:700;
 }
 
 .bot-card:hover{
-    transform:translateY(-5px);
+    transform:translateY(-6px);
     border-color:#00f7ff;
+    box-shadow:0 0 25px rgba(0,247,255,0.1);
 }
 
 .bot-card h2{
     margin-bottom:15px;
+    font-size:28px;
+    position:relative;
+    z-index:2;
 }
 
 .bot-card p{
     color:#b5b5b5;
-    line-height:1.7;
-    margin-bottom:20px;
+    line-height:1.8;
+    margin-bottom:22px;
+    position:relative;
+    z-index:2;
 }
 
+/* STATS */
+
 .stats{
-    margin-bottom:20px;
+    margin-bottom:22px;
+    position:relative;
+    z-index:2;
 }
 
 .stats div{
-    margin-bottom:10px;
+    margin-bottom:12px;
+    background:#111936;
+    padding:13px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.05);
 }
+
+/* STATUS */
+
+.bot-status{
+    display:inline-block;
+    background:#00f7ff20;
+    color:#00f7ff;
+    padding:8px 16px;
+    border-radius:30px;
+    font-size:13px;
+    margin-bottom:20px;
+    position:relative;
+    z-index:2;
+}
+
+/* BUTTON */
 
 .view-btn{
     display:block;
     text-align:center;
     text-decoration:none;
-    background:#00f7ff;
+    background:linear-gradient(90deg,#00f7ff,#00c3ff);
     color:black;
-    padding:14px;
-    border-radius:12px;
-    font-weight:600;
+    padding:15px;
+    border-radius:14px;
+    font-weight:700;
+    transition:0.3s;
+    position:relative;
+    z-index:2;
+}
+
+.view-btn:hover{
+    transform:translateY(-3px);
+    opacity:0.9;
 }
 
 /* MOBILE */
 
 @media(max-width:900px){
 
-body{
-    flex-direction:column;
+.sidebar{
+    left:-100%;
 }
 
-.sidebar{
-    width:100%;
-    height:auto;
-    position:relative;
+.sidebar.active{
+    left:0;
+}
+
+.overlay.active{
+    display:block;
 }
 
 .main{
     margin-left:0;
     width:100%;
+    padding:20px;
+}
+
+.menu-toggle{
+    display:block;
+}
+
+.page-title{
+    font-size:28px;
+}
+
+.hero{
+    padding:25px;
+}
+
+.hero h2{
+    font-size:28px;
+}
+
+.bot-grid{
+    grid-template-columns:1fr;
+}
+
+.profile{
+    width:100%;
+    justify-content:center;
 }
 
 }
@@ -148,20 +337,42 @@ body{
 </head>
 <body>
 
+<div class="overlay" id="overlay"></div>
+
 <!-- SIDEBAR -->
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
 
     <div class="logo">SummitFX</div>
 
     <div class="menu">
+
+        <div class="menu-title">MAIN MENU</div>
+
         <a href="dashboard.html">Dashboard</a>
+
         <a href="deposit.html">Deposit</a>
+
         <a href="withdraw.html">Withdraw</a>
+
         <a href="bots.html">Trading Bots</a>
+
+        <a href="plans.html">Investment Plans</a>
+
         <a href="transactions.html">Transactions</a>
+
+        <div class="menu-title">ACCOUNT</div>
+
+        <a href="profile.html">My Profile</a>
+
+        <a href="edit-profile.html">Edit Profile</a>
+
+        <a href="kyc.html">Verify KYC</a>
+
         <a href="settings.html">Settings</a>
+
         <a href="index.html">Logout</a>
+
     </div>
 
 </div>
@@ -170,7 +381,59 @@ body{
 
 <div class="main">
 
-    <h1 class="page-title">Trading Bots</h1>
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="topbar-left">
+
+            <button class="menu-toggle" id="menuBtn">
+                ☰
+            </button>
+
+            <div>
+
+                <h1 class="page-title">
+                    Trading Bots
+                </h1>
+
+                <p class="page-subtitle">
+                    Explore powerful AI trading systems designed for different market strategies.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="profile">
+
+            <div class="avatar">
+                S
+            </div>
+
+            <div>
+                <div>SummitFX User</div>
+                <small style="color:#9ca8c7;">Premium Member</small>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <h2>Automated AI Trading Systems</h2>
+
+        <p>
+            Activate intelligent trading bots built for forex, gold, swing trading and hedging strategies.
+            Monitor performance, maximize profits and manage your portfolio from one secure platform.
+        </p>
+
+    </div>
+
+    <!-- BOT GRID -->
 
     <div class="bot-grid">
 
@@ -178,17 +441,24 @@ body{
 
         <div class="bot-card">
 
+            <div class="bot-status">
+                ACTIVE
+            </div>
+
             <h2>Scalper AI</h2>
 
             <p>
-                High-frequency forex AI trading
-                bot optimized for short-term profits.
+                High-frequency forex AI trading bot optimized for short-term market opportunities and fast execution.
             </p>
 
             <div class="stats">
+
                 <div>ROI: 18%</div>
-                <div>Risk: Medium</div>
+
+                <div>Risk Level: Medium</div>
+
                 <div>Win Rate: 89%</div>
+
             </div>
 
             <a href="scalper-bot.html" class="view-btn">
@@ -201,17 +471,24 @@ body{
 
         <div class="bot-card">
 
+            <div class="bot-status">
+                ACTIVE
+            </div>
+
             <h2>Swing Master</h2>
 
             <p>
-                Advanced swing trading bot
-                designed for stable growth.
+                Advanced swing trading AI designed for steady growth and longer-term market positioning.
             </p>
 
             <div class="stats">
+
                 <div>ROI: 24%</div>
-                <div>Risk: Low</div>
+
+                <div>Risk Level: Low</div>
+
                 <div>Win Rate: 92%</div>
+
             </div>
 
             <a href="swing-bot.html" class="view-btn">
@@ -224,17 +501,24 @@ body{
 
         <div class="bot-card">
 
+            <div class="bot-status">
+                ACTIVE
+            </div>
+
             <h2>Gold Hunter</h2>
 
             <p>
-                AI-powered XAU/USD gold
-                trading automation system.
+                AI-powered XAU/USD gold trading automation system focused on high volatility opportunities.
             </p>
 
             <div class="stats">
+
                 <div>ROI: 31%</div>
-                <div>Risk: High</div>
+
+                <div>Risk Level: High</div>
+
                 <div>Win Rate: 85%</div>
+
             </div>
 
             <a href="gold-bot.html" class="view-btn">
@@ -247,17 +531,24 @@ body{
 
         <div class="bot-card">
 
+            <div class="bot-status">
+                ACTIVE
+            </div>
+
             <h2>Smart Hedge AI</h2>
 
             <p>
-                Intelligent hedging system
-                for portfolio protection.
+                Intelligent hedging system created for portfolio protection and controlled risk management.
             </p>
 
             <div class="stats">
+
                 <div>ROI: 15%</div>
-                <div>Risk: Low</div>
+
+                <div>Risk Level: Low</div>
+
                 <div>Win Rate: 95%</div>
+
             </div>
 
             <a href="hedge-bot.html" class="view-btn">
@@ -269,6 +560,30 @@ body{
     </div>
 
 </div>
+
+<script>
+
+/* MOBILE MENU */
+
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+
+});
+
+overlay.addEventListener("click", () => {
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+});
+
+</script>
 
 </body>
 </html>
