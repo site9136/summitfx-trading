@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -23,7 +25,7 @@ body{
 }
 
 .container{
-    max-width:850px;
+    max-width:900px;
     margin:auto;
 }
 
@@ -127,6 +129,15 @@ input:focus{
     line-height:1.6;
 }
 
+.preview-image{
+    width:100%;
+    max-height:250px;
+    object-fit:cover;
+    border-radius:16px;
+    margin-top:15px;
+    display:none;
+}
+
 .note-box{
     background:rgba(0,247,255,0.08);
     border:1px solid rgba(0,247,255,0.2);
@@ -227,7 +238,7 @@ input:focus{
 
         <div class="status-box">
 
-            <h3>KYC Status: Not Verified</h3>
+            <h3>KYC Status: Pending Verification</h3>
 
             <p>
                 Submit your identity verification documents below.
@@ -268,7 +279,7 @@ input:focus{
 
             <div class="form-group">
 
-                <label>Upload Front Side</label>
+                <label>Front Side of Document</label>
 
                 <div class="upload-box">
 
@@ -279,8 +290,11 @@ input:focus{
                     required>
 
                     <p>
-                        Take a clear photo of the front side of your document.
+                        Take a clear picture of the front side of your document.
                     </p>
+
+                    <img id="frontPreview"
+                    class="preview-image">
 
                 </div>
 
@@ -290,7 +304,7 @@ input:focus{
 
             <div class="form-group">
 
-                <label>Upload Back Side</label>
+                <label>Back Side of Document</label>
 
                 <div class="upload-box">
 
@@ -301,8 +315,11 @@ input:focus{
                     required>
 
                     <p>
-                        Take a clear photo of the back side of your document.
+                        Take a clear picture of the back side of your document.
                     </p>
+
+                    <img id="backPreview"
+                    class="preview-image">
 
                 </div>
 
@@ -312,7 +329,7 @@ input:focus{
 
             <div class="form-group">
 
-                <label>Upload Selfie Holding Document</label>
+                <label>Selfie Holding Document</label>
 
                 <div class="upload-box">
 
@@ -323,8 +340,11 @@ input:focus{
                     required>
 
                     <p>
-                        Take a clear selfie while holding your selected document.
+                        Take a selfie while holding your document.
                     </p>
+
+                    <img id="selfiePreview"
+                    class="preview-image">
 
                 </div>
 
@@ -354,7 +374,9 @@ input:focus{
 
             <!-- SUBMIT -->
 
-            <button type="submit" class="submit-btn" id="submitBtn">
+            <button type="submit"
+            class="submit-btn"
+            id="submitBtn">
 
                 Submit Verification
 
@@ -362,7 +384,8 @@ input:focus{
 
             <!-- MESSAGE -->
 
-            <div class="message" id="message"></div>
+            <div class="message"
+            id="message"></div>
 
         </form>
 
@@ -372,32 +395,221 @@ input:focus{
 
 <script>
 
-const form = document.getElementById("kycForm");
+/* SUPABASE */
 
-const submitBtn = document.getElementById("submitBtn");
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
 
-const message = document.getElementById("message");
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
 
-form.addEventListener("submit", function(e){
+const { createClient } = supabase;
+
+const client =
+createClient(supabaseUrl, supabaseKey);
+
+/* PREVIEW IMAGES */
+
+function previewImage(inputId, previewId){
+
+    const input =
+    document.getElementById(inputId);
+
+    const preview =
+    document.getElementById(previewId);
+
+    input.addEventListener("change", () => {
+
+        const file = input.files[0];
+
+        if(file){
+
+            preview.src =
+            URL.createObjectURL(file);
+
+            preview.style.display = "block";
+
+        }
+
+    });
+
+}
+
+previewImage("frontImage", "frontPreview");
+previewImage("backImage", "backPreview");
+previewImage("selfieImage", "selfiePreview");
+
+/* FORM */
+
+const form =
+document.getElementById("kycForm");
+
+const submitBtn =
+document.getElementById("submitBtn");
+
+const message =
+document.getElementById("message");
+
+form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    submitBtn.innerText = "Submitting...";
+    submitBtn.innerText =
+    "Uploading Documents...";
 
-    setTimeout(() => {
+    submitBtn.disabled = true;
+
+    message.style.display = "none";
+
+    try{
+
+        /* USER */
+
+        const {
+            data:{ user }
+        } = await client.auth.getUser();
+
+        if(!user){
+
+            throw new Error(
+                "Please login first."
+            );
+
+        }
+
+        /* FILES */
+
+        const frontFile =
+        document.getElementById("frontImage").files[0];
+
+        const backFile =
+        document.getElementById("backImage").files[0];
+
+        const selfieFile =
+        document.getElementById("selfieImage").files[0];
+
+        const documentType =
+        document.getElementById("documentType").value;
+
+        /* UNIQUE FILE NAMES */
+
+        const frontPath =
+        `${user.id}/front_${Date.now()}`;
+
+        const backPath =
+        `${user.id}/back_${Date.now()}`;
+
+        const selfiePath =
+        `${user.id}/selfie_${Date.now()}`;
+
+        /* UPLOAD FRONT */
+
+        const { error:frontError } =
+        await client.storage
+        .from('kyc')
+        .upload(frontPath, frontFile);
+
+        if(frontError) throw frontError;
+
+        /* UPLOAD BACK */
+
+        const { error:backError } =
+        await client.storage
+        .from('kyc')
+        .upload(backPath, backFile);
+
+        if(backError) throw backError;
+
+        /* UPLOAD SELFIE */
+
+        const { error:selfieError } =
+        await client.storage
+        .from('kyc')
+        .upload(selfiePath, selfieFile);
+
+        if(selfieError) throw selfieError;
+
+        /* GET URLS */
+
+        const frontUrl =
+        client.storage
+        .from('kyc')
+        .getPublicUrl(frontPath)
+        .data.publicUrl;
+
+        const backUrl =
+        client.storage
+        .from('kyc')
+        .getPublicUrl(backPath)
+        .data.publicUrl;
+
+        const selfieUrl =
+        client.storage
+        .from('kyc')
+        .getPublicUrl(selfiePath)
+        .data.publicUrl;
+
+        /* SAVE TO DATABASE */
+
+        const { error:dbError } =
+        await client
+        .from('kyc_requests')
+        .insert([{
+
+            user_id: user.id,
+
+            document_type: documentType,
+
+            front_image: frontUrl,
+
+            back_image: backUrl,
+
+            selfie_image: selfieUrl,
+
+            status: 'Pending'
+
+        }]);
+
+        if(dbError) throw dbError;
+
+        /* SUCCESS */
 
         message.style.display = "block";
 
-        message.className = "message success";
+        message.className =
+        "message success";
 
         message.innerText =
-        "KYC documents submitted successfully. Awaiting admin approval.";
-
-        submitBtn.innerText = "Verification Submitted";
+        "KYC submitted successfully. Awaiting admin approval.";
 
         form.reset();
 
-    }, 2000);
+        document.querySelectorAll('.preview-image')
+        .forEach(img => {
+
+            img.style.display = "none";
+
+        });
+
+        submitBtn.innerText =
+        "Verification Submitted";
+
+    }catch(error){
+
+        message.style.display = "block";
+
+        message.className =
+        "message error";
+
+        message.innerText =
+        error.message;
+
+        submitBtn.innerText =
+        "Submit Verification";
+
+        submitBtn.disabled = false;
+
+    }
 
 });
 
