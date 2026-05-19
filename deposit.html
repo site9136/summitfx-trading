@@ -252,7 +252,7 @@ body{
 
 /* BUTTON */
 
-button{
+.submit-btn{
     width:100%;
     padding:17px;
     border:none;
@@ -265,7 +265,7 @@ button{
     transition:0.3s;
 }
 
-button:hover{
+.submit-btn:hover{
     opacity:0.9;
     transform:translateY(-3px);
 }
@@ -455,7 +455,7 @@ body{
 
                 </div>
 
-                <button class="copy-btn" onclick="copyWallet()">
+                <button type="button" class="copy-btn" onclick="copyWallet()">
                     Copy
                 </button>
 
@@ -496,7 +496,7 @@ body{
 
         </div>
 
-        <button onclick="submitDeposit()">
+        <button class="submit-btn" onclick="submitDeposit()">
 
             Submit Deposit Request
 
@@ -642,19 +642,19 @@ async function submitDeposit(){
 
         }
 
-        let proofUrl = '';
+        let screenshotUrl = '';
 
         /* UPLOAD IMAGE */
 
         if(file){
 
-            const filePath =
-            `${user.id}/deposit_${Date.now()}`;
+            const fileName =
+            `${user.id}_${Date.now()}_${file.name}`;
 
             const { error:uploadError } =
             await client.storage
             .from('deposit-proofs')
-            .upload(filePath,file);
+            .upload(fileName,file);
 
             if(uploadError){
 
@@ -663,10 +663,10 @@ async function submitDeposit(){
 
             }
 
-            proofUrl =
+            screenshotUrl =
             client.storage
             .from('deposit-proofs')
-            .getPublicUrl(filePath)
+            .getPublicUrl(fileName)
             .data.publicUrl;
 
         }
@@ -682,11 +682,11 @@ async function submitDeposit(){
 
             crypto:crypto,
 
-            amount:amount,
+            amount:Number(amount),
 
             transaction_hash:txHash,
 
-            proof_image:proofUrl,
+            screenshot_url:screenshotUrl,
 
             wallet_address:
             document.getElementById('walletAddress').innerText,
