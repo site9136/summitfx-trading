@@ -184,14 +184,39 @@ body{
     margin-bottom:10px;
 }
 
+.wallet-copy-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:15px;
+    flex-wrap:wrap;
+}
+
 .wallet-address{
+    flex:1;
     word-break:break-all;
     color:#00f7ff;
     font-size:15px;
-    margin-top:15px;
     background:#0d1327;
     padding:15px;
     border-radius:12px;
+}
+
+.copy-btn{
+    width:auto;
+    padding:14px 18px;
+    border:none;
+    border-radius:12px;
+    background:#00f7ff;
+    color:black;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.copy-btn:hover{
+    opacity:0.9;
+    transform:translateY(-2px);
 }
 
 /* QR */
@@ -306,6 +331,15 @@ body{
     padding:25px;
 }
 
+.wallet-copy-box{
+    flex-direction:column;
+    align-items:stretch;
+}
+
+.copy-btn{
+    width:100%;
+}
+
 }
 
 </style>
@@ -411,9 +445,17 @@ body{
 
             <p>Send payment to this wallet address:</p>
 
-            <div class="wallet-address" id="walletAddress">
+            <div class="wallet-copy-box">
 
-                TVa4pHAaHe5eo3pyPuHXYnXr7jsS96XCiL
+                <div class="wallet-address" id="walletAddress">
+
+                    TVa4pHAaHe5eo3pyPuHXYnXr7jsS96XCiL
+
+                </div>
+
+                <button class="copy-btn" onclick="copyWallet()">
+                    Copy
+                </button>
 
             </div>
 
@@ -461,6 +503,19 @@ overlay.addEventListener("click", () => {
     overlay.classList.remove("active");
 
 });
+
+/* COPY WALLET */
+
+function copyWallet(){
+
+    const walletText =
+    document.getElementById('walletAddress').innerText;
+
+    navigator.clipboard.writeText(walletText);
+
+    alert("Wallet address copied!");
+
+}
 
 /* CHANGE WALLET */
 
