@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - SummitFX</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
 <style>
 
 *{
@@ -19,70 +8,91 @@
 
 body{
     font-family:'Poppins',sans-serif;
-    background:#050816;
+    background:
+    radial-gradient(circle at top right,#13203f 0%,#050816 40%),
+    #050816;
     color:white;
     display:flex;
     overflow-x:hidden;
 }
 
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#00f7ff;
+    border-radius:20px;
+}
+
 /* SIDEBAR */
 
 .sidebar{
-    width:260px;
+    width:270px;
     height:100vh;
-    background:#0b1020;
+    background:rgba(13,19,39,0.88);
+    backdrop-filter:blur(20px);
     padding:30px 20px;
     position:fixed;
     left:0;
     top:0;
-    border-right:1px solid rgba(255,255,255,0.1);
+    border-right:1px solid rgba(255,255,255,0.08);
     overflow-y:auto;
     transition:0.3s;
     z-index:1000;
+    box-shadow:
+    0 0 40px rgba(0,247,255,0.05);
 }
 
 .logo{
-    font-size:28px;
+    font-size:32px;
     font-weight:700;
     color:#00f7ff;
-    margin-bottom:40px;
+    margin-bottom:45px;
+    text-shadow:0 0 20px rgba(0,247,255,0.5);
 }
 
 .menu{
     display:flex;
     flex-direction:column;
-    gap:15px;
+    gap:14px;
 }
 
 .menu-title{
     color:#7f8db3;
-    font-size:14px;
+    font-size:13px;
     margin-bottom:5px;
-    margin-top:10px;
+    margin-top:15px;
     padding-left:5px;
+    letter-spacing:1px;
 }
 
 .menu a{
     text-decoration:none;
     color:white;
-    padding:15px;
-    border-radius:12px;
-    transition:0.3s;
-    background:#111936;
+    padding:16px;
+    border-radius:16px;
+    transition:0.3s ease;
+    background:rgba(255,255,255,0.03);
     font-weight:500;
+    border:1px solid transparent;
 }
 
 .menu a:hover{
-    background:#00f7ff;
+    background:linear-gradient(90deg,#00f7ff,#00c3ff);
     color:black;
+    transform:translateX(5px);
+    box-shadow:0 0 25px rgba(0,247,255,0.35);
 }
 
 /* MAIN */
 
 .main{
-    margin-left:260px;
-    width:calc(100% - 260px);
-    padding:30px;
+    margin-left:270px;
+    width:calc(100% - 270px);
+    padding:35px;
 }
 
 /* TOPBAR */
@@ -91,18 +101,23 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:30px;
+    margin-bottom:35px;
     gap:20px;
 }
 
 .topbar h1{
-    font-size:32px;
+    font-size:36px;
+    font-weight:700;
 }
 
 .profile{
-    background:#111936;
-    padding:12px 20px;
-    border-radius:12px;
+    background:rgba(255,255,255,0.04);
+    backdrop-filter:blur(15px);
+    padding:14px 24px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:
+    0 0 20px rgba(0,247,255,0.08);
 }
 
 /* MOBILE MENU */
@@ -112,7 +127,7 @@ body{
     width:50px;
     height:50px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     background:#111936;
     color:#00f7ff;
     font-size:24px;
@@ -123,7 +138,7 @@ body{
     position:fixed;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.6);
+    background:rgba(0,0,0,0.7);
     top:0;
     left:0;
     z-index:900;
@@ -134,123 +149,188 @@ body{
 
 .cards{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-bottom:40px;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:24px;
+    margin-bottom:45px;
 }
 
 .card{
-    background:#0d1327;
-    padding:25px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,0.08);
-    transition:0.3s;
+    background:
+    linear-gradient(145deg,
+    rgba(17,25,54,0.95),
+    rgba(13,19,39,0.95));
+    padding:28px;
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,0.06);
+    transition:0.35s ease;
+    position:relative;
+    overflow:hidden;
+    backdrop-filter:blur(20px);
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    width:150px;
+    height:150px;
+    background:rgba(0,247,255,0.06);
+    border-radius:50%;
+    top:-60px;
+    right:-60px;
 }
 
 .card:hover{
-    transform:translateY(-5px);
+    transform:translateY(-8px);
     border-color:#00f7ff;
+    box-shadow:
+    0 0 35px rgba(0,247,255,0.15);
 }
 
 .card h3{
-    color:#b5b5b5;
-    margin-bottom:10px;
-    font-size:16px;
+    color:#8ea2d6;
+    margin-bottom:12px;
+    font-size:15px;
+    font-weight:500;
 }
 
 .card h2{
-    font-size:30px;
+    font-size:34px;
+    font-weight:700;
+    color:#ffffff;
 }
 
 /* SECTION */
 
 .section-title{
-    font-size:28px;
-    margin-bottom:20px;
+    font-size:30px;
+    margin-bottom:25px;
+    font-weight:700;
 }
 
 /* BOT GRID */
 
 .bot-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
 }
 
 .bot-card{
-    background:#0d1327;
-    padding:25px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,0.08);
-    transition:0.3s;
+    background:
+    linear-gradient(145deg,
+    rgba(17,25,54,0.96),
+    rgba(13,19,39,0.96));
+    padding:30px;
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,0.06);
+    transition:0.35s ease;
+    backdrop-filter:blur(20px);
+    position:relative;
+    overflow:hidden;
+}
+
+.bot-card::before{
+    content:'';
+    position:absolute;
+    width:180px;
+    height:180px;
+    background:rgba(0,247,255,0.04);
+    border-radius:50%;
+    top:-80px;
+    right:-80px;
 }
 
 .bot-card:hover{
-    transform:translateY(-5px);
+    transform:translateY(-8px);
     border-color:#00f7ff;
+    box-shadow:
+    0 0 35px rgba(0,247,255,0.15);
 }
 
 .bot-card h3{
-    margin-bottom:15px;
-    font-size:24px;
+    margin-bottom:18px;
+    font-size:28px;
 }
 
 .bot-card p{
-    color:#b5b5b5;
-    margin-bottom:20px;
-    line-height:1.6;
+    color:#9fb0d7;
+    margin-bottom:22px;
+    line-height:1.7;
 }
 
 .stats{
-    margin-bottom:20px;
+    margin-bottom:24px;
 }
 
 .stats div{
-    margin-bottom:10px;
+    margin-bottom:12px;
+    color:#d7e3ff;
 }
+
+/* BUTTONS */
 
 .activate-btn{
     width:100%;
-    padding:14px;
+    padding:16px;
     border:none;
-    border-radius:12px;
-    background:#00f7ff;
+    border-radius:16px;
+    background:linear-gradient(90deg,#00f7ff,#00c3ff);
     color:black;
-    font-weight:600;
+    font-weight:700;
     cursor:pointer;
+    transition:0.3s ease;
+    font-size:15px;
 }
 
 .activate-btn:hover{
-    opacity:0.8;
+    transform:translateY(-3px);
+    box-shadow:
+    0 0 25px rgba(0,247,255,0.35);
 }
 
 /* TABLES */
 
 .transactions{
-    margin-top:40px;
-    background:#0d1327;
-    padding:25px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,0.08);
+    margin-top:45px;
+    background:
+    linear-gradient(145deg,
+    rgba(17,25,54,0.95),
+    rgba(13,19,39,0.95));
+    padding:30px;
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,0.06);
     overflow-x:auto;
+    backdrop-filter:blur(20px);
+}
+
+.transactions h2{
+    margin-bottom:20px;
+    font-size:28px;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:20px;
-    min-width:500px;
+    margin-top:15px;
+    min-width:600px;
 }
 
 table th{
     text-align:left;
-    padding:15px;
-    background:#111936;
+    padding:18px;
+    background:rgba(255,255,255,0.04);
+    color:#00f7ff;
+    font-weight:600;
 }
 
 table td{
-    padding:15px;
-    border-bottom:1px solid rgba(255,255,255,0.08);
+    padding:18px;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    color:#d8e2ff;
+}
+
+table tr:hover{
+    background:rgba(255,255,255,0.03);
 }
 
 /* MOBILE */
@@ -280,7 +360,7 @@ table td{
 }
 
 .topbar h1{
-    font-size:24px;
+    font-size:26px;
 }
 
 .cards{
@@ -294,329 +374,3 @@ table td{
 }
 
 </style>
-</head>
-<body>
-
-<div class="overlay" id="overlay"></div>
-
-<!-- SIDEBAR -->
-
-<div class="sidebar" id="sidebar">
-
-    <div class="logo">SummitFX</div>
-
-    <div class="menu">
-
-        <div class="menu-title">MAIN MENU</div>
-
-        <a href="dashboard.html">Dashboard</a>
-
-        <a href="deposit.html">Deposit</a>
-
-        <a href="withdraw.html">Withdraw</a>
-
-        <a href="bots.html">Trading Bots</a>
-
-        <a href="plans.html">Investment Plans</a>
-
-        <a href="transactions.html">Transactions</a>
-
-        <div class="menu-title">ACCOUNT</div>
-
-        <a href="profile.html">My Profile</a>
-
-        <a href="edit-profile.html">Edit Profile</a>
-
-        <a href="kyc.html">Verify KYC</a>
-
-        <a href="settings.html">Settings</a>
-
-        <a href="index.html">Logout</a>
-
-    </div>
-
-</div>
-
-<!-- MAIN -->
-
-<div class="main">
-
-    <div class="topbar">
-
-        <button class="menu-toggle" id="menuBtn">
-            ☰
-        </button>
-
-        <h1>User Dashboard</h1>
-
-        <div class="profile">
-            Welcome Trader
-        </div>
-
-    </div>
-
-    <!-- STATS -->
-
-    <div class="cards">
-
-        <div class="card">
-            <h3>Account Balance</h3>
-            <h2 id="balance">$0.00</h2>
-        </div>
-
-        <div class="card">
-            <h3>Total Profit</h3>
-            <h2>$0.00</h2>
-        </div>
-
-        <div class="card">
-            <h3>Active Investments</h3>
-            <h2 id="activePlans">0</h2>
-        </div>
-
-        <div class="card">
-            <h3>Total Withdrawals</h3>
-            <h2>$0.00</h2>
-        </div>
-
-    </div>
-
-    <!-- INVESTMENT PLANS -->
-
-    <h2 class="section-title">Investment Plans</h2>
-
-    <div class="bot-grid">
-
-        <div class="bot-card">
-
-            <h3>Starter Plan</h3>
-
-            <p>
-                Beginner investment package for new traders.
-            </p>
-
-            <div class="stats">
-                <div>Minimum: $100</div>
-                <div>ROI: 15%</div>
-                <div>Duration: 7 Days</div>
-            </div>
-
-            <button class="activate-btn">
-                Activate Plan
-            </button>
-
-        </div>
-
-        <div class="bot-card">
-
-            <h3>Pro Trader</h3>
-
-            <p>
-                Medium-risk trading investment package.
-            </p>
-
-            <div class="stats">
-                <div>Minimum: $500</div>
-                <div>ROI: 35%</div>
-                <div>Duration: 14 Days</div>
-            </div>
-
-            <button class="activate-btn">
-                Activate Plan
-            </button>
-
-        </div>
-
-        <div class="bot-card">
-
-            <h3>VIP Elite</h3>
-
-            <p>
-                Advanced AI trading portfolio with high returns.
-            </p>
-
-            <div class="stats">
-                <div>Minimum: $1000</div>
-                <div>ROI: 60%</div>
-                <div>Duration: 30 Days</div>
-            </div>
-
-            <button class="activate-btn">
-                Activate Plan
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- BOTS -->
-
-    <div class="transactions">
-
-        <h2>Active Investments</h2>
-
-        <table>
-
-            <thead>
-
-            <tr>
-                <th>Plan</th>
-                <th>Amount</th>
-                <th>ROI</th>
-                <th>Status</th>
-            </tr>
-
-            </thead>
-
-            <tbody id="investmentTable">
-
-            <tr>
-                <td colspan="4"
-                style="text-align:center;padding:30px;color:#b5b5b5;">
-                    No active investments
-                </td>
-            </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <!-- TRANSACTIONS -->
-
-    <div class="transactions">
-
-        <h2>Recent Transactions</h2>
-
-        <table>
-
-            <tr>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Status</th>
-            </tr>
-
-            <tr>
-                <td colspan="3"
-                style="text-align:center;padding:30px;color:#b5b5b5;">
-                    No transactions available yet.
-                </td>
-            </tr>
-
-        </table>
-
-    </div>
-
-</div>
-
-<script>
-
-/* MOBILE MENU */
-
-const sidebar = document.getElementById("sidebar");
-const menuBtn = document.getElementById("menuBtn");
-const overlay = document.getElementById("overlay");
-
-menuBtn.addEventListener("click", () => {
-
-    sidebar.classList.toggle("active");
-    overlay.classList.toggle("active");
-
-});
-
-overlay.addEventListener("click", () => {
-
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-
-});
-
-/* SUPABASE */
-
-const supabaseUrl =
-'https://grcpnibpjcpjckognvbm.supabase.co';
-
-const supabaseKey =
-'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
-
-const { createClient } = supabase;
-
-const client =
-createClient(supabaseUrl,supabaseKey);
-
-/* LOAD USER DATA */
-
-async function loadDashboard(){
-
-    const { data:{ user } } =
-    await client.auth.getUser();
-
-    if(!user){
-
-        window.location.href = "login.html";
-        return;
-
-    }
-
-    const { data:userData } =
-    await client
-    .from('users')
-    .select('*')
-    .eq('id',user.id)
-    .single();
-
-    if(userData){
-
-        document.getElementById('balance')
-        .innerText =
-        `$${Number(userData.balance || 0).toFixed(2)}`;
-
-    }
-
-    const { data:plans } =
-    await client
-    .from('user_investments')
-    .select('*')
-    .eq('user_id',user.id);
-
-    document.getElementById('activePlans')
-    .innerText = plans.length;
-
-    const investmentTable =
-    document.getElementById('investmentTable');
-
-    if(plans.length > 0){
-
-        investmentTable.innerHTML = '';
-
-        plans.forEach(plan => {
-
-            investmentTable.innerHTML += `
-
-            <tr>
-
-                <td>${plan.plan_name}</td>
-
-                <td>$${plan.amount}</td>
-
-                <td>${plan.roi}%</td>
-
-                <td>${plan.status}</td>
-
-            </tr>
-
-            `;
-
-        });
-
-    }
-
-}
-
-loadDashboard();
-
-</script>
-
-</body>
-</html>
