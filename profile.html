@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -150,6 +152,25 @@ body{
     opacity:0.8;
 }
 
+.message{
+    margin-top:20px;
+    padding:15px;
+    border-radius:12px;
+    display:none;
+    text-align:center;
+    font-weight:500;
+}
+
+.success{
+    background:rgba(0,255,140,0.1);
+    color:#00ff99;
+}
+
+.error{
+    background:rgba(255,0,0,0.1);
+    color:#ff5c5c;
+}
+
 /* MOBILE */
 
 @media(max-width:768px){
@@ -192,11 +213,11 @@ body{
 
         <div class="profile-header">
 
-            <div class="avatar">
+            <div class="avatar" id="avatar">
                 S
             </div>
 
-            <h2>SummitFX Trader</h2>
+            <h2 id="displayName">SummitFX Trader</h2>
 
             <p>Manage your personal account information</p>
 
@@ -204,85 +225,167 @@ body{
 
         <!-- FORM -->
 
-        <form>
+        <form id="profileForm">
 
             <div class="form-grid">
 
                 <div class="input-group">
                     <label>First Name</label>
-                    <input type="text" placeholder="Enter first name">
+                    <input type="text" id="first_name" readonly>
                 </div>
 
                 <div class="input-group">
                     <label>Last Name</label>
-                    <input type="text" placeholder="Enter last name">
+                    <input type="text" id="last_name" readonly>
                 </div>
 
                 <div class="input-group">
                     <label>Username</label>
-                    <input type="text" placeholder="Enter username">
+                    <input type="text" id="username" readonly>
                 </div>
 
                 <div class="input-group">
                     <label>Phone Number</label>
-                    <input type="tel" placeholder="Enter phone number">
+                    <input type="tel" id="phone" readonly>
                 </div>
 
                 <div class="input-group">
                     <label>Date of Birth</label>
-                    <input type="date">
+                    <input type="date" id="dob" readonly>
                 </div>
 
                 <div class="input-group">
                     <label>Gender</label>
-                    <select>
-                        <option>Select Gender</option>
-                        <option>Male</option>
-                        <option>Female</option>
-                        <option>Other</option>
-                    </select>
+                    <input type="text" id="gender" readonly>
                 </div>
 
                 <div class="input-group">
                     <label>Country</label>
-                    <select>
-                        <option>Select Country</option>
-                        <option>Kenya</option>
-                        <option>United States</option>
-                        <option>United Kingdom</option>
-                        <option>Canada</option>
-                        <option>South Africa</option>
-                        <option>Nigeria</option>
-                        <option>India</option>
-                    </select>
+                    <input type="text" id="country" readonly>
                 </div>
 
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" placeholder="Enter email">
+                    <input type="email" id="email" readonly>
                 </div>
 
                 <div class="input-group full-width">
                     <label>Bio</label>
-                    <textarea rows="5" placeholder="Tell us about yourself"></textarea>
+                    <textarea rows="5" id="bio" readonly></textarea>
                 </div>
 
                 <div class="input-group full-width">
                     <label>Address</label>
-                    <textarea rows="4" placeholder="Enter your address"></textarea>
+                    <textarea rows="4" id="address" readonly></textarea>
                 </div>
 
             </div>
 
-            <button type="submit" class="save-btn">
-                Save Profile
-            </button>
+            <a href="edit-profile.html">
+                <button type="button" class="save-btn">
+                    Edit Profile
+                </button>
+            </a>
+
+            <div class="message" id="message"></div>
 
         </form>
 
     </div>
 
 </div>
+
+<script>
+
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client =
+createClient(supabaseUrl, supabaseKey);
+
+async function loadProfile(){
+
+    const { data:{ user } } =
+    await client.auth.getUser();
+
+    if(!user){
+
+        window.location.href = "login.html";
+        return;
+
+    }
+
+    const { data, error } =
+    await client
+    .from('users')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+    if(error){
+
+        document.getElementById("message").style.display = "block";
+        document.getElementById("message").className = "message error";
+        document.getElementById("message").innerText =
+        "Failed to load profile.";
+
+        return;
+
+    }
+
+    document.getElementById("first_name").value =
+    data.first_name || "";
+
+    document.getElementById("last_name").value =
+    data.last_name || "";
+
+    document.getElementById("username").value =
+    data.username || "";
+
+    document.getElementById("phone").value =
+    data.phone || "";
+
+    document.getElementById("dob").value =
+    data.dob || "";
+
+    document.getElementById("gender").value =
+    data.gender || "";
+
+    document.getElementById("country").value =
+    data.country || "";
+
+    document.getElementById("email").value =
+    data.email || user.email;
+
+    document.getElementById("bio").value =
+    data.bio || "";
+
+    document.getElementById("address").value =
+    data.address || "";
+
+    const fullName =
+    `${data.first_name || ''} ${data.last_name || ''}`.trim();
+
+    if(fullName){
+
+        document.getElementById("displayName").innerText =
+        fullName;
+
+        document.getElementById("avatar").innerText =
+        fullName.charAt(0).toUpperCase();
+
+    }
+
+}
+
+loadProfile();
+
+</script>
 
 </body>
 </html>
