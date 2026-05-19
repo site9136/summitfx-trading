@@ -1,505 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Profile - SummitFX</title>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
 
-<style>
+/* SUPABASE */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
 
-body{
-    font-family:'Poppins',sans-serif;
-    background:#050816;
-    color:white;
-    padding:30px;
-}
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
 
-/* CONTAINER */
+const { createClient } = supabase;
 
-.container{
-    max-width:1200px;
-    margin:auto;
-}
+const client =
+createClient(supabaseUrl, supabaseKey);
 
-/* TOPBAR */
+/* FORM */
 
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:35px;
-    flex-wrap:wrap;
-    gap:15px;
-}
+const form =
+document.querySelector(".profile-form");
 
-.topbar h1{
-    font-size:34px;
-    font-weight:700;
-}
+/* LOAD USER PROFILE */
 
-.back-btn{
-    text-decoration:none;
-    background:#111936;
-    color:#00f7ff;
-    padding:14px 22px;
-    border-radius:14px;
-    transition:0.3s;
-    font-weight:600;
-}
+async function loadProfile(){
 
-.back-btn:hover{
-    background:#00f7ff;
-    color:black;
-}
+    const { data:{ user } } =
+    await client.auth.getUser();
 
-/* PROFILE FORM */
+    if(!user){
 
-.profile-form{
-    width:100%;
-    max-width:1100px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:25px;
-    background:linear-gradient(145deg,#0d1327,#111936);
-    padding:40px;
-    border-radius:28px;
-    border:1px solid rgba(0,247,255,0.12);
-    box-shadow:
-    0 0 25px rgba(0,247,255,0.08),
-    0 0 60px rgba(0,0,0,0.35);
-}
+        window.location.href = "login.html";
+        return;
 
-/* INPUT GROUP */
+    }
 
-.input-group{
-    display:flex;
-    flex-direction:column;
-}
+    const { data, error } =
+    await client
+    .from('users')
+    .select('*')
+    .eq('id', user.id)
+    .single();
 
-/* LABELS */
+    if(data){
 
-.input-group label{
-    margin-bottom:10px;
-    color:#00f7ff;
-    font-size:14px;
-    font-weight:600;
-    letter-spacing:0.5px;
-}
+        document.getElementById("firstName").value =
+        data.first_name || "";
 
-/* INPUTS */
+        document.getElementById("lastName").value =
+        data.last_name || "";
 
-.input-group input,
-.input-group select{
-    width:100%;
-    padding:18px;
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,0.08);
-    background:linear-gradient(145deg,#111936,#182445);
-    color:white;
-    font-size:15px;
-    transition:0.3s;
-    outline:none;
-}
+        document.getElementById("username").value =
+        data.username || "";
 
-/* PLACEHOLDER */
+        document.getElementById("phone").value =
+        data.phone || "";
 
-.input-group input::placeholder{
-    color:#9ba6c7;
-}
+        document.getElementById("dob").value =
+        data.dob || "";
 
-/* HOVER */
+        document.getElementById("gender").value =
+        data.gender || "";
 
-.input-group input:hover,
-.input-group select:hover{
-    border-color:rgba(0,247,255,0.4);
-}
+        document.getElementById("country").value =
+        data.country || "";
 
-/* FOCUS */
+        document.getElementById("email").value =
+        data.email || "";
 
-.input-group input:focus,
-.input-group select:focus{
-    border-color:#00f7ff;
-    box-shadow:0 0 15px rgba(0,247,255,0.3);
-    transform:translateY(-2px);
-}
-
-/* OPTIONS */
-
-.input-group select option{
-    background:#0b1020;
-    color:white;
-}
-
-/* SAVE BUTTON */
-
-.save-btn{
-    grid-column:1/-1;
-    padding:18px;
-    border:none;
-    border-radius:18px;
-    background:linear-gradient(90deg,#00f7ff,#00c3ff);
-    color:black;
-    font-size:17px;
-    font-weight:700;
-    cursor:pointer;
-    transition:0.3s;
-    margin-top:10px;
-}
-
-.save-btn:hover{
-    transform:translateY(-3px);
-    opacity:0.9;
-    box-shadow:0 0 20px rgba(0,247,255,0.35);
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-body{
-    padding:20px;
-}
-
-.profile-form{
-    grid-template-columns:1fr;
-    padding:25px;
-}
-
-.topbar h1{
-    font-size:28px;
-}
+    }
 
 }
 
-</style>
-</head>
-<body>
+/* SAVE PROFILE */
 
-<div class="container">
+form.addEventListener("submit", async(e)=>{
 
-    <!-- TOPBAR -->
+    e.preventDefault();
 
-    <div class="topbar">
+    const saveBtn =
+    document.querySelector(".save-btn");
 
-        <h1>Edit Profile</h1>
+    saveBtn.innerText = "Saving...";
 
-        <a href="dashboard.html" class="back-btn">
-            Back to Dashboard
-        </a>
+    const { data:{ user } } =
+    await client.auth.getUser();
 
-    </div>
+    const updates = {
 
-    <!-- PROFILE FORM -->
+        first_name:
+        document.getElementById("firstName").value,
 
-    <form class="profile-form">
+        last_name:
+        document.getElementById("lastName").value,
 
-        <!-- FIRST NAME -->
+        username:
+        document.getElementById("username").value,
 
-        <div class="input-group">
-            <label>First Name</label>
-            <input type="text"
-            id="firstName"
-            placeholder="Enter first name">
-        </div>
+        phone:
+        document.getElementById("phone").value,
 
-        <!-- LAST NAME -->
+        dob:
+        document.getElementById("dob").value,
 
-        <div class="input-group">
-            <label>Last Name</label>
-            <input type="text"
-            id="lastName"
-            placeholder="Enter last name">
-        </div>
+        gender:
+        document.getElementById("gender").value,
 
-        <!-- USERNAME -->
+        country:
+        document.getElementById("country").value,
 
-        <div class="input-group">
-            <label>Username</label>
-            <input type="text"
-            id="username"
-            placeholder="Enter username">
-        </div>
-
-        <!-- PHONE -->
-
-        <div class="input-group">
-            <label>Phone Number</label>
-            <input type="tel"
-            id="phone"
-            placeholder="Enter phone number">
-        </div>
-
-        <!-- DATE OF BIRTH -->
-
-        <div class="input-group">
-            <label>Date of Birth</label>
-            <input type="date"
-            id="dob">
-        </div>
-
-        <!-- GENDER -->
-
-        <div class="input-group">
-
-            <label>Gender</label>
-
-            <select id="gender">
-
-                <option value="">
-                    Select Gender
-                </option>
-
-                <option value="Male">
-                    Male
-                </option>
-
-                <option value="Female">
-                    Female
-                </option>
-
-                <option value="Other">
-                    Other
-                </option>
-
-            </select>
-
-        </div>
-
-        <!-- COUNTRY -->
-
-        <div class="input-group">
-
-            <label>Country</label>
-
-            <select id="country">
-
-                <option value="">
-                    Select Country
-                </option>
-
-                 <option>Afghanistan</option>
-        <option>Albania</option>
-        <option>Algeria</option>
-        <option>Andorra</option>
-        <option>Angola</option>
-        <option>Argentina</option>
-        <option>Armenia</option>
-        <option>Australia</option>
-        <option>Austria</option>
-        <option>Azerbaijan</option>
-
-        <option>Bahamas</option>
-        <option>Bahrain</option>
-        <option>Bangladesh</option>
-        <option>Barbados</option>
-        <option>Belarus</option>
-        <option>Belgium</option>
-        <option>Belize</option>
-        <option>Benin</option>
-        <option>Bhutan</option>
-        <option>Bolivia</option>
-        <option>Bosnia and Herzegovina</option>
-        <option>Botswana</option>
-        <option>Brazil</option>
-        <option>Brunei</option>
-        <option>Bulgaria</option>
-        <option>Burkina Faso</option>
-        <option>Burundi</option>
-
-        <option>Cambodia</option>
-        <option>Cameroon</option>
-        <option>Canada</option>
-        <option>Central African Republic</option>
-        <option>Chad</option>
-        <option>Chile</option>
-        <option>China</option>
-        <option>Colombia</option>
-        <option>Comoros</option>
-        <option>Congo</option>
-        <option>Costa Rica</option>
-        <option>Croatia</option>
-        <option>Cuba</option>
-        <option>Cyprus</option>
-        <option>Czech Republic</option>
-
-        <option>Denmark</option>
-        <option>Djibouti</option>
-        <option>Dominica</option>
-        <option>Dominican Republic</option>
-
-        <option>Ecuador</option>
-        <option>Egypt</option>
-        <option>El Salvador</option>
-        <option>Equatorial Guinea</option>
-        <option>Eritrea</option>
-        <option>Estonia</option>
-        <option>Eswatini</option>
-        <option>Ethiopia</option>
-
-        <option>Fiji</option>
-        <option>Finland</option>
-        <option>France</option>
-
-        <option>Gabon</option>
-        <option>Gambia</option>
-        <option>Georgia</option>
-        <option>Germany</option>
-        <option>Ghana</option>
-        <option>Greece</option>
-        <option>Grenada</option>
-        <option>Guatemala</option>
-        <option>Guinea</option>
-        <option>Guyana</option>
-
-        <option>Haiti</option>
-        <option>Honduras</option>
-        <option>Hungary</option>
-
-        <option>Iceland</option>
-        <option>India</option>
-        <option>Indonesia</option>
-        <option>Iran</option>
-        <option>Iraq</option>
-        <option>Ireland</option>
-        <option>Israel</option>
-        <option>Italy</option>
-
-        <option>Jamaica</option>
-        <option>Japan</option>
-        <option>Jordan</option>
-
-        <option>Kazakhstan</option>
-        <option>Kenya</option>
-        <option>Kuwait</option>
-        <option>Kyrgyzstan</option>
-
-        <option>Laos</option>
-        <option>Latvia</option>
-        <option>Lebanon</option>
-        <option>Lesotho</option>
-        <option>Liberia</option>
-        <option>Libya</option>
-        <option>Lithuania</option>
-        <option>Luxembourg</option>
-
-        <option>Madagascar</option>
-        <option>Malawi</option>
-        <option>Malaysia</option>
-        <option>Maldives</option>
-        <option>Mali</option>
-        <option>Malta</option>
-        <option>Mauritania</option>
-        <option>Mauritius</option>
-        <option>Mexico</option>
-        <option>Moldova</option>
-        <option>Mongolia</option>
-        <option>Montenegro</option>
-        <option>Morocco</option>
-        <option>Mozambique</option>
-        <option>Myanmar</option>
-
-        <option>Namibia</option>
-        <option>Nepal</option>
-        <option>Netherlands</option>
-        <option>New Zealand</option>
-        <option>Nicaragua</option>
-        <option>Niger</option>
-        <option>Nigeria</option>
-        <option>North Korea</option>
-        <option>Norway</option>
-
-        <option>Oman</option>
-
-        <option>Pakistan</option>
-        <option>Panama</option>
-        <option>Papua New Guinea</option>
-        <option>Paraguay</option>
-        <option>Peru</option>
-        <option>Philippines</option>
-        <option>Poland</option>
-        <option>Portugal</option>
-
-        <option>Qatar</option>
-
-        <option>Romania</option>
-        <option>Russia</option>
-        <option>Rwanda</option>
-
-        <option>Saudi Arabia</option>
-        <option>Senegal</option>
-        <option>Serbia</option>
-        <option>Sierra Leone</option>
-        <option>Singapore</option>
-        <option>Slovakia</option>
-        <option>Slovenia</option>
-        <option>Somalia</option>
-        <option>South Africa</option>
-        <option>South Korea</option>
-        <option>Spain</option>
-        <option>Sri Lanka</option>
-        <option>Sudan</option>
-        <option>Sweden</option>
-        <option>Switzerland</option>
-        <option>Syria</option>
-
-        <option>Taiwan</option>
-        <option>Tajikistan</option>
-        <option>Tanzania</option>
-        <option>Thailand</option>
-        <option>Togo</option>
-        <option>Trinidad and Tobago</option>
-        <option>Tunisia</option>
-        <option>Turkey</option>
-        <option>Turkmenistan</option>
-
-        <option>Uganda</option>
-        <option>Ukraine</option>
-        <option>United Arab Emirates</option>
-        <option>United Kingdom</option>
-        <option>United States</option>
-        <option>Uruguay</option>
-        <option>Uzbekistan</option>
-
-        <option>Venezuela</option>
-        <option>Vietnam</option>
-
-        <option>Yemen</option>
-
-        <option>Zambia</option>
-        <option>Zimbabwe</option>
-
- 
-            </select>
-
-        </div>
-
-        <!-- EMAIL -->
-
-        <div class="input-group">
-            <label>Email</label>
-            <input type="email"
-            id="email"
-            placeholder="Enter email">
-        </div>
-
-        <!-- SAVE BUTTON -->
-
-        <button type="submit" class="save-btn">
-            Save Profile Changes
-        </button>
-
-    </form>
-
-</div>
+        email:
+        document.getElementById("email").value
+
+    };
+
+    const { error } =
+    await client
+    .from('users')
+    .update(updates)
+    .eq('id', user.id);
+
+    if(error){
+
+        alert(error.message);
+
+        saveBtn.innerText =
+        "Save Profile Changes";
+
+        return;
+
+    }
+
+    alert("Profile updated successfully");
+
+    saveBtn.innerText =
+    "Save Profile Changes";
+
+});
+
+/* START */
+
+loadProfile();
+
+</script>
 
 </body>
 </html>
