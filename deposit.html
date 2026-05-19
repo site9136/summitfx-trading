@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -437,7 +439,7 @@ body{
 
             <label>Deposit Amount</label>
 
-            <input type="number" placeholder="Enter amount">
+            <input type="number" id="depositAmount" placeholder="Enter amount">
 
         </div>
 
@@ -466,13 +468,35 @@ body{
 
         </div>
 
-        <div class="upload-box">
+        <div class="input-group">
 
-            Upload payment screenshot or transaction hash
+            <label>Transaction Hash</label>
+
+            <input
+            type="text"
+            id="txHash"
+            placeholder="Enter transaction hash">
 
         </div>
 
-        <button>
+        <div class="upload-box">
+
+            <input
+            type="file"
+            id="paymentProof"
+            accept="image/*"
+            style="
+            width:100%;
+            padding:15px;
+            background:#111936;
+            color:white;
+            border:none;
+            border-radius:12px;
+            ">
+
+        </div>
+
+        <button onclick="submitDeposit()">
 
             Submit Deposit Request
 
@@ -503,6 +527,19 @@ overlay.addEventListener("click", () => {
     overlay.classList.remove("active");
 
 });
+
+/* SUPABASE */
+
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client =
+createClient(supabaseUrl,supabaseKey);
 
 /* COPY WALLET */
 
@@ -557,6 +594,126 @@ function changeWallet(){
 
         walletQR.src =
         'photo_2026-05-18_14-18-11.png';
+
+    }
+
+}
+
+/* SUBMIT DEPOSIT */
+
+async function submitDeposit(){
+
+    try{
+
+        const {
+            data:{ user }
+        } = await client.auth.getUser();
+
+        if(!user){
+
+            alert("Please login first");
+            return;
+
+        }
+
+        const crypto =
+        document.getElementById('cryptoSelect').value;
+
+        const amount =
+        document.getElementById('depositAmount').value;
+
+        const txHash =
+        document.getElementById('txHash').value;
+
+        const file =
+        document.getElementById('paymentProof').files[0];
+
+        if(!amount){
+
+            alert("Enter deposit amount");
+            return;
+
+        }
+
+        if(!txHash && !file){
+
+            alert("Upload screenshot or enter transaction hash");
+            return;
+
+        }
+
+        let proofUrl = '';
+
+        /* UPLOAD IMAGE */
+
+        if(file){
+
+            const filePath =
+            `${user.id}/deposit_${Date.now()}`;
+
+            const { error:uploadError } =
+            await client.storage
+            .from('deposit-proofs')
+            .upload(filePath,file);
+
+            if(uploadError){
+
+                alert(uploadError.message);
+                return;
+
+            }
+
+            proofUrl =
+            client.storage
+            .from('deposit-proofs')
+            .getPublicUrl(filePath)
+            .data.publicUrl;
+
+        }
+
+        /* SAVE TO DATABASE */
+
+        const { error } =
+        await client
+        .from('deposit_requests')
+        .insert([{
+
+            user_id:user.id,
+
+            crypto:crypto,
+
+            amount:amount,
+
+            transaction_hash:txHash,
+
+            proof_image:proofUrl,
+
+            wallet_address:
+            document.getElementById('walletAddress').innerText,
+
+            status:'Pending'
+
+        }]);
+
+        if(error){
+
+            alert(error.message);
+            return;
+
+        }
+
+        alert(
+        "Deposit request submitted successfully");
+
+        document.getElementById('depositAmount').value = '';
+        document.getElementById('txHash').value = '';
+        document.getElementById('paymentProof').value = '';
+
+    }
+
+    catch(error){
+
+        alert(error.message);
 
     }
 
