@@ -328,7 +328,7 @@ body{
                 </div>
 
                 <div class="stat-value" id="balance">
-                    Loading...
+                    $0.00
                 </div>
 
             </div>
@@ -462,40 +462,80 @@ document.getElementById('botStatus');
 const tradeLog =
 document.getElementById('tradeLog');
 
-/* LOAD USER BALANCE */
+/* LOAD USER ACCOUNT */
 
 async function loadBalance(){
 
     const {
-        data:{ user }
-    } = await client.auth.getUser();
+        data:{ session }
+    } = await client.auth.getSession();
 
-    if(!user){
+    if(!session){
 
         alert("Please login first");
-        window.location.href = "login.html";
+
+        window.location.href =
+        "login.html";
+
         return;
 
     }
+
+    const user =
+    session.user;
 
     const {
         data,
         error
     } = await client
     .from('profiles')
-    .select('*')
+    .select('balance')
     .eq('id',user.id)
-    .single();
+    .maybeSingle();
 
     if(error){
 
         console.log(error);
+
+        balanceEl.innerText =
+        "$0.00";
+
         return;
 
     }
 
-    balance =
-    Number(data.balance || 0);
+    if(!data){
+
+        const {
+            error:createError
+        } = await client
+        .from('profiles')
+        .insert({
+            id:user.id,
+            balance:0
+        });
+
+        if(createError){
+
+            console.log(createError);
+
+            balanceEl.innerText =
+            "$0.00";
+
+            return;
+
+        }
+
+        balance = 0;
+
+    }
+
+    else{
+
+        balance =
+        Number(data.balance || 0);
+
+    }
 
     updateUI();
 
@@ -643,15 +683,17 @@ function addTradeLog(profit){
 async function saveBalance(){
 
     const {
-        data:{ user }
-    } = await client.auth.getUser();
+        data:{ session }
+    } = await client.auth.getSession();
+
+    if(!session) return;
 
     await client
     .from('profiles')
     .update({
         balance:balance
     })
-    .eq('id',user.id);
+    .eq('id',session.user.id);
 
 }
 
@@ -678,7 +720,9 @@ function botLoop(){
     }
 
     balance += trade;
+
     totalProfit += trade;
+
     livePL = trade;
 
     activeTrades =
@@ -757,9 +801,11 @@ function stopBot(){
 
 }
 
-/* START LOOP */
+/* START */
 
 drawChart();
+
+updateUI();
 
 loadBalance();
 
