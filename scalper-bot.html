@@ -160,7 +160,6 @@ h1{
         Activate Bot
     </button>
 
-    <!-- FIXED BUTTON -->
     <a href="scalper-ai.html" class="dashboard-btn" id="dashboardBtn">
         Open Bot Dashboard
     </a>
@@ -211,6 +210,8 @@ async function activateBot(){
 
     if(!user){
 
+        message.classList.remove("success");
+
         message.innerHTML =
         "Please login first.";
 
@@ -230,6 +231,8 @@ async function activateBot(){
     .single();
 
     if(error){
+
+        message.classList.remove("success");
 
         message.innerHTML =
         "Failed to load account.";
@@ -259,6 +262,11 @@ async function activateBot(){
 
     }
 
+    /* DEDUCT MONEY */
+
+    const newBalance =
+    balance - 500;
+
     /* SAVE BOT STATUS */
 
     const {
@@ -266,7 +274,9 @@ async function activateBot(){
     } = await client
     .from('profiles')
     .update({
-        scalper_ai_active:true
+        scalper_ai_active:true,
+        scalper_ai_investment:500,
+        balance:newBalance
     })
     .eq('id',user.id);
 
