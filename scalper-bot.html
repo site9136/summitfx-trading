@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -62,6 +64,7 @@ button{
     font-weight:700;
     cursor:pointer;
     margin-bottom:15px;
+    transition:0.3s;
 }
 
 button:hover{
@@ -75,6 +78,11 @@ button:hover{
     border-radius:12px;
     display:none;
     color:#ffcc00;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.success{
+    color:#00ff88;
 }
 
 .back-btn{
@@ -97,10 +105,33 @@ button:hover{
     cursor:pointer;
     text-align:center;
     text-decoration:none;
+    transition:0.3s;
 }
 
 .dashboard-btn:hover{
     opacity:0.8;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+body{
+    padding:20px;
+}
+
+.container{
+    padding:25px;
+}
+
+h1{
+    font-size:32px;
+}
+
+.stats div{
+    font-size:16px;
+}
+
 }
 
 </style>
@@ -125,7 +156,7 @@ button:hover{
         <div>Win Rate: 89%</div>
     </div>
 
-    <button onclick="showMessage()">
+    <button onclick="activateBot()" id="activateBtn">
         Activate Bot
     </button>
 
@@ -133,9 +164,7 @@ button:hover{
         Open Bot Dashboard
     </a>
 
-    <div class="message" id="message">
-        Insufficient funds. Please deposit funds to activate this bot.
-    </div>
+    <div class="message" id="message"></div>
 
     <a href="bots.html" class="back-btn">
         ← Back to Bots
@@ -145,11 +174,127 @@ button:hover{
 
 <script>
 
-function showMessage(){
+/* SUPABASE */
 
-    document.getElementById("message").style.display = "block";
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
 
-    document.getElementById("dashboardBtn").style.display = "block";
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client =
+createClient(supabaseUrl,supabaseKey);
+
+/* ACTIVATE BOT */
+
+async function activateBot(){
+
+    const message =
+    document.getElementById("message");
+
+    const dashboardBtn =
+    document.getElementById("dashboardBtn");
+
+    const activateBtn =
+    document.getElementById("activateBtn");
+
+    message.style.display = "block";
+
+    /* GET USER */
+
+    const {
+        data:{ user }
+    } = await client.auth.getUser();
+
+    if(!user){
+
+        message.innerHTML =
+        "Please login first.";
+
+        return;
+
+    }
+
+    /* GET PROFILE */
+
+    const {
+        data,
+        error
+    } = await client
+    .from('profiles')
+    .select('*')
+    .eq('id',user.id)
+    .single();
+
+    if(error){
+
+        message.innerHTML =
+        "Failed to load account.";
+
+        console.log(error);
+
+        return;
+
+    }
+
+    const balance =
+    Number(data.balance || 0);
+
+    /* CHECK BALANCE */
+
+    if(balance < 500){
+
+        message.innerHTML =
+        "Insufficient funds. Please deposit at least $500 to activate this bot.";
+
+        dashboardBtn.style.display =
+        "none";
+
+        return;
+
+    }
+
+    /* SAVE BOT STATUS */
+
+    const {
+        error:updateError
+    } = await client
+    .from('profiles')
+    .update({
+        scalper_ai_active:true
+    })
+    .eq('id',user.id);
+
+    if(updateError){
+
+        message.innerHTML =
+        "Failed to activate bot.";
+
+        console.log(updateError);
+
+        return;
+
+    }
+
+    /* SUCCESS */
+
+    message.classList.add("success");
+
+    message.innerHTML =
+    "Scalper AI activated successfully.";
+
+    dashboardBtn.style.display =
+    "block";
+
+    activateBtn.innerText =
+    "Bot Activated";
+
+    activateBtn.disabled = true;
+
+    activateBtn.style.opacity =
+    "0.7";
 
 }
 
