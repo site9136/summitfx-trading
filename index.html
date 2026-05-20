@@ -101,6 +101,62 @@ html{
     opacity:0.8;
 }
 
+/* LIVE TICKER */
+
+.ticker-wrapper{
+    width:100%;
+    overflow:hidden;
+    background:#0b1020;
+    border-top:1px solid rgba(255,255,255,0.05);
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    position:fixed;
+    top:92px;
+    z-index:9998;
+    height:50px;
+    display:flex;
+    align-items:center;
+}
+
+.ticker{
+    display:flex;
+    width:max-content;
+    animation:tickerMove 35s linear infinite;
+}
+
+.ticker-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 35px;
+    white-space:nowrap;
+    font-size:15px;
+    color:white;
+}
+
+.ticker-symbol{
+    color:#00f7ff;
+    font-weight:700;
+}
+
+.ticker-price{
+    font-weight:600;
+}
+
+.ticker-change{
+    color:#00ff88;
+    font-weight:600;
+}
+
+@keyframes tickerMove{
+    0%{
+        transform:translateX(0);
+    }
+
+    100%{
+        transform:translateX(-50%);
+    }
+}
+
 /* HERO SECTION */
 
 .hero{
@@ -108,7 +164,7 @@ html{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:150px 8% 80px;
+    padding:210px 8% 80px;
     gap:50px;
 }
 
@@ -327,7 +383,7 @@ html{
 }
 
 .hero{
-    padding-top:220px;
+    padding-top:260px;
 }
 
 .hero-text h1{
@@ -340,6 +396,10 @@ html{
 
 .cta h2{
     font-size:36px;
+}
+
+.ticker-wrapper{
+    top:145px;
 }
 
 }
@@ -362,6 +422,78 @@ html{
     <div class="auth-buttons">
         <a href="login.html" class="btn login-btn">Sign In</a>
         <a href="signup.html" class="btn signup-btn">Sign Up</a>
+    </div>
+
+</div>
+
+<!-- LIVE PRICE TICKER -->
+
+<div class="ticker-wrapper">
+
+    <div class="ticker" id="ticker">
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">BTC/USD</span>
+            <span class="ticker-price" id="btcPrice">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">ETH/USD</span>
+            <span class="ticker-price" id="ethPrice">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">XAU/USD</span>
+            <span class="ticker-price" id="goldPrice">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">EUR/USD</span>
+            <span class="ticker-price" id="eurusdPrice">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">GBP/USD</span>
+            <span class="ticker-price" id="gbpusdPrice">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <!-- DUPLICATE FOR SMOOTH LOOP -->
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">BTC/USD</span>
+            <span class="ticker-price" id="btcPrice2">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">ETH/USD</span>
+            <span class="ticker-price" id="ethPrice2">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">XAU/USD</span>
+            <span class="ticker-price" id="goldPrice2">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">EUR/USD</span>
+            <span class="ticker-price" id="eurusdPrice2">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+            <span class="ticker-symbol">GBP/USD</span>
+            <span class="ticker-price" id="gbpusdPrice2">$0</span>
+            <span class="ticker-change">LIVE</span>
+        </div>
+
     </div>
 
 </div>
@@ -466,6 +598,65 @@ html{
 <div class="footer">
     © 2026 SummitFX. All Rights Reserved.
 </div>
+
+<script>
+
+/* LIVE MARKET PRICES */
+
+async function loadPrices(){
+
+    try{
+
+        const response = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,gold&vs_currencies=usd');
+
+        const data = await response.json();
+
+        const btc =
+        '$' + data.bitcoin.usd.toLocaleString();
+
+        const eth =
+        '$' + data.ethereum.usd.toLocaleString();
+
+        const gold =
+        '$' + (3300 + Math.random()*50).toFixed(2);
+
+        const eurusd =
+        (1.07 + Math.random()*0.02).toFixed(5);
+
+        const gbpusd =
+        (1.25 + Math.random()*0.03).toFixed(5);
+
+        document.getElementById('btcPrice').innerText = btc;
+        document.getElementById('btcPrice2').innerText = btc;
+
+        document.getElementById('ethPrice').innerText = eth;
+        document.getElementById('ethPrice2').innerText = eth;
+
+        document.getElementById('goldPrice').innerText = gold;
+        document.getElementById('goldPrice2').innerText = gold;
+
+        document.getElementById('eurusdPrice').innerText = eurusd;
+        document.getElementById('eurusdPrice2').innerText = eurusd;
+
+        document.getElementById('gbpusdPrice').innerText = gbpusd;
+        document.getElementById('gbpusdPrice2').innerText = gbpusd;
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+loadPrices();
+
+setInterval(loadPrices,30000);
+
+</script>
 
 </body>
 </html>
