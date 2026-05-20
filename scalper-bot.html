@@ -61,6 +61,7 @@ button{
     font-size:18px;
     font-weight:700;
     cursor:pointer;
+    margin-bottom:15px;
 }
 
 button:hover{
@@ -81,6 +82,25 @@ button:hover{
     margin-top:25px;
     color:#00f7ff;
     text-decoration:none;
+}
+
+.dashboard-btn{
+    display:none;
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:14px;
+    background:#00ff88;
+    color:black;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    text-align:center;
+    text-decoration:none;
+}
+
+.dashboard-btn:hover{
+    opacity:0.8;
 }
 
 </style>
@@ -109,6 +129,10 @@ button:hover{
         Activate Bot
     </button>
 
+    <a href="scalper-ai-dashboard.html" class="dashboard-btn" id="dashboardBtn">
+        Open Bot Dashboard
+    </a>
+
     <div class="message" id="message">
         Insufficient funds. Please deposit funds to activate this bot.
     </div>
@@ -122,7 +146,11 @@ button:hover{
 <script>
 
 function showMessage(){
+
     document.getElementById("message").style.display = "block";
+
+    document.getElementById("dashboardBtn").style.display = "block";
+
 }
 
 </script>
