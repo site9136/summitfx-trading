@@ -160,7 +160,8 @@ h1{
         Activate Bot
     </button>
 
-    <a href="scalper-ai-dashboard.html" class="dashboard-btn" id="dashboardBtn">
+    <!-- FIXED BUTTON -->
+    <a href="scalper-ai.html" class="dashboard-btn" id="dashboardBtn">
         Open Bot Dashboard
     </a>
 
@@ -246,6 +247,8 @@ async function activateBot(){
 
     if(balance < 500){
 
+        message.classList.remove("success");
+
         message.innerHTML =
         "Insufficient funds. Please deposit at least $500 to activate this bot.";
 
@@ -268,6 +271,8 @@ async function activateBot(){
     .eq('id',user.id);
 
     if(updateError){
+
+        message.classList.remove("success");
 
         message.innerHTML =
         "Failed to activate bot.";
@@ -297,6 +302,44 @@ async function activateBot(){
     "0.7";
 
 }
+
+/* SHOW DASHBOARD BUTTON IF ALREADY ACTIVATED */
+
+async function checkBotStatus(){
+
+    const {
+        data:{ user }
+    } = await client.auth.getUser();
+
+    if(!user) return;
+
+    const {
+        data
+    } = await client
+    .from('profiles')
+    .select('scalper_ai_active')
+    .eq('id',user.id)
+    .single();
+
+    if(data && data.scalper_ai_active){
+
+        document.getElementById("dashboardBtn").style.display =
+        "block";
+
+        document.getElementById("activateBtn").innerText =
+        "Bot Activated";
+
+        document.getElementById("activateBtn").disabled =
+        true;
+
+        document.getElementById("activateBtn").style.opacity =
+        "0.7";
+
+    }
+
+}
+
+checkBotStatus();
 
 </script>
 
