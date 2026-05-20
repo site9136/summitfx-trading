@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -29,13 +31,11 @@ body{
     padding:40px;
     border-radius:20px;
     border:1px solid rgba(255,255,255,0.08);
-    box-shadow:0 0 40px rgba(0,247,255,0.05);
 }
 
 h1{
     font-size:40px;
     margin-bottom:20px;
-    color:#00f7ff;
 }
 
 .description{
@@ -51,10 +51,6 @@ h1{
 .stats div{
     margin-bottom:15px;
     font-size:18px;
-    background:#111936;
-    padding:15px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,0.06);
 }
 
 button{
@@ -67,12 +63,12 @@ button{
     font-size:18px;
     font-weight:700;
     cursor:pointer;
+    margin-bottom:15px;
     transition:0.3s;
 }
 
 button:hover{
     opacity:0.8;
-    transform:translateY(-2px);
 }
 
 .message{
@@ -85,15 +81,34 @@ button:hover{
     border:1px solid rgba(255,255,255,0.08);
 }
 
+.success{
+    color:#00ff88;
+}
+
 .back-btn{
     display:inline-block;
     margin-top:25px;
     color:#00f7ff;
     text-decoration:none;
-    font-weight:500;
 }
 
-.back-btn:hover{
+.dashboard-btn{
+    display:none;
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:14px;
+    background:#00ff88;
+    color:black;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    text-align:center;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.dashboard-btn:hover{
     opacity:0.8;
 }
 
@@ -136,31 +151,25 @@ h1{
 
     <div class="stats">
 
-        <div>
-            Minimum Deposit: $100
-        </div>
+        <div>Minimum Activation: $100</div>
 
-        <div>
-            Potential Winnings: $3,500 in 24 Hours
-        </div>
+        <div>Potential Earnings: $3,500 in 24 Hours</div>
 
-        <div>
-            Risk Level: Low
-        </div>
+        <div>Risk Level: Low</div>
 
-        <div>
-            Win Rate: 94%
-        </div>
+        <div>Win Rate: 94%</div>
 
     </div>
 
-    <button onclick="showMessage()">
+    <button onclick="activateBot()" id="activateBtn">
         Activate Bot
     </button>
 
-    <div class="message" id="message">
-        Insufficient funds. Please deposit funds to activate this bot.
-    </div>
+    <a href="swing-master-dashboard.html" class="dashboard-btn" id="dashboardBtn">
+        Open Bot Dashboard
+    </a>
+
+    <div class="message" id="message"></div>
 
     <a href="bots.html" class="back-btn">
         ← Back to Bots
@@ -170,11 +179,176 @@ h1{
 
 <script>
 
-function showMessage(){
+/* SUPABASE */
 
-    document.getElementById("message").style.display = "block";
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client =
+createClient(supabaseUrl,supabaseKey);
+
+/* ACTIVATE BOT */
+
+async function activateBot(){
+
+    const message =
+    document.getElementById("message");
+
+    const dashboardBtn =
+    document.getElementById("dashboardBtn");
+
+    const activateBtn =
+    document.getElementById("activateBtn");
+
+    message.style.display = "block";
+
+    /* GET USER */
+
+    const {
+        data:{ user }
+    } = await client.auth.getUser();
+
+    if(!user){
+
+        message.classList.remove("success");
+
+        message.innerHTML =
+        "Please login first.";
+
+        return;
+
+    }
+
+    /* GET PROFILE */
+
+    const {
+        data,
+        error
+    } = await client
+    .from('profiles')
+    .select('*')
+    .eq('id',user.id)
+    .single();
+
+    if(error){
+
+        message.classList.remove("success");
+
+        message.innerHTML =
+        "Failed to load account.";
+
+        console.log(error);
+
+        return;
+
+    }
+
+    const balance =
+    Number(data.balance || 0);
+
+    /* CHECK BALANCE */
+
+    if(balance < 100){
+
+        message.classList.remove("success");
+
+        message.innerHTML =
+        "Insufficient funds. Please deposit at least $100 to activate this bot.";
+
+        dashboardBtn.style.display =
+        "none";
+
+        return;
+
+    }
+
+    /* SAVE BOT STATUS */
+
+    const {
+        error:updateError
+    } = await client
+    .from('profiles')
+    .update({
+        swing_master_active:true,
+        swing_master_investment:100
+    })
+    .eq('id',user.id);
+
+    if(updateError){
+
+        message.classList.remove("success");
+
+        message.innerHTML =
+        "Failed to activate bot.";
+
+        console.log(updateError);
+
+        return;
+
+    }
+
+    /* SUCCESS */
+
+    message.classList.add("success");
+
+    message.innerHTML =
+    "Swing Master activated successfully.";
+
+    dashboardBtn.style.display =
+    "block";
+
+    activateBtn.innerText =
+    "Bot Activated";
+
+    activateBtn.disabled = true;
+
+    activateBtn.style.opacity =
+    "0.7";
 
 }
+
+/* SHOW DASHBOARD BUTTON IF ALREADY ACTIVATED */
+
+async function checkBotStatus(){
+
+    const {
+        data:{ user }
+    } = await client.auth.getUser();
+
+    if(!user) return;
+
+    const {
+        data
+    } = await client
+    .from('profiles')
+    .select('swing_master_active')
+    .eq('id',user.id)
+    .single();
+
+    if(data && data.swing_master_active){
+
+        document.getElementById("dashboardBtn").style.display =
+        "block";
+
+        document.getElementById("activateBtn").innerText =
+        "Bot Activated";
+
+        document.getElementById("activateBtn").disabled =
+        true;
+
+        document.getElementById("activateBtn").style.opacity =
+        "0.7";
+
+    }
+
+}
+
+checkBotStatus();
 
 </script>
 
