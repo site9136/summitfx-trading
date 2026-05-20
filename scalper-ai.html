@@ -474,8 +474,10 @@ async function loadBalance(){
 
         if(!session){
 
-            balanceEl.innerText =
-            "$0.00";
+            alert("Please login first");
+
+            window.location.href =
+            "login.html";
 
             return;
 
@@ -489,9 +491,9 @@ async function loadBalance(){
             error
         } = await client
         .from('profiles')
-        .select('*')
+        .select('balance,scalper_ai_active')
         .eq('id',user.id)
-        .maybeSingle();
+        .single();
 
         if(error){
 
@@ -504,39 +506,21 @@ async function loadBalance(){
 
         }
 
-        if(!data){
+        /* BOT MUST BE ACTIVATED */
 
-            const {
-                error:createError
-            } = await client
-            .from('profiles')
-            .insert({
-                id:user.id,
-                balance:0,
-                scalper_ai_active:false
-            });
+        if(!data.scalper_ai_active){
 
-            if(createError){
+            alert("Activate the bot first");
 
-                console.log(createError);
+            window.location.href =
+            "scalper-bot.html";
 
-                balanceEl.innerText =
-                "$0.00";
-
-                return;
-
-            }
-
-            balance = 0;
+            return;
 
         }
 
-        else{
-
-            balance =
-            Number(data.balance || 0);
-
-        }
+        balance =
+        Number(data.balance || 0);
 
         updateUI();
 
@@ -759,15 +743,6 @@ function botLoop(){
 /* START */
 
 function startBot(){
-
-    if(balance < 500){
-
-        alert(
-        'Minimum $500 required to activate bot');
-
-        return;
-
-    }
 
     running = true;
 
