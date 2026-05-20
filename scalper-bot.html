@@ -71,6 +71,11 @@ button:hover{
     opacity:0.8;
 }
 
+button:disabled{
+    opacity:0.7;
+    cursor:not-allowed;
+}
+
 .message{
     margin-top:20px;
     background:#111936;
@@ -243,6 +248,27 @@ async function activateBot(){
 
     }
 
+    /* CHECK IF ALREADY ACTIVATED */
+
+    if(data.scalper_ai_active){
+
+        message.classList.add("success");
+
+        message.innerHTML =
+        "Scalper AI already activated.";
+
+        dashboardBtn.style.display =
+        "block";
+
+        activateBtn.innerText =
+        "Bot Activated";
+
+        activateBtn.disabled = true;
+
+        return;
+
+    }
+
     const balance =
     Number(data.balance || 0);
 
@@ -267,7 +293,7 @@ async function activateBot(){
     const newBalance =
     balance - 500;
 
-    /* SAVE BOT STATUS */
+    /* UPDATE ACCOUNT */
 
     const {
         error:updateError
@@ -298,7 +324,7 @@ async function activateBot(){
     message.classList.add("success");
 
     message.innerHTML =
-    "Scalper AI activated successfully.";
+    "Scalper AI activated successfully. $500 has been deducted from your account.";
 
     dashboardBtn.style.display =
     "block";
@@ -308,12 +334,9 @@ async function activateBot(){
 
     activateBtn.disabled = true;
 
-    activateBtn.style.opacity =
-    "0.7";
-
 }
 
-/* SHOW DASHBOARD BUTTON IF ALREADY ACTIVATED */
+/* CHECK BOT STATUS */
 
 async function checkBotStatus(){
 
@@ -324,12 +347,20 @@ async function checkBotStatus(){
     if(!user) return;
 
     const {
-        data
+        data,
+        error
     } = await client
     .from('profiles')
     .select('scalper_ai_active')
     .eq('id',user.id)
     .single();
+
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
 
     if(data && data.scalper_ai_active){
 
@@ -341,9 +372,6 @@ async function checkBotStatus(){
 
         document.getElementById("activateBtn").disabled =
         true;
-
-        document.getElementById("activateBtn").style.opacity =
-        "0.7";
 
     }
 
