@@ -494,13 +494,13 @@ form.addEventListener("submit", async (e) => {
         /* UNIQUE FILE NAMES */
 
         const frontPath =
-        `${user.id}/front_${Date.now()}`;
+        `${user.id}/front_${Date.now()}.jpg`;
 
         const backPath =
-        `${user.id}/back_${Date.now()}`;
+        `${user.id}/back_${Date.now()}.jpg`;
 
         const selfiePath =
-        `${user.id}/selfie_${Date.now()}`;
+        `${user.id}/selfie_${Date.now()}.jpg`;
 
         /* UPLOAD FRONT */
 
@@ -570,7 +570,15 @@ form.addEventListener("submit", async (e) => {
 
         }]);
 
-        if(dbError) throw dbError;
+        if(dbError){
+
+            console.log(dbError);
+
+            throw new Error(
+                "KYC submission blocked by database policy. Disable RLS or add INSERT policy in Supabase."
+            );
+
+        }
 
         /* SUCCESS */
 
@@ -595,6 +603,8 @@ form.addEventListener("submit", async (e) => {
         "Verification Submitted";
 
     }catch(error){
+
+        console.log(error);
 
         message.style.display = "block";
 
