@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -311,8 +313,8 @@ body{
                 Quantum AI Bot
             </div>
 
-            <div class="status running" id="botStatus">
-                RUNNING
+            <div class="status stopped" id="botStatus">
+                STOPPED
             </div>
 
         </div>
@@ -326,7 +328,7 @@ body{
                 </div>
 
                 <div class="stat-value" id="balance">
-                    $4,523.55
+                    Loading...
                 </div>
 
             </div>
@@ -338,7 +340,7 @@ body{
                 </div>
 
                 <div class="stat-value green" id="livePL">
-                    +$123.44
+                    +$0.00
                 </div>
 
             </div>
@@ -350,7 +352,7 @@ body{
                 </div>
 
                 <div class="stat-value green" id="totalProfit">
-                    +$1,820.00
+                    +$0.00
                 </div>
 
             </div>
@@ -362,7 +364,7 @@ body{
                 </div>
 
                 <div class="stat-value" id="activeTrades">
-                    4
+                    0
                 </div>
 
             </div>
@@ -417,14 +419,27 @@ body{
 
 <script>
 
+/* SUPABASE */
+
+const supabaseUrl =
+'https://grcpnibpjcpjckognvbm.supabase.co';
+
+const supabaseKey =
+'sb_publishable_QOfEf0mxWde9MH4ELMBMEw_frEjjb5K';
+
+const { createClient } = supabase;
+
+const client =
+createClient(supabaseUrl,supabaseKey);
+
 /* BOT DATA */
 
-let balance = 4523.55;
-let totalProfit = 1820;
-let livePL = 123.44;
-let activeTrades = 4;
+let balance = 0;
+let totalProfit = 0;
+let livePL = 0;
+let activeTrades = 0;
 
-let running = true;
+let running = false;
 let interval;
 
 /* ELEMENTS */
@@ -446,6 +461,45 @@ document.getElementById('botStatus');
 
 const tradeLog =
 document.getElementById('tradeLog');
+
+/* LOAD USER BALANCE */
+
+async function loadBalance(){
+
+    const {
+        data:{ user }
+    } = await client.auth.getUser();
+
+    if(!user){
+
+        alert("Please login first");
+        window.location.href = "login.html";
+        return;
+
+    }
+
+    const {
+        data,
+        error
+    } = await client
+    .from('profiles')
+    .select('*')
+    .eq('id',user.id)
+    .single();
+
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
+
+    balance =
+    Number(data.balance || 0);
+
+    updateUI();
+
+}
 
 /* CHART */
 
@@ -584,6 +638,23 @@ function addTradeLog(profit){
 
 }
 
+/* SAVE BALANCE */
+
+async function saveBalance(){
+
+    const {
+        data:{ user }
+    } = await client.auth.getUser();
+
+    await client
+    .from('profiles')
+    .update({
+        balance:balance
+    })
+    .eq('id',user.id);
+
+}
+
 /* BOT ENGINE */
 
 function botLoop(){
@@ -625,11 +696,22 @@ function botLoop(){
 
     addTradeLog(trade);
 
+    saveBalance();
+
 }
 
 /* START */
 
 function startBot(){
+
+    if(balance < 500){
+
+        alert(
+        'Minimum $500 required to activate bot');
+
+        return;
+
+    }
 
     running = true;
 
@@ -669,6 +751,8 @@ function stopBot(){
 
     livePL = 0;
 
+    activeTrades = 0;
+
     updateUI();
 
 }
@@ -676,7 +760,8 @@ function stopBot(){
 /* START LOOP */
 
 drawChart();
-updateUI();
+
+loadBalance();
 
 interval =
 setInterval(botLoop,3000);
