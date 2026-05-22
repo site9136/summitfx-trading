@@ -593,12 +593,19 @@ async function loadBalance(){
 
     if(!user) return;
 
-    const { data } =
+    const { data,error } =
     await client
     .from('users')
     .select('balance')
     .eq('id',user.id)
-    .single();
+    .maybeSingle();
+
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
 
     if(data){
 
@@ -660,13 +667,20 @@ async function submitWithdrawal(){
         const { data:userData, error:userError } =
         await client
         .from('users')
-        .select('balance,total_withdrawals')
+        .select('balance')
         .eq('id',user.id)
-        .single();
+        .maybeSingle();
 
         if(userError){
 
             alert(userError.message);
+            return;
+
+        }
+
+        if(!userData){
+
+            alert("User account not found");
             return;
 
         }
@@ -721,11 +735,7 @@ async function submitWithdrawal(){
         .from('users')
         .update({
 
-            balance:newBalance,
-
-            total_withdrawals:
-            Number(userData.total_withdrawals || 0)
-            + amount
+            balance:newBalance
 
         })
         .eq('id',user.id);
@@ -739,6 +749,7 @@ async function submitWithdrawal(){
 
         /* SAVE TO TRANSACTIONS */
 
+        const { error:transactionError } =
         await client
         .from('transactions')
         .insert([{
@@ -752,6 +763,12 @@ async function submitWithdrawal(){
             status:'Pending'
 
         }]);
+
+        if(transactionError){
+
+            console.log(transactionError);
+
+        }
 
         alert(
         "Withdrawal request submitted successfully");
