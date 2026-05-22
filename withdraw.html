@@ -583,6 +583,8 @@ createClient(supabaseUrl,supabaseKey);
 
 /* LOAD USER BALANCE */
 
+let currentBalance = 0;
+
 async function loadBalance(){
 
     const {
@@ -600,9 +602,12 @@ async function loadBalance(){
 
     if(data){
 
+        currentBalance =
+        Number(data.balance || 0);
+
         document.getElementById('balance')
         .innerText =
-        `$${Number(data.balance || 0).toFixed(2)}`;
+        `$${currentBalance.toFixed(2)}`;
 
     }
 
@@ -631,7 +636,7 @@ async function submitWithdrawal(){
         document.getElementById('crypto').value;
 
         const amount =
-        document.getElementById('amount').value;
+        Number(document.getElementById('amount').value);
 
         const walletAddress =
         document.getElementById('walletAddress').value;
@@ -650,6 +655,41 @@ async function submitWithdrawal(){
 
         }
 
+        /* GET USER BALANCE */
+
+        const { data:userData, error:userError } =
+        await client
+        .from('users')
+        .select('balance,total_withdrawals')
+        .eq('id',user.id)
+        .single();
+
+        if(userError){
+
+            alert(userError.message);
+            return;
+
+        }
+
+        const balance =
+        Number(userData.balance || 0);
+
+        /* INSUFFICIENT FUNDS */
+
+        if(amount > balance){
+
+            alert("Insufficient funds");
+            return;
+
+        }
+
+        /* NEW BALANCE */
+
+        const newBalance =
+        balance - amount;
+
+        /* SAVE WITHDRAWAL REQUEST */
+
         const { error } =
         await client
         .from('withdraw_requests')
@@ -657,7 +697,7 @@ async function submitWithdrawal(){
 
             user_id:user.id,
 
-            amount:Number(amount),
+            amount:amount,
 
             crypto:crypto,
 
@@ -674,11 +714,52 @@ async function submitWithdrawal(){
 
         }
 
+        /* UPDATE USER BALANCE */
+
+        const { error:updateError } =
+        await client
+        .from('users')
+        .update({
+
+            balance:newBalance,
+
+            total_withdrawals:
+            Number(userData.total_withdrawals || 0)
+            + amount
+
+        })
+        .eq('id',user.id);
+
+        if(updateError){
+
+            alert(updateError.message);
+            return;
+
+        }
+
+        /* SAVE TO TRANSACTIONS */
+
+        await client
+        .from('transactions')
+        .insert([{
+
+            user_id:user.id,
+
+            type:'Withdrawal',
+
+            amount:amount,
+
+            status:'Pending'
+
+        }]);
+
         alert(
         "Withdrawal request submitted successfully");
 
         document.getElementById('amount').value = '';
         document.getElementById('walletAddress').value = '';
+
+        loadBalance();
 
     }
 
